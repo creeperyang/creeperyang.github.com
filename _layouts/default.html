@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+        <meta name="author" content="creeper yang" />
+        <meta name="description" content="creeper yang blog" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <title>{{page.title}}</title>
+        <link rel="stylesheet" type="text/css" href="/publics/css/h5main.css" />
+        <link rel="stylesheet" type="text/css" href="/publics/css/h5normalize.css" />
+        <link rel="stylesheet" type="text/css" href="/publics/css/grid.css" />
+        <link rel="stylesheet" type="text/css" href="/publics/css/font-awesome.css" />
+        <script type="text/javascript" src="/js/lib/jquery.min.js"></script>
+        <script type="text/javascript">
+            /*window.dataStr = '{ {% for tag in site.tags %}{% if tag[0] != site.tags.first[0] %},{% endif %}"{{ tag[0] }}":[{% for post in tag[1] %}{% if post != tag[1].first %},{% endif %}{"url":"{{post.url}}", "description":"{{post.description}}", "title":"{{post.title}}", "date":"{{post.date | date:"%d/%m/%Y"}}"}{% endfor %}]{% endfor %} }';
+            $(function(){
+                // tag html generate
+                var data = JSON.parse(dataStr),curTag,archieves,tmp;
+                if((tmp=parseSearch(window.location.search))){
+                    curTag=decodeURI(tmp[1]);
+                    archieves = data[curTag];
+                    var html='',$post=$('ul.posts');
+                    for (var i = 0; i < archieves.length; i++) {
+                        archieves[i]
+                        html+="<li><h3 class='post-title'><a href='"+archieves[i].url+"'>"+archieves[i].title+"</a></h3><p class='post-info'><span class='post-time'>"+archieves[i].date+"</span></p><div class='post-description'>"+archieves[i].description+"</div></li>";
+                    };
+                    $post.html('');
+                    $post.html(html);
+                }
+            });
+            function parseSearch(search){
+                var r=/^\?tag=([\w\W]+)$/i;
+                return r.exec(search);
+            }*/
+        </script>
+    </head>
+    <body>
+        <div class="wrapper">
+            {{content}}
+        </div>
+    </body>
+</html>
