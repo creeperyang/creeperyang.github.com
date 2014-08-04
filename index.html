@@ -12,20 +12,80 @@
         <link rel="stylesheet" type="text/css" href="/publics/css/h5normalize.css" />
         <link rel="stylesheet" type="text/css" href="/publics/css/grid.css" />
         <link rel="stylesheet" type="text/css" href="/publics/css/font-awesome.css" />
+
+        <link rel="stylesheet" type="text/css" href="/publics/css/cs-select.css" />
+        <link rel="stylesheet" type="text/css" href="/publics/css/cs-skin-elastic.css" />
+
         <link rel="stylesheet" type="text/css" href="/publics/css/main.css" />
-        <script type="text/javascript" src="/publics/js/lib/jquery.min.js"></script>
     </head>
     <body>
         <article class="main-wrap">
             <header class="cy-page" id="user-des">
-            	<div class="head-img-zone">
-            		<img class="head-img" src="/publics/images/head.jpg">
+            	<div class="head-img-zone cy-page-zone">
+                    <div class="ih-item circle effect15 left_to_right">
+                        <a href="#">
+                            <div class="img">
+                                <img class="head-img img-inner" src="/publics/images/head.jpg">
+                            </div>
+                            <div class="info">
+                                <h3>Blog</h3>
+                                <p>--Creeper Yang--</p>
+                            </div>
+                        </a>
+                    </div>
             	</div>
-            	<div class="des-zone">
+            	<div class="des-zone cy-page-zone">
             		<p>种一棵树最好的时间是十年前，其次是现在。</p>
             	</div>
+                <div class="next-page-zone cy-page-zone">
+                    <span class="icon-angle-down next-page"></span>
+                </div>
             </header>
-            <section class="cy-page"></section>
+            <section class="cy-page">
+                <div class="menu-zone cy-page-zone">
+                    <!-- <ul class="col-sm-12">
+                        <li class="menu-item col-md-3 col-sm-6">
+                            <div class="ih-item circle effect3 right_to_left">
+                                <a href="#">
+                                    <div class="img">
+                                        <span class="img-inner icon-file-alt"></span>
+                                    </div>
+                                    <div class="info">
+                                        <h3>所有分类</h3>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                        <li class="menu-item col-md-3 col-sm-6">JavaScript</li>
+                        <li class="menu-item col-md-3 col-sm-6">HTML&CSS</li>
+                        <li class="menu-item col-md-3 col-sm-6">Node.js</li>
+                    </ul> -->
+                    <div class="col-md-4" style="height:400px;">
+                        <div class="cy-dropdown">
+                            <span class="cy-title">Select a Country</span>
+                            <div class="cy-subitems">
+                                <ul>
+                                    <li>
+                                        <span>France</span>
+                                    </li>
+                                    <li>
+                                        <span>Brazil</span>
+                                    </li>
+                                    <li>
+                                        <span>Argentina</span>
+                                    </li>
+                                    <li>
+                                        <span>South Africa</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </article>
+        <script type="text/javascript" src="/publics/js/lib/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="/publics/js/lib/jquery.cyDropdown.js"></script>
+        <script type="text/javascript" src="/publics/js/main.js"></script>
     </body>
 </html>
