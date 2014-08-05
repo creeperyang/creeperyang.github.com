@@ -5,6 +5,7 @@
 @lightgrayFontColor: #999;
 @bgGray: #f7f7f5;
 @orange: #df5453;
+@deepBlue: #415c71;
 
 // fonts
 @font-face {
@@ -128,7 +129,7 @@
     overflow: hidden;
 
     background-color: transparent;
-    visibility: visible;
+    visibility: hidden;
 }
 .cy-subitem-list {
     list-style: none;
@@ -260,22 +261,6 @@ body {
         height: 100vh;
     }
 }
-.next-page {
-    position: relative;
-    bottom: -3rem;
-    display: inline-block;
-    height: 3.2rem;
-    width: 2.2rem;
-    font-size: 2rem;
-    color: #fff;
-    line-height: 3.2rem;
-    background-color: darken(@orange, 3%);
-    cursor: pointer;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-    @media screen and (max-width: 480px) {
-        display: none;
-    }
-}
 
 // user info page
 #user-info {
@@ -358,8 +343,45 @@ body {
         padding: 2rem;
     }
 }
-.next-page-zone {
+.menu-zone {
     text-align: center;
+    .cy-menu {
+        bottom: -3rem;
+
+        display: inline-block;
+        width: 8rem;
+
+        font-size: 1.4rem;
+        color: #fff;
+
+        background-color: darken(@orange, 3%);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+
+        .cy-main-item {
+            text-align: center;
+        }
+        &:hover {
+            .cy-subitems-zone {
+                box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+            }
+        }
+    }
+    .main-menu {
+        /*position: relative;
+        bottom: -3rem;
+        display: inline-block;
+        height: 3.2rem;
+        width: 2.2rem;
+        font-size: 1.4rem;
+        color: #fff;
+        line-height: 3.2rem;
+        background-color: darken(@orange, 3%);
+        cursor: pointer;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);*/
+        /*@media screen and (max-width: 480px) {
+            display: none;
+        }*/
+    }
 }
 
 
@@ -384,6 +406,7 @@ body {
     overflow: hidden;
 
     background-color: white;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
     @media screen and (max-width: 480px) {
         display: none;
     }
@@ -406,10 +429,22 @@ body {
 // article page
 #article-page {
     overflow: hidden;
+
+    .article-view {
+        padding: 1rem 0;
+    }
+    .article-title {
+        h1 {
+            font-size: 1rem;
+            font-weight: normal;
+            color: @baseFontColor;
+        }
+    }
 }
 
 // foot
 #footer-page {
     overflow: hidden;
-    background-color: #666;
+    padding: 4rem 0;
+    background-color: @deepBlue;
 }
