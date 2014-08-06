@@ -17,4 +17,16 @@ $(function(){
             "padding-top": delta + parseInt(paddingTop) + "px"
         });
     }*/
+    /*http://www.html5tricks.com/demo/html5-css3-path-menu/index.html#*/
+    $(".flyout-btn").click(function() {
+    $(".flyout-btn").toggleClass("btn-rotate");
+    $(".flyout").find("a").removeClass();
+    return $(".flyout").removeClass("flyout-init fade").toggleClass("expand");
+  });
+
+  $(".flyout").find("a").click(function() {
+    $(".flyout-btn").toggleClass("btn-rotate");
+    $(".flyout").removeClass("expand").addClass("fade");
+    return $(this).addClass("clicked");
+  });
 });
