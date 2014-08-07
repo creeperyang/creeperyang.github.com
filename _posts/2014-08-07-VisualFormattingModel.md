@@ -20,6 +20,7 @@ description: <p>wait...</p>
 5. box model： 盒模型。
 6. positioning scheme： 定位体系。
 7. containing blocks： 包含块，元素生成box，该box就是子元素的包含块。
+8. block-level elements, block box: 块级元素，块框
 
 ##Introduction to the visual formatting model
 
@@ -27,14 +28,15 @@ description: <p>wait...</p>
 
 在模型中，根据盒模型，树中每个元素生成0个或多个盒子。这些盒子的布局受以下因素影响：
 
-1. box尺寸和类型。
-   类型特指`display`特性决定的元素类型，如`div`是块级元素，`span`是行内元素。
+1.  box尺寸和类型。
+    
+    类型特指`display`特性决定的元素类型，如`div`是块级元素，`span`是行内元素。
 
-2. 定位体系。
+2.  定位体系。
 
     元素在布局时，根据3种定位体系定位。分别是，常规流、浮动和绝对定位。
 
-3. 文档树中元素之间的关系。
+3.  文档树中元素之间的关系。
 
     比如，一个块元素包含两个互为兄弟节点的浮动元素，后面那个浮动元素的布局，会受前面元素以及它包含块的影响。
 
@@ -57,6 +59,25 @@ description: <p>wait...</p>
 包含块是一个相对的概念。“一个box的包含块”，指的是“该box所存在的那个包含块”，并不是它建造的包含块。
 
 每个box相对于它的包含块都有一个位置，但是它不会被包含块限制；它可以溢出(包含块)。
+
+##Controlling box generation(控制框的生成)
+
+我们经常用到块元素、行内元素的概念，那么，到底什么是块元素，什么是行内元素，它们有什么特点，怎么形成的，有什么作用呢？什么是块框，什么又是行内框呢？
+
+###块级元素和块框
+
+块级元素是源文档中那些在视觉上被格式化为块（如：段落）的元素。下面这些'display'属性的取值会产生块级元素：'block'，'list-item'，以及'table'。
+
+The three terms "block-level box," "block container box," and "block box" are sometimes abbreviated as "block" where unambiguous.
+
+块级框是参与block formatting context的框。每个块级元素会生成一个主块级框（principal block-level box），这个主块级框包含后代框、生成的内容，并且也是涉及所有定位体系的框。一些块级元素会生成主块级框之外的框（additional boxes），比如`'list-item'`元素。这些额外的框相对于主块级框布局。
+
+Except for table boxes, which are described in a later chapter, and replaced elements, a block-level box is also a block container box. A block container box either contains only block-level boxes or establishes an inline formatting context and thus contains only inline-level boxes. Not all block container boxes are block-level boxes: non-replaced inline blocks and non-replaced table cells are block containers but not block-level boxes. Block-level boxes that are also block containers are called block boxes.
+
+除去table框，其它块级框也是块级容器框（a block container box），它可能仅包含块级框，或者创建inline formatting context以包含行内框。
+
+块级元素（不包含 table），会形成仅包含块框或仅包含行内框的主块框( principal block box )。主块框会为子孙元素建立包含块，生成内容，并且也是涉及所有定位体系的框。
+
 
 ##Containing blocks详细
 
