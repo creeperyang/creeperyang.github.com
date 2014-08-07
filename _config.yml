@@ -1,0 +1,4 @@
+baseurl: /
+markdown: rdiscount
+paginate_path: "page:num"
+permalink: /:categories/:year/:month/:title

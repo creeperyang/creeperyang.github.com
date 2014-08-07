@@ -1,10 +1,8 @@
 ---
-layout: default
+layout: article
 title: Javascript的技巧与细节
 category: tech
 tags: JavaScript
-extraCss: [/css/github.css]
-extraJs: [/js/page/hight.js]
 description: <p>Javascript是一种动态类型、弱类型、基于原型的语言，有很多不同于一般编程语言的特性。对于从Java或C++之类语言转学Javascript的，必然有很多不易理解或容易出错的<b>小细节</b>，本文从博主自己学习使用js的过程出发，罗列了一些。</p><p>这些细节可能是某个运算符的使用，也可能是对象的构造函数解说。</p>
 ---
 
