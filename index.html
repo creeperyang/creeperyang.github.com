@@ -96,24 +96,17 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-                            <div class="article-view">
-                                <div class="article-title">
-                                    <h1>Vim命令合集</h1>
-                                    <div class="article-attrs"></div>
+                            {% for post in site.posts %}
+                                <div class="article-view">
+                                    <div class="article-title">
+                                        <h1>{{ post.title }}</h1>
+                                        <div class="article-attrs"></div>
+                                    </div>
+                                    <div class="article-some-text">
+                                        {{ post.description }}
+                                    </div>
                                 </div>
-                                <div class="article-some-text">
-                                    <p>以:和/开头的命令都有历史纪录，可以首先键入:或/然后按上下箭头来选择某个历史命令。</p>
-                                </div>
-                            </div>
-                            <div class="article-view">
-                                <div class="article-title">
-                                    <h1>Vim命令合集</h1>
-                                    <div class="article-attrs"></div>
-                                </div>
-                                <div class="article-some-text">
-                                    <p>以:和/开头的命令都有历史纪录，可以首先键入:或/然后按上下箭头来选择某个历史命令。</p>
-                                </div>
-                            </div>
+                            {% endfor %}
                             <div class="article-view">
                                 <div class="article-title">
                                     <h1>Vim命令合集</h1>
