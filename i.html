@@ -1,0 +1,17 @@
+---
+title: hh
+layout: default
+---
+
+{% for post in site.posts %}
+    <h1>{{ post.title }}</h1>
+{% endfor %}
+
+<br/>
+
+{% cycle 'group 1': 'one', 'two', 'three' %}
+{% cycle 'group 1': 'one', 'two', 'three' %}
+
+<br/>
+
+{{ site.time }}

@@ -7,38 +7,19 @@
         <meta name="author" content="creeper yang" />
         <meta name="description" content="creeper yang blog" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <title>{{page.title}}</title>
+        <title>{{ page.title }}</title>
         <link rel="stylesheet" type="text/css" href="/publics/css/h5main.css" />
         <link rel="stylesheet" type="text/css" href="/publics/css/h5normalize.css" />
         <link rel="stylesheet" type="text/css" href="/publics/css/grid.css" />
         <link rel="stylesheet" type="text/css" href="/publics/css/font-awesome.css" />
-        <script type="text/javascript" src="/js/lib/jquery.min.js"></script>
-        <script type="text/javascript">
-            /*window.dataStr = '{ {% for tag in site.tags %}{% if tag[0] != site.tags.first[0] %},{% endif %}"{{ tag[0] }}":[{% for post in tag[1] %}{% if post != tag[1].first %},{% endif %}{"url":"{{post.url}}", "description":"{{post.description}}", "title":"{{post.title}}", "date":"{{post.date | date:"%d/%m/%Y"}}"}{% endfor %}]{% endfor %} }';
-            $(function(){
-                // tag html generate
-                var data = JSON.parse(dataStr),curTag,archieves,tmp;
-                if((tmp=parseSearch(window.location.search))){
-                    curTag=decodeURI(tmp[1]);
-                    archieves = data[curTag];
-                    var html='',$post=$('ul.posts');
-                    for (var i = 0; i < archieves.length; i++) {
-                        archieves[i]
-                        html+="<li><h3 class='post-title'><a href='"+archieves[i].url+"'>"+archieves[i].title+"</a></h3><p class='post-info'><span class='post-time'>"+archieves[i].date+"</span></p><div class='post-description'>"+archieves[i].description+"</div></li>";
-                    };
-                    $post.html('');
-                    $post.html(html);
-                }
-            });
-            function parseSearch(search){
-                var r=/^\?tag=([\w\W]+)$/i;
-                return r.exec(search);
-            }*/
-        </script>
+
+        <link rel="stylesheet" type="text/css" href="/publics/css/main.css" />
     </head>
     <body>
-        <div class="wrapper">
-            {{content}}
-        </div>
+        <article class="main-wrap">
+            {{ page.content }}
+        </article>
+        <script type="text/javascript" src="/publics/js/lib/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="/publics/js/main.js"></script>
     </body>
 </html>
