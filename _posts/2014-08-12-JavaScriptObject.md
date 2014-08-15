@@ -79,9 +79,20 @@ but this is rare) associated with it. This second object is known as a prototype
 
 ```javascript
 var arr = new Array(); // arr.prototype 就是 Array.prototype
+arr.__proto__ // []
+Array.prototype // []
+Array.prototype === arr.__proto__ // true
 ```
 
-`var obj = Object.prtotype;`，obj就是很少的没有原型的对象之一：它不继承任何属性。
+`var obj = Object.prtotype;`，obj就是很少的没有原型(**原型是null**)的对象之一：它不继承任何属性。
+
+```javascript
+var obj = {x: 1}; // 对象直接量
+obj.__proto__ // Object {}
+Object.prototype // Object {}
+Object.prototype === obj.__proto__ // true
+Object.prototype.__proto__ // null 
+```
 
 ###第3种对象创建方法：Object.create()
 
