@@ -130,4 +130,32 @@ for(i = 0; i < 4; i++) {
     addr += customer["address" + i] + '\n';
 ```
 
+这是点操作符难以做到的。
+
+###继承
+
+属性查询时会顺着原型链查找，但设置属性时只会在对象上创建或修改属性，不会修改原型链。
+
+###属性访问错误
+
+查询一个不存在的属性会返回undefined，但对象不存在，查询其属性则报错。但可以这样来避免错误：
+
+```javascript
+// A concise and idiomatic alternative to get subtitle length or undefined
+var len = book && book.subtitle && book.subtitle.length;
+```
+
+有些属性是只读的，不能重新赋值；有些对象不允许新增属性，但设置这些属性的失败操作不会报错。ecma5的严格模式已经修复。
+
+```javascript
+// The prototype properties of built-in constructors are read-only.
+Object.prototype = 0; // Assignment fails silently; Object.prototype unchanged
+```
+
+在这些场景下设置对象o的属性p会失败：
+
+-  o的属性p是只读的（有个例外：`defineProperty()`方法可以配置只读属性可以被设置）；
+-  o有个继承的只读属性p：不可能通过设置同名属性来隐藏原型链上的只读属性；
+-  o不可扩展。
+
 
