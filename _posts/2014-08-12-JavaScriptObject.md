@@ -16,13 +16,16 @@ JavaScript对象是什么？
 
 JS对象是动态的，属性可以添加或删除。除去string、number、true/false、null、undefined，在js中其他值都是对象。
 
+> null is not an object, it is a primitive value. For example, you cannot add properties to it. Sometimes people wrongly assume that it is an object, because typeof null returns "object". But that is actually a bug (that might even be fixed in ECMAScript 6).    ------From <http://stackoverflow.com/questions/801032/why-is-null-an-object-and-whats-the-difference-between-null-and-undefined/802371#802371>
+> null不是对象，是基础类型。不要被`typeof null;  // object`迷惑，这是js解释器的错误。 
+
 property有name和value，name可以是任意字符串，包括空字符串（empty string），但一个对象不可能有相同的name。value可以任意js value，或者setter或/和getter方法（ecma5）。但除去name和value，对象还有3个相关的“属性特性”（*property attribute*）：
 
 -  writable attribute，指定value是否可以设置；
 -  enumerable attribute，指定是否可以通过`for in`返回属性的name；
 -  configurable attribute，指定是否可以删除该属性，或者属性的"属性特性"是否可以修改。
 
-除去属性，每个对象还拥有3个相关的对象特性（*object attribute*）：
+除去属性，每个对象还拥有3个相关的“对象特性”（*object attribute*）：
 
 -  prototype，另一个对象的引用，本对象继承另一个对象的属性；
 -  class，标识对象类型的字符串；
@@ -39,9 +42,9 @@ property有name和value，name可以是任意字符串，包括空字符串（em
 
 ##创建对象
 
- 可以通过对象直接量（*object literals*）、new关键字、`Object.create()`（ecma5）方法创建对象。
+可以通过对象直接量（*object literals*）、new关键字、`Object.create()`（ecma5）方法创建对象。
 
- ###对象直接量
+###对象直接量
 
  ```javascript
  var book = {
@@ -53,10 +56,10 @@ property有name和value，name可以是任意字符串，包括空字符串（em
  }
  ```
 
- 注意： 
+注意： 
 
- -  保留字作属性name时最好加引号，虽然ecma5与一部分3可以不加引号；
- -  对象直接量最后一个属性后的逗号会忽略，但ie报错。
+-  保留字作属性name时最好加引号，虽然ecma5与一部分3可以不加引号；
+-  对象直接量最后一个属性后的逗号会忽略，但ie报错。
 
 对象直接量是一个表达式，这个表达式创建并初始化一个新的不同的对象。这意味着在loop中，对象直接量将创建很多新对象，并且每个对象的属性值可能也不同。
 
@@ -169,4 +172,43 @@ Object.prototype = 0; // Assignment fails silently; Object.prototype unchanged
 -  o有个继承的只读属性p：不可能通过设置同名属性来隐藏原型链上的只读属性；
 -  o不可扩展。
 
+##删除属性
+
+`delete`操作符删除对象的属性。操作数必须是一个属性访问表达式。
+
+`delete`只能删除自有属性，不能删除继承属性。要删除继承的属性，必须从定义这个属性的原型对象上删除它。
+
+`delete`删除成功或没起作用时返回true；`delete`后面不是属性访问表达式时也返回true。
+
+```javascript
+o = {x:1}; // o has own property x and inherits property toString
+delete o.x; // Delete x, and return true
+delete o.x; // Do nothing (x doesn't exist), and return true
+delete o.toString; // Do nothing (toString isn't an own property), return true
+delete 1; // Nonsense, but evaluates to true
+```
+
+*configurable*设为false的属性不会被`delete`删除。某些内置对象的属性是不可配置的，比如通过变量声明和函数声明创建的全局对象的属性。严格模式中，删除不可配置属性会报TypeError，但ecma3并且是非严格模式下，仅仅是`return false；`：
+
+```javascript
+delete Object.prototype; // Can't delete; property is non-configurable
+var x = 1; // Declare a global variable
+delete this.x; // return false; Can't delete this property
+function f() {} // Declare a global function
+delete this.f; // Can't delete this property either
+```
+
+非严格模式下，删除可配置属性时，可以省略对全局对象的引用，直接在`delete`操作符后跟上属性名即可：
+
+```javascript
+this.x = 1; // Create a configurable global property (no var)
+delete x; // And delete it
+```
+
+但在严格模式下，上述做法会报SyntaxError，必须：
+
+```javascript
+delete x; // SyntaxError in strict mode
+delete this.x; // This works
+```
 
