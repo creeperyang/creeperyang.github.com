@@ -312,12 +312,96 @@ var p= {
 
 ##属性特性（Property Attributes）
 
-属性特性指定属性是否：可写、可枚举、可配置。ecma3无法设置这些，ecma5提供了查询和设置这些特性的api。这些api对类库来说很重要：
+属性特性指定属性是否可写、可枚举、可配置。ecma3无法设置这些，ecma5提供了查询和设置这些特性的api。这些api对类库来说很重要，因为：
 
 - 允许为原型对象添加方法，并让方法不可枚举，跟内置的方法一样;
 - 允许锁住对象，定义不可更改、删除的属性。
 
->we can say that a property has a name and four attributes. The four attributes of a data property are value, writable, enumerable, and configurable.
->我们把“访问器属性”的setter/getter看作特性，按这个逻辑，“数据属性”的值也可以看作特性。因此，可以说一个属性有一个名字和4个特性：value、writable、enumerable、configurable。
+我们把“访问器属性”的setter/getter看作特性，按这个逻辑，“数据属性”的值也可以看作特性。因此，可以说一个属性有一个名字和4个特性：value、writable、enumerable、configurable。
 
-为了实现属性特性的查询和设置，ecma5定义了一个叫“属性描述符”（property descriptor）的对象来代表那4个特性。
+>we can say that a property has a name and four attributes. The four attributes of a data property are value, writable, enumerable, and configurable.
+
+为了实现属性特性的查询和设置，ecma5定义了一个叫“属性描述符”（property descriptor）的对象来代表那4个特性。描述符对象的属性和它们所描述的属性特性是同名的，因此：
+
+- “数据属性”的描述符对象有value、writable、enumerable、configurable等4个属性；
+- “访问器属性”的描述符对象则用getter/setter代替value和writable。
+
+writable、enumerable、configurable都是布尔值。getter/setter是函数。
+
+通过`Object.getOwnPropertyDescriptor()`可以对指定对象获取指定属性的描述符对象：
+
+```javascript
+// Returns {value: 1, writable:true, enumerable:true, configurable:true}
+Object.getOwnPropertyDescriptor({x:1}, "x");
+
+// This object has accessor properties that return random numbers.
+var random = {
+    get octet() { return Math.floor(Math.random()*256); },
+    get uint16() { return Math.floor(Math.random()*65536); },
+    get int16() { return Math.floor(Math.random()*65536)-32768; }
+};
+// Returns { get: /*func*/, set:undefined, enumerable:true, configurable:true}
+Object.getOwnPropertyDescriptor(random, "octet");
+
+Object.getOwnPropertyDescriptor({}, "x"); // undefined, no such prop
+Object.getOwnPropertyDescriptor({}, "toString"); // undefined, inherited
+```
+
+`Object.getOwnPropertyDescriptor()`只能获取自有属性的描述符对象，对继承的属性，要遍历原型链（` Object.getPrototypeOf()`）。
+
+要设置属性特性，用` Object.defineProperty()`，传入参数：要修改的对象、属性、描述符对象。
+
+```javascript
+var o = {}; // Start with no properties at all
+// Add a nonenumerable data property x with value 1.
+Object.defineProperty(o, "x", { value : 1,
+    writable: true,
+    enumerable: false,
+    configurable: true});
+// Check that the property is there but is nonenumerable
+o.x; // => 1
+Object.keys(o) // => []
+
+// Now modify the property x so that it is read-only
+Object.defineProperty(o, "x", { writable: false });
+// Try to change the value of the property
+o.x = 2; // Fails silently or throws TypeError in strict mode
+o.x // => 1
+
+// The property is still configurable, so we can change its value like this:
+Object.defineProperty(o, "x", { value: 2 });
+o.x // => 2
+// Now change x from a data property to an accessor property
+Object.defineProperty(o, "x", { get: function() { return 0; } });
+o.x // => 0
+```
+
+` Object.defineProperty()`创建/修改自有属性，不能修改继承的属性。
+
+` Object.defineProperties()`同时创建或修改多个属性,返回修改过的对象。
+
+```javascript
+var p = Object.defineProperties({}, {
+    x: { value: 1, writable: true, enumerable:true, configurable:true },
+    y: { value: 1, writable: true, enumerable:true, configurable:true },
+    r: {
+        get: function() { return Math.sqrt(this.x*this.x + this.y*this.y) },
+        enumerable:true,
+        configurable:true
+    }
+});
+```
+
+对不允许修改/创建的属性用上述2个方法，会报错：TypeError。一般说，writable特性控制着value特性，configurable特性控制着其它特性，但这不是绝对的，具体规则如下：
+
+- 如果对象是不可扩展的，则可以编辑已有属性，但不能添加新属性；
+- 如果“访问器属性”是不可配置的，则不能修改getter和setter方法，也不能转为“数据属性”；
+- 如果“数据属性”是不可配置的，则不能将它转换为“访问器属性”；
+- 如果“数据属性”是不可配置的，则不能将它的writable从false修改为true，但可以从true修改为false；
+- 如果“数据属性”是不可配置且不可写的，则不能修改它的值。
+
+###getter和setter的老式API
+
+在ecma5标准被采纳之前，一些浏览器已经可以支持set和get。具体略。
+
+##
