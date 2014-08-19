@@ -212,3 +212,112 @@ delete x; // SyntaxError in strict mode
 delete this.x; // This works
 ```
 
+##检测属性
+
+`in`运算符, `hasOwnProperty()`和`propertyIsEnumerable()`方法可以检测一个对象是否有某属性，或者简单的通过属性查询来完成。
+
+`in`运算符左侧是属性名（字符串），右侧是对象，如果对象的自有属性或继承属性包含这个属性的话，返回true。
+
+```javascript
+var o = { x: 1 }
+"x" in o; // true: o has an own property "x"
+"y" in o; // false: o doesn't have a property "y"
+"toString" in o;// true: o inherits a toString property
+```
+
+`hasOwnProperty()`检测自有属性。
+
+```javascript
+var o = { x: 1 }
+o.hasOwnProperty("x"); // true: o has an own property x
+o.hasOwnProperty("y"); // false: o doesn't have a property "y"
+o.hasOwnProperty("toString"); // false: toString is an inherited property
+```
+
+`propertyIsEnumerable()`是`hasOwnProperty()`的增强版：只有是自有属性，并且属性的可枚举性（enumerable attribute）为true时才返回true。
+
+```javascript
+var o = inherit({ y: 2 });
+o.x = 1;
+o.propertyIsEnumerable("x"); // true: o has an own enumerable property x
+o.propertyIsEnumerable("y"); // false: y is inherited, not own
+Object.prototype.propertyIsEnumerable("toString"); // false: not enumerable
+```
+
+其实除去用`in`， `！==undefined`在大部分情况下可替代。但这种情况只能用in：
+
+```javascript
+var o = { x: undefined }
+```
+
+##枚举属性
+
+除去验证某个属性的存在，我们有时会列举对象所有属性，这常常也用`for/in`来做，但ecma5提供了2个便捷的替代方法。
+
+1. `Object.keys()`， 返回 **可枚举的自有属性** 的name组成的数组。
+2. `Object.getOwnPropertyNames()`，类似`Object.keys()`，但返回自有属性而不止可枚举属性。
+
+```javascript
+var obj = Object.create({x:1});
+obj.y = 2;
+obj.toString() // "[object Object]"
+Object.keys(obj);
+["y"]
+Object.getOwnPropertyNames(obj)
+["y"]
+```
+
+##属性Getter和Setter
+
+我们说过，属性是由name、value以及一组特性attribute构成的。
+
+ecma5中，属性的value可以被1个或2个函数替代，这两个函数就是getter/setter。由getter/setter定义的属性常被称作“访问器属性”（“accessor property”），以区别于“数据属性”（“data property”），数据属性只有一个简单的值。
+
+当程序查询“访问器属性”时，js调用getter方法（不传参），方法返回值就是属性值。js调用setter时，赋值表达式右侧的值就作为参数传入setter。忽略setter的返回值。
+
+“访问器属性”没有*writable*特性：
+
+- 同时有setter/getter，读/写属性;
+- 只有setter，只写属性（“数据属性”不可能做到这一点），读取时得到undefined;
+- 只有getter，只读属性。
+
+```javascript
+var o = {
+    // An ordinary data property
+    data_prop: value,
+    // An accessor property defined as a pair of functions
+    // 访问器属性一般成对定义
+    get accessor_prop() { /* function body here */ },
+    set accessor_prop(value) { /* function body here */ }
+};
+var p= {
+    // x and y are regular read-write data properties.
+    x:1.0,
+    y:1.0,
+    // r is a read-write accessor property with getter and setter.
+    // Don't forget to put a comma after accessor methods.
+    get r() { return Math.sqrt(this.x*this.x + this.y*this.y); },
+    set r(newvalue) {
+        var oldvalue = Math.sqrt(this.x*this.x + this.y*this.y);
+        var ratio = newvalue/oldvalue;
+        this.x *= ratio;
+        this.y *= ratio;
+    }, 
+    // theta is a read-only accessor property with getter only.
+    get theta() { return Math.atan2(this.y, this.x); 
+}
+```
+
+“访问器属性”和“数据属性”一样可以被继承。
+
+##属性特性（Property Attributes）
+
+属性特性指定属性是否：可写、可枚举、可配置。ecma3无法设置这些，ecma5提供了查询和设置这些特性的api。这些api对类库来说很重要：
+
+- 允许为原型对象添加方法，并让方法不可枚举，跟内置的方法一样;
+- 允许锁住对象，定义不可更改、删除的属性。
+
+>we can say that a property has a name and four attributes. The four attributes of a data property are value, writable, enumerable, and configurable.
+>我们把“访问器属性”的setter/getter看作特性，按这个逻辑，“数据属性”的值也可以看作特性。因此，可以说一个属性有一个名字和4个特性：value、writable、enumerable、configurable。
+
+为了实现属性特性的查询和设置，ecma5定义了一个叫“属性描述符”（property descriptor）的对象来代表那4个特性。
