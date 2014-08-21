@@ -412,10 +412,54 @@ var p = Object.defineProperties({}, {
 
 prototype特性指定对象从哪个对象继承属性。这个属性非常重要，因此我们常简称为“对象o的原型”，而非“对象o的原型属性”。
 
-原型属性是对象创建之初就设置好的。
+原型属性是对象创建之初就设置好的。复述一下之前提到的：
 
 - 对象字面量的原型是Object.prototype;
 - new创建的对象的原型是构造函数的原型；
 - Object.create()用第一个参数（可以是null）作为原型。
 
+在ecma5中，`Object.getPrototypeOf()`可以查询对象的原型，而ecma3没有对应的方法。但我们可以通过`o.constructor.prototype `来检测对象o的原型。**通过new创建的对象，通常继承一个constructor属性，该属性指代创建这个对象的构造函数。**如上所说，构造函数的prototype就是新建对象的prototype。这一点在之后会详细解释，并且同时会解释为什么用这种方法检测原型不太可靠。
+
+对象直接量或者通过`Object.create()`创建的对象有一个constructor属性，该属性值为` Object()`构造函数：
+
+```javascript
+var o = Object.create({x:1});
+o.constructor // =>function Object() { [native code] }
+o.constructor.prototype  // => Object {}
+```
+
+因此，对对象直接量而言，`constructor.prototype`指向正确的原型，但对`Object.create()`创建的对象而言，指向原型常常不正确。
+
+要想检测一个对象是否是另一个对象的原型（或处于原型链中），用` isPrototypeOf()`方法。
+
+```javascript
+var p = {x:1}; // Define a prototype object.
+var o = Object.create(p); // Create an object with that prototype.
+p.isPrototypeOf(o) // => true: o inherits from p
+Object.prototype.isPrototypeOf(o) // => true: p inherits from Object.prototype
+```
+
+###class特性（The class Attribute）
+
+一个对象的class特性是一个字符串，代表对象的类型信息。
+
+ecma3，ecma5都没有提供设置这个特性的方法，并且只有一个间接的技术去查询它。默认的`toString`方法（继承自Object.prototype）返回这种形式的字符串：
+
+```javascript
+[object class]
+```
+
+可以查询类特性的方法：
+
+```javascript
+function classof(o) {
+    if (o === null) return "Null";
+    if (o === undefined) return "Undefined";
+    return Object.prototype.toString.call(o).slice(8,-1);
+}
+```
+
+`classof`函数可以传入任何类型的参数。number、string、bool都可以正确得出class，null和undefined也特殊对待了。内建的对象也可以正常得出同名class，如Date、Array等。另外，宿主对象一般也可以得出有意义的class名（取决于实现方式）。但是，自定义的对象、对象字面量、Object.create创建的对象都只能得出`Object`。所以对自定义的类来说，无法通过class来区分。
+
+###可扩展特性（The extensible Attribute）
 
