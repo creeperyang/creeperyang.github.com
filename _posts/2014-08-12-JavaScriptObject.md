@@ -404,4 +404,18 @@ var p = Object.defineProperties({}, {
 
 在ecma5标准被采纳之前，一些浏览器已经可以支持set和get。具体略。
 
-##
+##对象特性/属性（Object Attributes）
+
+每个对象都有`prototype、class、extensible`3个特性。
+
+###prototype属性
+
+prototype特性指定对象从哪个对象继承属性。这个属性非常重要，因此我们常简称为“对象o的原型”，而非“对象o的原型属性”。
+
+原型属性是对象创建之初就设置好的。
+
+- 对象字面量的原型是Object.prototype;
+- new创建的对象的原型是构造函数的原型；
+- Object.create()用第一个参数（可以是null）作为原型。
+
+
