@@ -463,3 +463,53 @@ function classof(o) {
 
 ###可扩展特性（The extensible Attribute）
 
+一个对象的可扩展特性指定该对象是否能够新加属性。
+
+在ecma3中，显然所有内建对象和用户自定义对象都可以扩展，宿主对象的可扩展性是由JS引擎定义的。ecma5默认所有内建对象和用户自定义对象是可扩展的，除非你转换成不可扩展；而宿主对象的可扩展性仍然是引擎定义。
+
+ecma5定义了函数来查询和设置对象的扩展性：
+
+- Object.isExtensible()，是否可扩展；
+- Object.preventExtensions()，转换对象为不可扩展。**已经转换为不可扩展的对象不能再转换为可扩展。**另外，不可扩展一般指定的是本对象，你可以为它的原型对象添加属性。
+- Object.seal()，除了使对象不可扩展，还使对象自有属性不可配置，即新属性无法添加，已有属性不能添加，已有属性不能删除或配置。没有方法去unseal一个对象，可以用`Object.isSealed()`去检测对象是否seal。
+- Object.freeze()更严格，相比seal，它使所有属性只读（但getter/setter不受影响）。记住，freeze同样只对本对象起作用，不影响原型。
+
+extensible特性的意义是能够“lock down”对象，使对象维持一个某一状态，不会被外部修改。
+
+##序列化对象（Serializing Objects）
+
+对象的序列化（serialization）就是把对象转化为字符串的过程（之后可以从字符串恢复）。
+
+ecma5使用`JSON.stringify()``JSON.parse()`来序列化和反序列化对象。
+
+JSON：JavaScript Object Notation，语法和js对象字面量很相似。
+
+JSON语法是JS语法的子集，它不能代表所有的js值。如RegExp、Error对象、undefined值不能序列化和反序列化。
+
+**JSON只序列化可枚举的自有属性！**
+
+##对象方法（Object Methods）
+
+如之前所说，所有的对象（除去创建时明显没有原型的）都从`Object.prototype`继承属性。
+
+###toString()
+
+`toString()`方法无参数，返回字符串，某种程度上代表调用这个方法的对象的值。
+
+###toLocaleString()
+
+返回本地化的字符串。
+
+###toJSON()
+
+Object.prototype实际上没有定义这个方法，但对需要序列化的对象来说，JSON.stringify()会查找toJSON方法，存在则调用。
+
+###valueOf()
+
+valueOf()和toString()很像，但往往但js需要将对象转换成某种原始值而不是字符串时会调用它。默认的valueOf什么都没做，但`Date`做了处理：
+
+```javascript
+var d = new Date();
+d.valueOf() // =>1408867947768
+```
+
