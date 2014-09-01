@@ -64,11 +64,12 @@ var r = new Range(1,3); // Create a range object
 r.includes(2); // => true: 2 is in the range
 r.foreach(console.log); // Prints 1 2 3
 console.log(r); // Prints (1...3)
+r instanceof Range // => true
 ```
 
 ###构造函数和类的标识（Constructors and Class Identity）
 
-像我们看到的，原型对象是标识类的基础：两个对象从并且只从同一个原型对象继承属性时才是同一个类的实例对象。构造函数初始化对象的状态，但是不那么基础：两个构造函数可能原型属性指向同一个原型对象，那么这两个构造函数可以创建同一个类的实例对象。
+像我们看到的，原型对象是标识类的基础(fundamental)：两个对象从并且只从同一个原型对象继承属性时才是同一个类的实例对象。构造函数初始化对象的状态，但是不那么基础：两个构造函数可能原型属性指向同一个原型对象，那么这两个构造函数可以创建同一个类的实例对象。
 
 但是，尽管构造函数不如原型重要，构造函数却是作为类的公共外观（public face）的。最明显的，构造函数的name常常用作类的name。另外，在测试对象是否是某个类的实例时，我们常用构造函数加`instanceof`操作符：
 
@@ -80,3 +81,56 @@ r instanceof Range
 
 ###构造函数属性（The constructor Property）
 
+任意js函数可以作为构造函数，而构造函数必须有prototype属性。
+
+**每个js函数F（除去 Function.bind()方法的返回值）自动有一个prototype属性，这个prototype属性的值有一个不可枚举的contructor属性。这个constructor属性的值就是这个函数对象F：**
+
+>Therefore, every JavaScript function (except functions returned by the EC-
+MAScript 5  Function.bind() method) automatically has a  prototype property. The value of this property is an object that has a single nonenumerable  constructor property. The value of the  constructor property is the function object:
+
+```javascript
+var F = function() {}; // This is a function object.
+var p = F.prototype; // This is the prototype object associated with it.
+var c = p.constructor; // This is the function associated with the prototype.
+c === F // => true: F.prototype.constructor==F for any function
+```
+
+预定义的原型对象（原型对象有个constructor属性）的存在表明：新创建对象一般继承了constructor属性，这个constructor属性指向它们的构造函数。因此，构造函数可以作为类的公共标识，因为这个constructor属性指出了对象所属的类。
+
+```javascript
+var o = new F(); // Create an object o of class F
+o.constructor === F // => true: the constructor property specifies the class
+o instanceof F // => true
+```
+
+前面`Range`的例子中我们覆盖了预定义的` Range.prototype`，因此就没有constructor属性来，但我们可以显示添加：
+
+```javascript
+Range.prototype = {
+    constructor: Range, // Explicitly set the constructor back-reference
+    ...
+};
+```
+
+注：
+
+```javascript
+//在没添加前
+r.constructor  // => function Object() { [native code] }
+//添加后
+r.constructor // =>
+//function Range(from, to) {
+//    this.from = from;
+//    this.to = to;
+//}
+```
+
+---
+
+一点疑问：
+
+`F.prototype.constructor.prototype.constructor...`这种循环引用有没有性能问题？jQuery对象的定义好像也用到循环引用。
+
+---
+
+##JS中Java风格的类（Java-Style Classes in JavaScript）
