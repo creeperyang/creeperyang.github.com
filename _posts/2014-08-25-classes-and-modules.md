@@ -134,3 +134,20 @@ r.constructor // =>
 ---
 
 ##JS中Java风格的类（Java-Style Classes in JavaScript）
+
+如果接触过Java之类的强类型面向对象语言，那么你可能习惯于想到四种类成员（class members）：
+
+- 实例字段（instance fields）：每个实例的属性或变量，保存独立实例对象的状态；
+- 实例方法（Instance methods）：类的所有实例共享的方法，被每个实例调用；
+- 类字段（Class fields）：属于类而不是某个实例的属性或变量；
+- 类方法（Class methods）：属于类而不是某个实例的方法。
+
+JavaScript与Java的一个不同之处是：函数也是值（its functions are values），方法与字段没有明显区别。
+
+除去这个不同之处，JavaScript可以模拟Java的四种类成员。在JS中，有3种不同的对象与类定义相关，而这3个对象的属性就可以模拟Java的四种类成员。
+
+- 构造器对象（Constructor object）。如上所说，JS中构造函数（也是对象）定义了类的名字。添加到构造函数上的属性相当于类属性和类方法。
+- 原型对象（Prototype object）。原型对象的属性被所有实例继承，因此，如果原型对象的属性的值是函数时，就相当于实例方法。
+- 实例对象（Instance object）。类的每个实例都是独立的对象，直接给实例定义的属性不会被其他实例共享，即实例字段。
+
+##增强类（Augmenting Classes）
