@@ -151,3 +151,116 @@ JavaScript与Java的一个不同之处是：函数也是值（its functions are 
 - 实例对象（Instance object）。类的每个实例都是独立的对象，直接给实例定义的属性不会被其他实例共享，即实例字段。
 
 ##增强类（Augmenting Classes）
+
+JS的基于原型的继承机制是动态的：对象被创建后，原型变化也会影响这个对象。这意味着我们可以通过简单的添加新方法来增强类。
+
+JS内置类也是开放的，你可以添加方法。
+
+##类和类型（Classes and Types）
+
+JS定义了一些类型（types）：null, undefined, boolean, number, string, function, object。
+
+`typeof`操作符可以区分这些类型。但是，把类当作对象的类型，并且以此区分对象可能更有用。JS内置对象（包括宿主对象）可以通过`Object.prototype.toString.call(obj).slice(8,-1);`来获取类名，但自定义对象则要通过本节介绍的一些方法来获取。
+
+###instanceof操作符
+
+`obj instanceof fun`，左边是对象，右边是构造函数，测试obj是否继承了fun的prototype。这种继承可以是间接的（多层继承）。
+
+注意：构造函数是类的public identity，但原型才是最关键的。instanceof检查的是原型继承，而不是对象是否由该构造函数初始化。
+
+如果你想测试原型链，可以用`prototypeObj.isPrototypeOf(obj)`。
+
+这两个方法的缺点是无法知道对象的类名。而且在客户端（浏览器）中，多窗口和多框架子页面中web兼容性不佳。每个窗口和子页面都有单独的执行上下文，每个上下文都有独有的全局对象和一组构造函数：一个框架页面的数组instanceof另一个框架页面Array构造函数结果是false。
+
+###构造函数属性（constructor property）
+
+```javascript
+function typeAndValue(x) {
+    if (x == null) return ""; // Null and undefined don't have constructors
+    switch(x.constructor) {
+        case Number: return "Number: " + x; // Works for primitive types
+        case String: return "String: '" + x + "'";
+        case Date: return "Date: " + x; // And for built-in types
+        case RegExp: return "Regexp: " + x;
+        case Complex: return "Complex: " + x; // And for user-defined types
+    }
+}
+```
+
+注意上面的case后表达式都是函数，而typeof之类的返回值是字符串。
+
+同instanceof一样，探测构造函数属性的方法没法在不同上下文下（不同框架页面、窗口）工作。另外，并非所有对象都有constructor属性，有的对象的constructor属性被覆盖，无法探测。
+
+###构造函数名字（The Constructor Name）
+
+>The main problem with using the  instanceof operator or the  constructor property for determining the class of an object occurs when there are multiple execution contexts and thus multiple copies of the constructor functions. 
+
+前面两种方法的一个重要缺陷是不同上下文时无法工作，所以我们可以尝试使用构造函数的名字而非构造函数本身。一些js实现（引擎）通过name属性让函数的名字可以被获取，而对一些没有name属性的JS实习来说，可以把函数转化为字符串，然后提取函数名。
+
+```javascript
+function type(o) {
+    var t, c, n; // type, class, name
+    // Special case for the null value:
+    if (o === null) return "null";
+    // Another special case: NaN is the only value not equal to itself:
+    if (o !== o) return "nan";
+    // Use typeof for any value other than "object".
+    // This identifies any primitive value and also functions.
+    if ((t = typeof o) !== "object") return t;
+    // Return the class of the object unless it is "Object".
+    // This will identify most native objects.
+    if ((c = classof(o)) !== "Object") return c;
+    // Return the object's constructor name, if it has one
+    if (o.constructor && typeof o.constructor === "function" &&
+    (n = o.constructor.getName())) return n;
+    // We can't determine a more specific type, so return "Object"
+    return "Object";
+}
+// Return the class of an object.
+function classof(o) {
+    return Object.prototype.toString.call(o).slice(8,-1);
+};
+// Return the name of a function (may be "") or null for nonfunctions
+Function.prototype.getName = function() {
+    if ("name" in this) return this.name;
+    return this.name = this.toString().match(/function\s*([^(]*)\(/)[1];
+};
+```
+
+构造函数名字的方法仍然有问题，即不是所有对象都有constructor属性。另外，constructor属性的值可以是匿名函数。
+
+###鸭式辨型（Duck-Typing）
+
+上面的区分对象类型的方法都有问题（至少在客户端JS）。一个可替代方法是回避“what is the class of this object?”问题，转而回答 “what can this object do?”。
+
+这种思考问题的方式与python和ruby很像，而Duck-Typing的称谓来源于这样一个表达：
+
+>When I see a bird that walks like a duck and swims like a duck and quacks like a duck, I call that bird a duck.
+
+```javascript
+// A function for duck-type checking
+// Return true if o implements the methods specified by the remaining args.
+function quacks(o /*, ... */) {
+    for(var i = 1; i < arguments.length; i++) { // for each argument after o
+        var arg = arguments[i];
+        switch(typeof arg) { // If arg is a:
+        case 'string': // string: check for a method with that name
+            if (typeof o[arg] !== "function") return false;
+            continue;
+        case 'function': // function: use the prototype object instead
+            // If the argument is a function, we use its prototype object
+            arg = arg.prototype;
+            // fall through to the next case
+        case 'object': // object: check for matching methods
+            for(var m in arg) { // For each property of the object
+                if (typeof arg[m] !== "function") continue; // skip non-methods
+                if (typeof o[m] !== "function") return false;
+            }
+        }
+    }
+    // If we're still here, then o implements everything
+    return true;
+}
+```
+
+##JS中的面向对象技术
