@@ -1,0 +1,231 @@
+@import url("base/variables.less");
+@import url("base/mixins.less");
+
+@import url("base/normalize.less");
+@import url("base/scaffolding.less");
+@import url("base/utilities.less");
+@import url("base/grid.less");
+
+// colors 
+@wsWhite: #fff;
+@wsBlue: #2fb7fe;
+@wsGray: #707070;
+@wsDeepGray: #666;
+@wsLightGray: #999;
+@wsSuperLightGray: #f2f2f2;
+@wsBaseBlack: #333;
+
+@wsRed: #fc2125;
+@wsOrange: #fe9d26;
+@horizontalPadding: 0.5rem;
+@wsBgColor: #f4f4f4;
+@wsBorderColor: #ccc;
+
+.unstyled-list() {
+    padding-left: 0;
+    margin: 0;
+
+    list-style: none;
+}
+.unstyled-list {
+    .unstyled-list();
+}
+
+// cy zone, 类似container，宽度100%，clearfix，高度最少1px
+.cy-zone {
+    display: block;
+    width: 100%;
+    min-height: 1px;
+    .clearfix();
+}
+
+// menu
+.cy-menu {
+    text-align: center;
+    .menu-item {
+        display: inline-block;
+        padding: 4px 8px;
+        float: left;
+    }
+}
+
+@-webkit-keyframes bounce { 
+    0% { -webkit-transform: translate3d(0,-20px,0); opacity:0; }
+    25% { -webkit-transform: translate3d(0,10px,0); }
+    50% { -webkit-transform: translate3d(0,-6px,0); }
+    75% { -webkit-transform: translate3d(0,2px,0); }
+    100% { -webkit-transform: translate3d(0,0,0); opacity: 1; }
+}
+@keyframes bounce { 
+    0% { transform: translate3d(0,-25px,0); opacity:0; }
+    25% { transform: translate3d(0,10px,0); }
+    50% { transform: translate3d(0,-6px,0); }
+    75% { transform: translate3d(0,2px,0); }
+    100% { transform: translate3d(0,0,0); opacity: 1; }
+}
+@-webkit-keyframes slide { 
+    0% { -webkit-transform: translate3d(-36rem,0,0); opacity:0.3; }
+    96% { -webkit-transform: translate3d(1rem,0,0);  }
+    100% { -webkit-transform: translate3d(0,0,0); opacity: 1; }
+}
+
+// text inputs
+.text-input() {
+    display: inline-block;
+    width: 8rem;
+    height: 3.4rem;
+    padding: 0.7rem 1rem;
+
+    line-height: 2rem;
+    font-size: 1.4rem;
+
+    border-radius: 0.5rem;
+    border: 1px solid @wsBorderColor;
+    &:focus {
+        outline: none;
+        border-color: @wsOrange;
+    }
+}
+.text-input {
+    .text-input();
+}
+.text-input-large {
+    width: 22.8rem;
+}
+.text-input-block {
+    width: 100%;
+}
+
+// buttons
+.btn() {
+    display: inline-block;
+    width: 5.8rem;
+    height: 2.6rem;
+
+    line-height: 2.58rem;
+    font-size: 1.2rem; 
+    color: @wsBlue;
+    text-align: center;
+
+    border: 0.1rem solid @wsBlue;
+    background-color: transparent;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    &:focus, &:hover {
+        color: white;
+        background-color: @wsBlue;
+        outline: none;
+    }
+}
+.btn {
+    .btn();
+}
+.btn-block {
+    height: 3.4rem;
+    width: 100%;
+
+    line-height: 3.38rem;
+    font-size: 1.4rem;
+}
+.btn-large {
+    height: 4rem;
+    width: 50%;
+
+    line-height: 3.98rem;
+    font-size: 2rem;
+}
+
+// icons
+.icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.icon-logo {
+    background-image: url("../images/index_logo.png");
+}
+
+// --------------- new ---------------
+.flat-box {
+    display: block;
+    width: 100%;
+    .clearfix();
+
+    background-color: @wsWhite;
+}
+
+
+
+
+// ====================================================================
+html {
+    font-size: 10px;
+}
+body {
+    font-family: 'Microsoft Yahei', 'Sim Hei', 'Ubuntu';
+    background-color: @wsSuperLightGray;
+}
+
+// =====user info zone=======
+#user-info {
+    .logo {
+        padding-top: 2rem;
+        svg {
+            position: relative;
+            left: 0;
+
+            width: 100%;
+            height: 160px;
+        }
+        path {
+            stroke-dasharray: 480;
+            stroke-dashoffset: 480;
+            -webkit-animation: dash 18s linear alternate infinite;
+        }
+        .title {
+            text-align: center;
+            font-weight: normal;
+            font-size: 2rem;
+        }
+    }
+    .cy-menu {
+        padding-bottom: 2rem;
+        border-bottom: 1px solid @wsLightGray;
+        .menu-item {
+            width: 25%;
+        }
+    }
+}
+@-webkit-keyframes dash {
+    from {
+        stroke-dashoffset: 480;
+    }
+    50% {
+        stroke-dashoffset: 320;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+// ======article list======
+#article-list {
+    padding: 2rem 0;
+}
+.article-view {
+    padding: 2rem 0 1rem;
+    .article-title {
+        h1 {
+            font-weight: normal;
+            font-size: 2rem;
+            color: @wsDeepGray;
+            a {
+                color: @wsDeepGray;
+            }
+        }
+    }
+    .article-des {
+        font-size: 1.4rem;
+        color: @wsLightGray;
+    }
+}

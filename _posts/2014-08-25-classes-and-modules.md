@@ -264,3 +264,102 @@ function quacks(o /*, ... */) {
 ```
 
 ##JS中的面向对象技术
+
+略
+
+##子类（subclasses）
+
+在面向对象编程语言中，类B可以继承类A，即A为父类，B为子类。**类B的实例继承了类A的所有实例方法。**类B也会定义自己的实例方法，可能会重载类A的同名方法。如果类B的一个方法重载了类A的方法，并且这个方法有时想要调用类A的被重载方法，这就叫方法链（method chaining）。同理，类B的构造函数B()可能会要调用类A构造函数A()，这就叫构造函数链（constructor chaining）。子类还可以有子类，在这种层级关系中，有时定义虚类会比较有用。虚类就是定义了一个或多个未实现的方法，方法的实现由继承虚类的类来完成。
+
+创建子类的关键就是正确地初始化原型对象。如果B继承自A，那么B.prototype必须是A.prototype的后裔。
+
+###定义子类（Defining a Subclass）
+
+JS中，对象继承（类的）原型对象的属性（通常是方法）。
+
+```javascript
+B.prototype = inherit(A.prototype); // Subclass inherits from superclass
+B.prototype.constructor = B;// Override the inherited constructor prop.
+
+function inherit(p) {
+    if (p == null) throw TypeError(); // p must be a non-null object
+    if (Object.create) // If Object.create() is defined...
+        return Object.create(p); // then just use it.
+    var t = typeof p; // Otherwise do some more type checking
+    if (t !== "object" && t !== "function") throw TypeError();
+    function f() {}; // Define a dummy constructor function.
+    f.prototype = p; // Set its prototype property to p.
+    return new f(); // Use f() to create an "heir" of p.
+}
+
+// A simple function for creating simple subclasses
+function defineSubclass(superclass, // Constructor of the superclass
+                        constructor, // The constructor for the new subclass
+                        methods,// Instance methods: copied to prototype
+                        statics)// Class properties: copied to constructor
+{
+    // Set up the prototype object of the subclass
+    constructor.prototype = inherit(superclass.prototype);
+    constructor.prototype.constructor = constructor;
+    // Copy the methods and statics as we would for a regular class
+    if (methods) extend(constructor.prototype, methods);
+    if (statics) extend(constructor, statics);
+    // Return the class
+    return constructor;
+}
+```
+
+###构造函数和方法链（Constructor  and Method Chaining）
+
+定义子类时，我们往往希望对父类的行为进行修改或扩充，而不是完全替换掉它们。为了做到这一点，构造函数或子类方法需要调用或链接到父类构造函数和父类方法。
+
+```javascript
+function NonNullSet() {
+    // Just chain to our superclass.
+    // Invoke the superclass constructor as an ordinary function to initialize
+    // the object that has been created by this constructor invocation.
+    Set.apply(this, arguments);
+}
+// Make NonNullSet a subclass of Set:
+NonNullSet.prototype = inherit(Set.prototype);
+NonNullSet.prototype.constructor = NonNullSet;
+// To exclude null and undefined, we only have to override the add() method
+NonNullSet.prototype.add = function() {
+    // Check for null or undefined arguments
+    for(var i = 0; i < arguments.length; i++)
+        if (arguments[i] == null)
+            throw new Error("Can't add null or undefined to a NonNullSet");
+    // Chain to the superclass to perform the actual insertion
+    return Set.prototype.add.apply(this, arguments);
+};
+```
+
+###组合VS子类（Composition Versus Subclassing）
+
+一个广为人知的原则是“组合优于继承”。
+
+```javascript
+var FilteredSet = Set.extend(
+    function FilteredSet(set, filter) { // The constructor
+        this.set = set;
+        this.filter = filter;
+    },
+    { // The instance methods
+        add: function() {
+            // If we have a filter, apply it
+            if (this.filter) {
+                for(var i = 0; i < arguments.length; i++) {
+                    var v = arguments[i];
+                    if (!this.filter(v))
+                        throw new Error("FilteredSet: value " + v + " rejected by filter");
+                }
+            }
+            // Now forward the add() method to this.set.add()
+            this.set.add.apply(this.set, arguments);
+            return this;
+        }
+    });
+```
+
+###类继承与虚类（Class Hierarchies and Abstract Classes）
+
