@@ -14,20 +14,32 @@ tags: [AngularJs]
 - A Better Way to Learn AngularJS：<https://thinkster.io/angulartutorial/a-better-way-to-learn-angularjs/>
 - 吕大豹「走进AngularJs」：<http://www.cnblogs.com/lvdabao/tag/AngularJs/>
 
-##AngularJs是什么
+##AngularJs是什么?
 
->AngularJS诞生于Google是一款优秀的前端JS框架，已经被用于Google的多款产品当中。AngularJS有着诸多特性，最为核心的是：MVC、模块化、自动化双向数据绑定、语义化标签、依赖注入，等等。
+AngularJS是为动态web应用设计的结构化框架。它让你可以用html作为模板语言，让你扩展html语法来更清晰简洁地展现你的应用组件。angular的数据绑定和依赖注入可以让你少写大量代码。angular是前端框架，可以搭配任意后台。
 
-这段定义引用自[百度百科](http://baike.baidu.com/view/9604951.htm?fr=aladdin)，而angular官网也有自己的一句概括：
+html作为声明式语言对静态文档而言是不错的，但不能满足动态web应用的需要。一些解决方案是使用类库或框架：
+
+- 类库：类库是一些函数的集合，它能帮助你写Web应用。起主导作用的是你的代码，由你来决定何时使用类库。类库有：`jQuery`等。
+- 框架：框架是一种特殊的、已经实现的Web应用，你只需要对它填充具体的业务逻辑。这里框架是起主导作用的，由它来根据具体的应用逻辑来调用你的代码。框架有：`durandal`, `ember`等。
+
+angular采用了另一个解决方案。它试图缩小以静态文档为核心的html和web应用需要的创建新html结构的不匹配。angular通过指令教会浏览器新语法。
+
+一句话概括angular：
 
 >HTML enhanced for web apps!
 
-先理解一下**前端框架**这个概念：
+###全面的客户端解决方案
 
-- 类库 - 类库是一些函数的集合，它能帮助你写WEB应用。起主导作用的是你的代码，由你来决定何时使用类库。类库有：jQuery等。
-- 框架 - 框架是一种特殊的、已经实现了的WEB应用，你只需要对它填充具体的业务逻辑。这里框架是起主导作用的，由它来根据具体的应用逻辑来调用你的代码。框架有：knockout、sproutcore等。
+angular是web应用在客户端一侧的全面解决方案。
 
-AngularJS不是类库。它没有抽象html、css、js，也不需要继承特殊的类型，不使用单向绑定并且重视测试。angular是一个扩展html，使html更具表现力、更可读的js框架。正如angular自我描述的：HTML enhanced for web apps。
+- 构建CRUD应用所需要的全部：数据绑定，模板指令，表格验证，路由，重用组件。依赖注入。
+- 测试：单元测试，端到端测试，mocks和测试工具。
+- 种子应用和测试脚本作为开发起点。
+
+###适用范围
+
+angular为CRUD应用而设计。游戏和GUI编辑器等需要密集、复杂DOM操作不适合angular，用抽象度更低的类库可能更好，如`jQuery`。
 
 ##AngularJS概览
 
@@ -50,6 +62,22 @@ Injector   | 依赖注入的容器（dependency injection container）
 Module     | 指令、控制器、服务等等的容器，可以配置注入（a container for the different parts of an app including controllers, services, filters, directives which configures the Injector）
 Service    | 可重用的并且独立于视图的业务逻辑（reusable business logic independent of views）
 
+##AngularJS禅理
+
+angular基于这样的理念而开发：在一起构建UI和软件组件时，声明式语言比命令式语言更好;命令式语言更适合写业务逻辑。
+
+- 把Dom操作和应用逻辑解耦非常好，折显著提高代码可测试性。
+- 测试和编程一样重要，测试难度取决于代码结构。
+- 客户端和服务端解偶很好，这使开发可以并行，并且两边都可以复用。
+- 框架如果能从头到尾给予开发人员引导，则很好。从ui设计到编写到测试。
+- 使一般任务容易，使难度任务可以完成总是好的。
+
+angular让你免于以下痛苦：
+
+- 注册回调。
+- 以编程操作DOM。
+- 把数据填充到UI/从UI取数据。
+- 写一堆初始化代码只是让程序可以启动。
 
 ##运行angular
 
