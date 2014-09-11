@@ -159,7 +159,7 @@ layout: default
                             <div class="article-attrs"></div>
                         </div>
                         <div class="article-des">
-                            {{ post.excerpt | remove: '<p>' | remove: '</p>'}}
+                            {{ post.content | truncate:240 }}
                         </div>
                     </div>
                 {% endfor %}
