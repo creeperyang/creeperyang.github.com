@@ -1,14 +1,14 @@
 ---
 layout: article
 comments: true
-title: AngularJs的启动和基本概念
+title: 启动AngularJs和表达式
 category: frontend
 tags: [AngularJs]
 ---
 
-angular的一个闪光点是你只需要对框架有个很少的了解就能顺利跑起Demo了。这很好，你可以边学边实际做，毕竟自学最重要的一点是动手，而不是哗啦哗啦地看些文档或视频就好。
+angular的一个闪光点是你只需要对框架有个很少的了解就能顺利跑起Demo了。这很好，你可以边学边实际做，毕竟自学最重要的一点是动手，而不是biabiabia看些文档或视频就好。
 
-那么，开始启动Angular吧。
+那么，开始启动简单的Angular应用吧。
 
 ##启动angular
 
@@ -82,8 +82,73 @@ angular表达式是类js代码（`JavaScript-like code snippets`），经常放�
 - **No Control Flow Statements**：没有流程控制，如条件、循环或例外（exceptions）;
 - **Filters**：可以使用过滤器格式化表达式的输出。
 
-###表达式执行上下文
+###Context
 
 angular不使用`eval()`来计算表达式。angular使用`$parse`服务来处理表达式。
 
-angular表达式无法访问全局变量如`window`, `document`或者`location`。这种严格是故意的。
+angular表达式无法访问全局变量如`window`, `document`或者`location`。这种严格是故意的，可以防止意外改变全局变量——这常常会导致bug。
+
+可以在函数中使用`$window`和`$location`服务代替。
+
+###Forgiving
+
+表达式执行会forgiving to undefined and null。在js中，如果a不是对象，执行`a.b.c`会抛出异常。
+
+表达式执行通常是为了数据绑定，形式如`{{a.b.c}}`，a是`undefined`（通常是等待服务器response，然后a会被定义）则会抛出异常，这很不好。如果没有Forgiving，我们可能不得不写这样的表达式：`{{((a||{}).b||{}).c}}`。
+
+###No Control Flow Statements
+
+除了三元操作符（`a ? b : c`），angular表达式中不允许任何流程控制语句。
+
+有这种限制的原因是angular的哲学：应用逻辑应该在控制器中，而不是在视图中。
+
+###Filter
+
+看例子：
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/creeper/vbd4qdwm/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+这里面`{{clickEvent | json}}`就有过滤器json。
+
+注意：
+
+- 我们怎么把`$event`传给`clickMe`函数的。
+- `$event`在第一处为什么不能显示？因为`$event`不在绑定的`scope`范围内。
+
+##一次性绑定（One-time binding）
+
+以`::`开头的表达式是一次性绑定，即一旦有稳定值（不是undefined）后不再重新计算。
+
+###为什么要有这种特性？
+
+One-time binding的主要目的是提供这样一种绑定：一旦有稳定值后绑定可以注销并释放资源。简而言之，为提高性能而设计。
+
+###值稳定算法（Value stabilization algorithm）
+
+在每个digest循环结束时，One-time binding会获取表达式的值，只要这个值不是undefined。具体算法如下：
+
+1. 给定的表达式以`::`开头，当一次digest循环开始，expression is dirty-checked store the value as V；
+2. 如果V不是undefined，标记表达式结果是stable，计划一个任务（schedule a task ），在一次digest循环结束时去注销监视（deregister the watch）；
+3. 像正常情况一样处理digest循环；
+4. 当digest循环结束，并且所有值都稳定了，处理watch deregistration tasks队列。对每个注销任务而言，检查值是否计算后仍然不为undefined，如果不是undefined，注销监视，否则转第一步。
+
+###怎么利用一次性绑定
+
+当插入文字或属性时，如果这个表达式的值一旦确定就不再改变，那么这就适合用一次性绑定。
+
+```html
+<div name="attr: {{::color}}">text: {{::name}}</div>
+
+<script>
+someModule.directive('someDirective', function() {
+  return {
+    scope: {
+      name: '=',
+      color: '@'
+    },
+    template: '{{name}}: {{color}}'
+  };
+});
+</script>
+```
+
