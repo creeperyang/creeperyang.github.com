@@ -1,3 +1,4 @@
+@charset "utf-8";
 // bootstrap grid, normalize, utilities
 @import url("base/variables.less");
 @import url("base/mixins.less");
@@ -10,20 +11,30 @@
 @import url("fa/variables.less");
 @import url("fa/font-awesome.less");
 
+//== Colors---base/variables.less
+
+// @gray-base:              #000;
+// @gray-darker:            lighten(@gray-base, 13.5%); // #222
+// @gray-dark:              lighten(@gray-base, 20%);   // #333
+// @gray:                   lighten(@gray-base, 33.5%); // #555
+// @gray-light:             lighten(@gray-base, 46.7%); // #777
+// @gray-lighter:           lighten(@gray-base, 93.5%); // #eee
+@gray-lighter2: #e3e3e3;
+@gray-light2: #999;
+
+// @brand-primary:         #428bca;
+// @brand-success:         #5cb85c;
+// @brand-info:            #5bc0de;
+// @brand-warning:         #f0ad4e;
+// @brand-danger:          #d9534f;
+
 // colors 
-@wsBlue: #2fb7fe;
-@wsBaseBlack: #333;
-@wsDeepGray: #666;
-@wsGray: #707070;
-@wsLightGray: #999;
-@wsSuperLightGray: #ccc;
-@wsWhiteGray: #f2f2f2;
-@wsWhite: #fff;
-@wsRed: #fc2125;
-@wsOrange: #fe9d26;
+@Blue: #2fb7fe;
+@WhiteGray: #f2f2f2;
+@White: #fff;
+@Red: #fc2125;
+@Orange: #fe9d26;
 @horizontalPadding: 0.5rem;
-@wsBgColor: #f4f4f4;
-@wsBorderColor: #ccc;
 
 
 .clearfix {
@@ -38,52 +49,56 @@
 
 // base 
 html {
-    font-family: "微软雅黑", "黑体", "Ubuntu";
     font-size: 10px;
-    color: @wsBaseBlack;
 }
 body {
-    background-color: @wsWhiteGray;
-    color: @wsDeepGray;
+    background-color: @WhiteGray;
+
+    font-family: "微软雅黑", "黑体", "Ubuntu";
+    font-size: 1.4rem;
+    color: @gray;
 }
 
 .wrap-inner {
     padding: 2.4rem 2rem;
 }
 .comment-wrap {
-    padding-top: 2.4rem 2rem;
+    padding-top: 3.2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2.4rem;
 }
 
 // h1-h6
 h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
-    color: @wsBaseBlack;
+    color: @gray-dark;
 }
 h1 {
-    font-size: 4.2rem;
+    font-size: 3.2rem;
 }
 h2 {
-    font-size: 3.0rem;
+    font-size: 2.8rem; // 2倍
 }
 h3 {
-    font-size: 2.4rem;
+    font-size: 2.1rem; // 1.5倍
 }
 h4 {
-    font-size: 2.1rem;
+    font-size: 1.75rem; // 1.25倍
 }
 h5 {
-    font-size: 1.7rem;
+    font-size: 1.4rem; // 1倍
 }
 h6 {
-    font-size: 1.4rem;
+    font-size: 1.4rem; // 1倍
 }
 
 // table 
 table {
-    border: 1px solid@wsLightGray;
+    border: 1px solid @gray-light2;
 
     th, td {
-        border: 1px solid@wsLightGray;
+        border: 1px solid @gray-light2;
 
         padding: 1rem 0.8rem;
     }
@@ -93,35 +108,36 @@ table {
         }
     }
     tbody tr:nth-child(odd) {
-        background-color: lighten(@wsSuperLightGray, 10%);
+        background-color: @gray-lighter2;
     }
+}
+
+// hr
+hr {
+    border-top-color: @gray-lighter2;
 }
 
 // quote
 blockquote {
     position: relative;
-    margin: 0;
-    padding: 1.6rem 3rem;
+    margin: 0 0 1.2rem;
+    padding: 0.8rem 1.6rem;
 
-    background-color: lighten(@wsSuperLightGray, 10%);
+    background-color: @gray-lighter2;
+    border-left: 0.4rem solid @gray-light;
 
-    color: @wsGray;
+    color: @gray-light;
+    font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
 
-    &:before {
-        position: absolute;
-        left: 0.2rem;
-        top: 0.6rem;
-
-        content: @fa-var-quote-left;
-        font: normal normal normal 14px/1 FontAwesome;
+    p:last-of-type {
+        margin-top: 0;
+    }
+    p:first-of-type {
+        margin-bottom: 0;
     }
 
-    &:after {
-        position: absolute;
-        right: 0.2rem;
-        bottom: 0.6rem;
-
-        content: @fa-var-quote-right;
-        font: normal normal normal 14px/1 FontAwesome;
-    }   
+    footer, small, .small {
+        font-size: 80%;
+        text-align: right;
+    }
 }

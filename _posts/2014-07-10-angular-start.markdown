@@ -79,92 +79,87 @@ angular让你免于以下痛苦：
 - 把数据填充到UI/从UI取数据。
 - 写一堆初始化代码只是让程序可以启动。
 
-##运行angular
+以上是对angular的概览，基本是对<https://docs.angularjs.org/guide/introduction>的翻译与精简，并再次强调：一个正确的印象要比急于深入细节重要。
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>运行ng</title>
-    <!-- 引入angular.js -->
-    <script type="text/javascript" src="../angular.js"></script>
-</head>
-<body>
-    <div>
-        1+1={{1+1}}<!-- 输出：1+1=2 -->
-    </div>
-    <script>
-        angular.bootstrap(document, []);
-    </script>
-</body>
-</html>
+##我希望我早知道这些关于AngularJS的
+
+这是一段补充，来自[Ruoyu Sun's博客|Things I Wish I Were Told About Angular.js](http://ruoyusun.com/2013/05/25/things-i-wish-i-were-told-about-angular-js.html)。在开始深入学习angular前读一读这篇文章可能会比较好。但请注意：这一段基于`angularJS 1.0.x`，一些内容可能已经不再合适。
+
+###关于学习曲线
+
+Backbone.js在前期就有很陡峭的学习曲线，写一个最简单的应用可能就需要学很多，但一旦你学会，写任何Backbone的应用可能也不需要更多知识了。
+
+Angular.js不同，你可能只需要知道控制器与一些指令就能开始写简单应用，但后面的学习曲线陡峭。
+
+###在开始前就要理解模块
+
+不要把代码仍在一个大文件里，学会模块化。可以把`controllers`分解到不同模块里，按需加载。可以从`controllers`中分解出通用的`filter`和`services`。另外，理解`dependency injection (DI)`。依赖注入可以使代码解耦合并更易维护。
+
+###When Your Controllers Get Bigger, Learn Scope
+
+你一开始不必理解`scope`，把它当作魔法就好。但你可能已经、或者必然会遇到以下问题：
+
+**为什么我的视图不更新？**
+
+```javascript
+function SomeCtrl($scope) {
+    setTimeout(function() {
+        $scope.message = "I am here!";
+    }, 1000);
+}
 ```
 
-以上是angular最简单的运用，通过调用bootstrap方法传入作用域和初始化的模块数组（此处为空）初始化angular。当然，我们可以不用bootstrap来初始化，仅改变2处：
+**为什么`ng-model="touched" `不像预期那样工作？**
 
 ```html
-<!DOCTYPE html>
-<html ng-app="myApp">
-...
-    <script>
-        var app = angular.module("myApp", [], function(){
-                console.log("start");
-            })
-    </script>
-</body>
-</html>
+<script type="text/javascript">
+function SomeCtrl($scope) {
+    $scope.items = [{ value: 2 }];
+    $scope.touched = false;
+}
+</script>
+<ul>
+    <li ng-repeat="item in items">
+        <input type="text" ng-model="item.value">
+        <input type="checkbox" ng-model="touched">
+    </li>   
+</ul>
 ```
 
-在`<html>`标签上多了一个属性ng-app="MyApp"，它就是用来指定ng的作用域是在`<html>`标签以内部分。js中，我们用module方法定义了模块，名字与ng-app对应。关于这些代码的具体说明先不急，但我们已经能让angular运行起来了。
+以上都跟`$scope`有关。更重要的是，当你的控制器越来越大，是时候拆分为子控制器了，并且继承与`$scope`密切相关。你应该知道`$scope`怎么工作：
 
-##模板与数据绑定
+- 数据绑定和`$scope.$watch()`、`$scope.$apply()`的关系？
+- 控制器和其子控制器怎么分享`$scope`？
+- angular什么时候会自动创建新的`$scope`？
+- 事件（`$scope.$on`, `$scope.$emit`, `$scope.$broadcast`）怎么在`scopes`之间传递？
 
-*模板是什么？*
+回到上面两个问题，答案仅供参考：
 
-1. 没有模板概念时，我们通过字符串拼接，然后append到dom实现dom更新。
-2. underscore等类库实现了前端模板，用`<script>`标签来实现。
-3. angular更进一步，HTML代码就是模板，突破了`<script>`的限制。
+1. 你需要`$scope.$apply()`;
+2. 在`ng-repeat`内，angular自动创建新的`scope`。
 
-*绑定是什么？*
+###当你在控制器内操作DOM，那么写指令
 
-绑定就是数据与视图之间的绑定。angular强大之处在于数据与视图之间的双向绑定，即数据变化，dom相应更新；dom交互，数据也会变化。
+angular推荐控制器和视图（DOM）之间的分离。
 
-```html
-<!DOCTYPE html>
-<html ng-app="MyApp">
-<head>
-    <meta charset="utf-8" />
-    <title>模板数据绑定</title>
-    <script type="text/javascript" src="../angular.js"></script>
-</head>
-<body>
-    <div ng-controller="testC">
-        <h1>{{newtitle}}</h1>
-        题目:<input type="text" ng-model="name" /><br />
-        分数:<input type="text" ng-model="fraction" /><br />
-        <hr>
-        <h1>{{previewtitle}}</h1>
-        <b>{{name}}</b>({{fraction}}分)
-    </div>
-    <script type="text/javascript" charset="utf-8">
-    var app = angular.module('MyApp', [], function() {
-        console.log('started')
-    });
-    var testC = function($scope) {
-        $scope.newtitle = '新建试题';
-        $scope.previewtitle = '预览试题';
-        $scope.name = $scope.fraction = '';
-    }
-    </script>
-</body>
-</html>
-```
+但需要在控制器中操作DOM的情况有时不可避免，典型的例子如jQuery的插件。尽管jQuery插件已经有点过时了，但它的生态系统不会那么快消失。然而，在控制器中使用jQuery插件非常**糟糕**：你的控制器将很难测试，而且难以复用。
 
-这是模板与绑定的简单demo，可以看出以下几点：
+最好的方法是写自定义指令。指令可以当作可复用的组件：不仅是jQuery插件，还可以是在多处使用的你自己的控制器。最好的地方在于，你的控制器不必知道指令的存在，交流由scope共享和$scope事件来完成。
 
-* {{}}实现数据到模板的单向绑定；
-* ng-model双向绑定；
-* ng-controller声明控制器，控制器建立数据到视图之间的联系。
+对自定义指令的一句话总结：控制逻辑放在指令控制器中，DOM操作放在`link`函数中，scope共享是胶水。
 
-到此，对angular有了基本的认识，更多的留到后面吧。
+>For any of you who look for a word of wisdom, here is my one sentence summary: put control logic in directive controller, and DOM logic in link function; scope sharing is the glue.
+
+###angular的路由可能不是你所想的
+
+路由可能是个陷阱。不像Backbone，angular监视`location.hash`，当路由符合某个规则时调用回调。Angular.js路由工作时与服务器端路由类似，它与`ng-view`协同工作。当符合一种路由时，angular会加载模板并注入ng-view，一些控制器会被实例化。
+
+你可以写自己的服务来代替路由，如果你不喜欢这种工作机制的话。
+
+-----
+
+这篇文章作为「angular学习系列」的开篇可能有点冗长，一下子抛出这么多概念也可能超出了初学者的舒适范围，但正如前面提到的：树立正确的框架要比管中窥豹好。
+
+另外，感谢[thinkster](https://thinkster.io/angulartutorial)的angular集成，对学习angular真是再好不过。[Ruoyu Sun's](http://ruoyusun.com/)的博客很不错，感兴趣的可以多看看。
+
+-----
