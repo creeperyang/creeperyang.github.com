@@ -1,14 +1,14 @@
 ---
 layout: article
 comments: true
-title: 启动AngularJs和表达式
+title: AngularJs启动和表达式、绑定
 category: frontend
 tags: [AngularJs]
 ---
 
-angular的一个闪光点是你只需要对框架有个很少的了解就能顺利跑起Demo了。这很好，你可以边学边实际做，毕竟自学最重要的一点是动手，而不是biabiabia看些文档或视频就好。
+angular的一个闪光点是你只需要对框架有个很少的了解就能顺利跑起Demo了。这很好，你可以边学边实际做，毕竟自学最重要的一点是动手，而不是`biabiabia`看些文档或视频就好。
 
-那么，开始启动简单的Angular应用吧。
+首先，看怎么启动最简单的Angular应用。
 
 ##启动angular
 
@@ -39,7 +39,7 @@ angular会自动初始化，一般在`DOMContentLoaded`事件发生时或者`doc
 - 创建注入器;
 - 编译dom，把`ng-app`指令当作编译开始的根元素。
 
-###手动初始化M(anual Initialization)
+###手动初始化(Manual Initialization)
 
 如果你希望控制初始化过程，你可以手动初始化。
 
@@ -47,15 +47,16 @@ angular会自动初始化，一般在`DOMContentLoaded`事件发生时或者`doc
 <!doctype html>
 <html>
 <body>
-  Hello {{greetMe}}!
+  Hello { {greetMe} }!
   <script src="http://code.angularjs.org/snapshot/angular.js"></script>
 
   <script>
+    // 先定义app 模块
     angular.module('myApp', [])
       .controller('MyController', ['$scope', function ($scope) {
         $scope.greetMe = 'World';
       }]);
-
+    // 载入app模块，应用启动后不能在添加controllers, services, directives等等
     angular.element(document).ready(function() {
       angular.bootstrap(document, ['myApp']);
     });
@@ -66,7 +67,7 @@ angular会自动初始化，一般在`DOMContentLoaded`事件发生时或者`doc
 
 ##表达式(Angular Expressions)
 
-angular表达式是类js代码（`JavaScript-like code snippets`），经常放在绑定中，如`{{ expression }}`。
+angular表达式是类js代码（`JavaScript-like code snippets`），经常放在绑定中，如`{ { expression } }`。
 
 一些合法的例子：
 
@@ -94,7 +95,11 @@ angular表达式无法访问全局变量如`window`, `document`或者`location`�
 
 表达式执行会forgiving to undefined and null。在js中，如果a不是对象，执行`a.b.c`会抛出异常。
 
-表达式执行通常是为了数据绑定，形式如`{{a.b.c}}`，a是`undefined`（通常是等待服务器response，然后a会被定义）则会抛出异常，这很不好。如果没有Forgiving，我们可能不得不写这样的表达式：`{{((a||{}).b||{}).c}}`。
+表达式执行通常是为了数据绑定，形式如`{{a.b.c}}`，a是`undefined`（通常是等待服务器response，然后a会被定义）则会抛出异常，这很不好。如果没有Forgiving，我们可能不得不写这样的表达式：
+
+```javascript
+{ {((a||{}).b||{}).c} }
+```
 
 ###No Control Flow Statements
 
@@ -108,12 +113,16 @@ angular表达式无法访问全局变量如`window`, `document`或者`location`�
 
 <iframe width="100%" height="300" src="http://jsfiddle.net/creeper/vbd4qdwm/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-这里面`{{clickEvent | json}}`就有过滤器json。
+这里面`{ {clickEvent | json} }`就有过滤器json。
 
 注意：
 
 - 我们怎么把`$event`传给`clickMe`函数的。
 - `$event`在第一处为什么不能显示？因为`$event`不在绑定的`scope`范围内。
+
+##数据绑定（Data Binding）
+
+Angular的数据绑定就是**模型（model）**和**视图组件（view components）**之间的数据的自动同步。
 
 ##一次性绑定（One-time binding）
 
