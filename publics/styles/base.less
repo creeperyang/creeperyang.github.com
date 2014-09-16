@@ -7,19 +7,31 @@
 @import url("base/grid.less");
 
 // colors 
-@wsBaseBlack: #333;
-@wsDeepGray: #666;
+// @gray-base:              #000;
+// @gray-darker:            lighten(@gray-base, 13.5%); // #222
+// @gray-dark:              lighten(@gray-base, 20%);   // #333
+// @gray:                   lighten(@gray-base, 33.5%); // #555
+// @gray-light:             lighten(@gray-base, 46.7%); // #777
+// @gray-lighter:           lighten(@gray-base, 93.5%); // #eee
+@gray-lighter2: #e3e3e3;
+@gray-light2: #999;
+@gray-light0: #666;
+
+// @brand-primary:         #428bca;
+// @brand-success:         #5cb85c;
+// @brand-info:            #5bc0de;
+// @brand-warning:         #f0ad4e;
+// @brand-danger:          #d9534f;
+@green: #696;
+
 @wsGray: #707070;
-@wsLightGray: #999;
 @wsSuperLightGray: #ccc;
-@wsWhiteGray: #f2f2f2;
+@WhiteGray: #f2f2f2;
 @wsWhite: #fff;
 
 @wsRed: #fc2125;
 @wsBlue: #2fb7fe;
 @wsOrange: #fe9d26;
-@horizontalPadding: 0.5rem;
-@wsBgColor: #f4f4f4;
 @wsBorderColor: #ccc;
 
 .unstyled-list() {
@@ -164,7 +176,7 @@ html {
 }
 body {
     font-family: 'Microsoft Yahei', 'Sim Hei', 'Ubuntu';
-    background-color: @wsWhiteGray;
+    background-color: @WhiteGray;
 }
 
 // =====user info zone=======
@@ -217,16 +229,22 @@ body {
     padding: 2rem 0 1rem;
     .article-title {
         h1 {
-            font-weight: normal;
             font-size: 2rem;
-            color: @wsDeepGray;
-            a {
-                color: @wsDeepGray;
-            }
+            border-bottom: 1px solid @green;
+            color: @gray-light0;
+        }
+        h1>a{
+            font-size: 2rem;
+            color: @gray-light0;
         }
     }
     .article-des {
         font-size: 1.4rem;
-        color: @wsLightGray;
+        color: @gray-light0;
+
+        h1, h2, h3, h4 {
+            font-size: 1.6rem;
+            color: @gray-light0;
+        }
     }
 }
