@@ -128,22 +128,20 @@ layout: default
                     </svg>
                     <h1 class="title">Creeper's Blog</h1>
                 </div>
-                <div class="cy-menu">
-                    <ul class="unstyled-list clearfix">
-                        <li class="menu-item">
-                            <i class="fa fa-home"></i><a class="unstyled-link" href="/">首页</a>
-                        </li>
-                        <li class="menu-item">
-                            <i class="fa fa-desktop"></i><a class="unstyled-link" href="">前端</a>
-                        </li>
-                        <li class="menu-item">
-                            <i class="fa fa-coffee"></i><a class="unstyled-link" href="">转载</a>
-                        </li>
-                        <li class="menu-item">
-                            <i class="fa fa-paw"></i><a class="unstyled-link" href="">关于</a>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="unstyled-list clearfix cy-menu">
+                    <li class="menu-item">
+                        <i class="fa fa-home"></i><a class="unstyled-link" href="/">首页</a>
+                    </li>
+                    <li class="menu-item">
+                        <i class="fa fa-desktop"></i><a class="unstyled-link" href="">前端</a>
+                    </li>
+                    <li class="menu-item">
+                        <i class="fa fa-coffee"></i><a class="unstyled-link" href="">转载</a>
+                    </li>
+                    <li class="menu-item">
+                        <i class="fa fa-paw"></i><a class="unstyled-link" href="">关于</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -155,11 +153,19 @@ layout: default
                 {% for post in site.posts %}
                     <div class="article-view">
                         <div class="article-title">
-                            <h1><a href="{{post.url}}">{{ post.title }}</a></h1>
-                            <div class="article-attrs"></div>
+                            <h1>
+                                <a href="{{post.url}}">{{ post.title }}</a>
+                            </h1>
+                            <div class="article-time">
+                                <p>
+                                    <span>{{post.date | date: "%b %d,%Y"}}</span>
+                                    &nbsp;|&nbsp;
+                                    <span>{{ post.content | strip_html | strip_newlines | split: "" | size }}</span>
+                                </p>
+                            </div>
                         </div>
                         <div class="article-des">
-                            {{ post.content | truncate:240 }}
+                            {{ post.content | split:'<!--view-break-->' | first }}
                         </div>
                     </div>
                 {% endfor %}

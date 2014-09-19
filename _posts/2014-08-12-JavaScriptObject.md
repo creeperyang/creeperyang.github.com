@@ -16,6 +16,8 @@ JavaScript对象是什么？
 
 JS对象是动态的，属性可以添加或删除。除去string、number、true/false、null、undefined，在js中其他值都是对象。
 
+<!--view-break-->
+
 > null is not an object, it is a primitive value. For example, you cannot add properties to it. Sometimes people wrongly assume that it is an object, because typeof null returns "object". But that is actually a bug (that might even be fixed in ECMAScript 6).    ------From <http://stackoverflow.com/questions/801032/why-is-null-an-object-and-whats-the-difference-between-null-and-undefined/802371#802371>
 > null不是对象，是基础类型。不要被`typeof null;  // object`迷惑，这是js解释器的错误。 
 

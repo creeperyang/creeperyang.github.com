@@ -1,10 +1,9 @@
 @import url("base/variables.less");
 @import url("base/mixins.less");
 
-@import url("base/normalize.less");
-@import url("base/scaffolding.less");
 @import url("base/utilities.less");
 @import url("base/grid.less");
+
 
 // colors 
 // @gray-base:              #000;
@@ -16,6 +15,7 @@
 @gray-lighter2: #e3e3e3;
 @gray-light2: #999;
 @gray-light0: #666;
+@theme-green: #63c29a;
 
 // @brand-primary:         #428bca;
 // @brand-success:         #5cb85c;
@@ -33,6 +33,43 @@
 @wsBlue: #2fb7fe;
 @wsOrange: #fe9d26;
 @wsBorderColor: #ccc;
+
+// extract from base/scaffolding.less, delete unuseful code
+* {
+    .box-sizing(border-box);
+}
+*:before, *:after {
+    .box-sizing(border-box);
+}
+// Reset fonts for relevant elements
+input, button, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+// Links, remove hover/focus effect
+a {
+    color: @link-color;
+    text-decoration: none;
+}
+// Figures
+//
+// We reset this here because previously Normalize had no `figure` margins. This
+// ensures we don't break anyone's use of the element.
+ figure {
+    margin: 0;
+}
+// Images
+img {
+    vertical-align: middle;
+}
+// Horizontal rules
+hr {
+    margin-top: @line-height-computed;
+    margin-bottom: @line-height-computed;
+    border: 0;
+    border-top: 1px solid@hr-border;
+}
 
 .unstyled-list() {
     padding-left: 0;
@@ -55,31 +92,18 @@
 // menu
 .cy-menu {
     text-align: center;
+    color: @theme-green;
     .menu-item {
         display: inline-block;
         padding: 4px 8px;
         float: left;
+        i, a {
+            color: @theme-green;
+        }
+        i {
+            margin-right: 0.8rem;
+        }
     }
-}
-
-@-webkit-keyframes bounce { 
-    0% { -webkit-transform: translate3d(0,-20px,0); opacity:0; }
-    25% { -webkit-transform: translate3d(0,10px,0); }
-    50% { -webkit-transform: translate3d(0,-6px,0); }
-    75% { -webkit-transform: translate3d(0,2px,0); }
-    100% { -webkit-transform: translate3d(0,0,0); opacity: 1; }
-}
-@keyframes bounce { 
-    0% { transform: translate3d(0,-25px,0); opacity:0; }
-    25% { transform: translate3d(0,10px,0); }
-    50% { transform: translate3d(0,-6px,0); }
-    75% { transform: translate3d(0,2px,0); }
-    100% { transform: translate3d(0,0,0); opacity: 1; }
-}
-@-webkit-keyframes slide { 
-    0% { -webkit-transform: translate3d(-36rem,0,0); opacity:0.3; }
-    96% { -webkit-transform: translate3d(1rem,0,0);  }
-    100% { -webkit-transform: translate3d(0,0,0); opacity: 1; }
 }
 
 // text inputs
@@ -175,7 +199,7 @@ html {
     font-size: 10px;
 }
 body {
-    font-family: 'Microsoft Yahei', 'Sim Hei', 'Ubuntu';
+    font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans","wenquanyi micro hei","Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
     background-color: @WhiteGray;
 }
 
@@ -202,10 +226,18 @@ body {
         }
     }
     .cy-menu {
-        padding-bottom: 2rem;
-        border-bottom: 1px solid @wsSuperLightGray;
+        padding-top: 2rem;
+        border-bottom: 1px solid @theme-green;
+        transition: all 0.4s ease;
+        -webkit-transition: all 0.4s ease;
         .menu-item {
             width: 25%;
+            &:hover {
+                background-color: @theme-green;
+                i, a {
+                    color: #fff;
+                }
+            }
         }
     }
 }
@@ -226,17 +258,25 @@ body {
     padding: 2rem 0;
 }
 .article-view {
-    padding: 2rem 0 1rem;
+    padding: 1rem 0 3rem;
     .article-title {
         h1 {
+            position: relative;
             font-size: 2rem;
-            border-bottom: 1px solid @green;
+            font-family: "微软雅黑", "黑体", "Ubuntu";
             color: @gray-light0;
         }
         h1>a{
             font-size: 2rem;
+            font-family: "微软雅黑", "黑体", "Ubuntu";
             color: @gray-light0;
         }
+    }
+    .article-time {
+        display: block;
+
+        color: #ababab;
+        font-size: 90%;
     }
     .article-des {
         font-size: 1.4rem;

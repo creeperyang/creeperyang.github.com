@@ -8,6 +8,8 @@ tags: [AngularJs]
 
 14年4月入职新公司，跟着Eyal开始接触、使用node.js，angular.js，d3.js等等，感觉到前端世界一扇不同的大门为我开启了。angular.js不同于以前接触过的Backbone，“增强HTML”是新奇的、不错的想法。在我的angular.js学习之路上，有了这几篇或十几篇有关angular的文章。
 
+<!--view-break-->
+
 首先声明学习过的资料（这些资料可能会出现在文章中）：
 
 - Angular官网：<https://angularjs.org/>

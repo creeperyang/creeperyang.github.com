@@ -10,6 +10,8 @@ angular的一个闪光点是你只需要对框架有个很少的了解就能顺�
 
 首先，看怎么启动最简单的Angular应用。
 
+<!--view-break-->
+
 ##启动angular
 
 angular可以自动启动或手动启动。

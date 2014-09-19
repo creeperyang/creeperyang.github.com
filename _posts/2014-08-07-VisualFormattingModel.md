@@ -32,6 +32,8 @@ description: <p>wait...</p>
 
 12. non-replaced element: 非替换元素，替换元素之外的所有其他元素都是非替换元素,由CSS的视觉格式化模型负责非替换元素的渲染。
 
+<!--view-break-->
+
 ##Introduction to the visual formatting model
 
 本章及下章描述了可视化格式模型：浏览器怎么为可视媒介处理文档树？
