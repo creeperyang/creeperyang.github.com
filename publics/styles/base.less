@@ -225,6 +225,11 @@ body {
             font-size: 2rem;
         }
     }
+    .logo-img {
+        display: block;
+        width: 90%;
+        padding: 5%;
+    }
     .cy-menu {
         padding-top: 2rem;
         border-bottom: 1px solid @theme-green;
@@ -232,7 +237,7 @@ body {
         -webkit-transition: all 0.4s ease;
         .menu-item {
             width: 25%;
-            &:hover {
+            &:hover, &.active {
                 background-color: @theme-green;
                 i, a {
                     color: #fff;
@@ -267,9 +272,19 @@ body {
             color: @gray-light0;
         }
         h1>a{
+            padding-left: 0.4rem;
+
             font-size: 2rem;
             font-family: "微软雅黑", "黑体", "Ubuntu";
             color: @gray-light0;
+
+            border-left: 0.4rem solid @theme-green;
+
+            transition: all 0.4s ease;
+            -webkit-transition: all 0.4s ease;
+            &:hover {
+                color: @theme-green;
+            }
         }
     }
     .article-time {
@@ -281,6 +296,8 @@ body {
     .article-des {
         font-size: 1.4rem;
         color: @gray-light0;
+
+        border-bottom: 1px solid @gray-lighter2;
 
         h1, h2, h3, h4 {
             font-size: 1.6rem;

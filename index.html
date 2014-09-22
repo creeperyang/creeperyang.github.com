@@ -129,11 +129,11 @@ layout: default
                     <h1 class="title">Creeper's Blog</h1>
                 </div>
                 <ul class="unstyled-list clearfix cy-menu">
-                    <li class="menu-item">
+                    <li class="menu-item active">
                         <i class="fa fa-home"></i><a class="unstyled-link" href="/">首页</a>
                     </li>
                     <li class="menu-item">
-                        <i class="fa fa-desktop"></i><a class="unstyled-link" href="">前端</a>
+                        <i class="fa fa-desktop"></i><a class="unstyled-link" href="/fe.html">前端</a>
                     </li>
                     <li class="menu-item">
                         <i class="fa fa-coffee"></i><a class="unstyled-link" href="">转载</a>
@@ -158,9 +158,9 @@ layout: default
                             </h1>
                             <div class="article-time">
                                 <p>
-                                    <span>{{post.date | date: "%b %d,%Y"}}</span>
+                                    <span>时间：{{post.date | date: "%F"}}</span>
                                     &nbsp;|&nbsp;
-                                    <span>{{ post.content | strip_html | strip_newlines | split: "" | size }}</span>
+                                    <span>字数：{{ post.content | strip_html | strip_newlines | split: "" | size }}</span>
                                 </p>
                             </div>
                         </div>

@@ -17,13 +17,42 @@
         <div class="body-wrap">
             <div class="container">
                 <div class="row clearfix">
-                    <header>
-                        
+                    <header class="col-xs-12 col-md-8 col-md-offset-2 info-wrap">
+                        <section class='info-top'>
+                            <div class='time-info'>
+                                <span class='time-part time-day'>{{ page.date | date: "%d" }}</span>
+                                <span class="time-part">
+                                    <i class='time-month'>{{ page.date | date: "%b" }}</i>
+                                    <i class='time-year'>{{ page.date | date: "%Y" }}</i>
+                                </span>
+                            </div>
+                            <div class='tag-info'>
+                                {% assign part = {{page.tags.size | divided_by:2 }} %}
+                                {% assign remainpart = {{page.tags.size | minus:part }} %}
+                                <div class='tags top'>
+                                    {% for tag in page.tags limit:remainpart offset:part %}
+                                        <span class='tag-label'><i class='fa fa-tag'> {{tag}}</i></span>
+                                    {% endfor %}
+                                </div>
+                                <div class='tags bottom'>
+                                    {% for tag in page.tags limit:part %}
+                                        <span class='tag-label'><i class='fa fa-tag'> {{tag}}</i></span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </section>
+                        <section id='info-bottom'>
+                            <h1 class='title-info'>{{ page.title }}</h1>
+                            <ul class='status-info clearfix'>
+                                <li><b>字数：</b><span>{{ page.content | strip_html | strip_newlines | split: "" | size }}</span></li>
+                                <li><b>作者：</b><span>Jerry</span></li>
+                            </ul>
+                        </section>
                     </header>
-                    <div class="col-xs-12 col-md-8 col-md-offset-2 wrap-inner">
+                    <article class="col-xs-12 col-md-8 col-md-offset-2 wrap-inner">
                         {{content}}
-                    </div>
-                    <div class="col-xs-12 col-md-8 col-md-offset-2 comment-wrap">
+                    </article>
+                    <footer class="col-xs-12 col-md-8 col-md-offset-2 comment-wrap">
                         <div id="disqus_thread"></div>
                         <script type="text/javascript">
                         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -42,7 +71,7 @@
                         </noscript>
                         <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
-                    </div>
+                    </footer>
 
                 </div>
             </div>
