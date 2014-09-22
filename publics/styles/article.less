@@ -219,3 +219,37 @@ blockquote {
         }
     }
 }
+.side-menu {
+    position: fixed;
+    width: 2rem;
+    right: 0;
+    bottom: 6rem;
+    margin-right: 0;
+    a {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        margin-bottom: 1px;
+
+        text-align: center;
+        color: white;
+
+        background-color: @theme-green;
+        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: all 1s;
+        transform: rotateZ(0deg);
+        &:hover {
+            transform: rotateZ(360deg);
+            -webkit-transform: rotateZ(360deg);
+        }
+    }
+    @media screen and (min-width: @screen-md) {
+        right: 8.4%;
+    }
+    @media screen and (min-width: @screen-lg) {
+        opacity: 1;
+        right: 50%;
+        margin-right: -341.5px;
+    }
+}

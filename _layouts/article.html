@@ -11,13 +11,14 @@
 
         <link rel="stylesheet" type="text/css" href="/publics/styles/article.css" />
         <link rel="stylesheet" type="text/css" href="/publics/styles/syntax-github.css" />
-        <script type="text/javascript" src="/publics/js/lib/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="/publics/scripts/lib/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="/publics/scripts/main.js"></script>
     </head>
     <body>
         <div class="body-wrap">
             <div class="container">
                 <div class="row clearfix">
-                    <header class="col-xs-12 col-md-8 col-md-offset-2 info-wrap">
+                    <header class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 info-wrap">
                         <section class='info-top'>
                             <div class='time-info'>
                                 <span class='time-part time-day'>{{ page.date | date: "%d" }}</span>
@@ -49,10 +50,10 @@
                             </ul>
                         </section>
                     </header>
-                    <article class="col-xs-12 col-md-8 col-md-offset-2 wrap-inner">
+                    <article class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 wrap-inner">
                         {{content}}
                     </article>
-                    <footer class="col-xs-12 col-md-8 col-md-offset-2 comment-wrap">
+                    <footer class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 comment-wrap">
                         <div id="disqus_thread"></div>
                         <script type="text/javascript">
                         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -72,7 +73,12 @@
                         <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
                     </footer>
-
+                    <aside class='side-menu'>
+                        <a href="{{page.previous.url}}" id='pre-page'><i class='fa fa-angle-left'></i></a>
+                        <a href="{{page.next.url}}" id='next-page'><i class='fa fa-angle-right'></i></a>
+                        <a id='back-to-top'><i class='fa fa-angle-up'></i></a>
+                        <a href="/" id='back-to-home'><i class='fa fa-home'></i></a>
+                    </aside>
                 </div>
             </div>
         </div>
