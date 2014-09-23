@@ -6,15 +6,15 @@ category: frontend
 tags: [AngularJs]
 ---
 
-14年4月入职新公司，跟着Eyal开始接触、使用node.js，angular.js，d3.js等等，感觉到前端世界一扇不同的大门为我开启了。angular.js不同于以前接触过的Backbone，“增强HTML”是新奇的、不错的想法。在我的angular.js学习之路上，有了这几篇或十几篇有关angular的文章。
+14年4月入职新公司，跟着Eyal开始接触、使用node.js，angular.js，d3.js等等，感觉到前端世界一扇不同的大门为我开启了。angular.js不同于以前接触过的Backbone，“enhance html”的概念是如此自然和深刻。在我的angular.js学习之路上，有了这几篇或十几篇有关angular的文章。
 
 <!--view-break-->
 
 首先声明学习过的资料（这些资料可能会出现在文章中）：
 
-- Angular官网：<https://angularjs.org/>
-- A Better Way to Learn AngularJS：<https://thinkster.io/angulartutorial/a-better-way-to-learn-angularjs/>
-- 吕大豹「走进AngularJs」：<http://www.cnblogs.com/lvdabao/tag/AngularJs/>
+- Angular官网：<https://angularjs.org/>（不需说明，官方文档）
+- A Better Way to Learn AngularJS：<https://thinkster.io/angulartutorial/a-better-way-to-learn-angularjs/>（perfect）
+- 吕大豹「走进AngularJs」：<http://www.cnblogs.com/lvdabao/tag/AngularJs/>（很风趣，不想看英文的可以看看）
 
 ##AngularJs是什么?
 
@@ -35,9 +35,9 @@ angular采用了另一个解决方案。它试图缩小以静态文档为核心�
 
 angular是web应用在客户端一侧的全面解决方案。
 
-- 构建CRUD应用所需要的全部：数据绑定，模板指令，表格验证，路由，重用组件。依赖注入。
+- 构建CRUD应用所需要的全部：数据绑定，模板指令，表格验证，路由，重用组件，依赖注入。
 - 测试：单元测试，端到端测试，mocks和测试工具。
-- 种子应用和测试脚本作为开发起点。
+- 有种子应用和测试脚本作为开发起点。
 
 ###适用范围
 
@@ -85,7 +85,7 @@ angular让你免于以下痛苦：
 
 ##我希望我早知道这些关于AngularJS的
 
-这是一段补充，来自[Ruoyu Sun's博客|Things I Wish I Were Told About Angular.js](http://ruoyusun.com/2013/05/25/things-i-wish-i-were-told-about-angular-js.html)。在开始深入学习angular前读一读这篇文章可能会比较好。但请注意：这一段基于`angularJS 1.0.x`，一些内容可能已经不再合适。
+这是一段补充，来自[Ruoyu Sun's博客「Things I Wish I Were Told About Angular.js」](http://ruoyusun.com/2013/05/25/things-i-wish-i-were-told-about-angular-js.html)。在开始深入学习angular前读一读这篇文章可能会比较好。但请注意：这一段基于`angularJS 1.0.x`，一些内容可能已经不再合适。
 
 ###关于学习曲线
 
@@ -135,7 +135,7 @@ function SomeCtrl($scope) {
 - angular什么时候会自动创建新的`$scope`？
 - 事件（`$scope.$on`, `$scope.$emit`, `$scope.$broadcast`）怎么在`scopes`之间传递？
 
-回到上面两个问题，答案仅供参考：
+对上面两个问题，答案仅供参考：
 
 1. 你需要`$scope.$apply()`;
 2. 在`ng-repeat`内，angular自动创建新的`scope`。

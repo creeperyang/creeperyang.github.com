@@ -97,10 +97,10 @@ angular表达式无法访问全局变量如`window`, `document`或者`location`�
 
 表达式执行会forgiving to undefined and null。在js中，如果a不是对象，执行`a.b.c`会抛出异常。
 
-表达式执行通常是为了数据绑定，形式如`{{a.b.c}}`，a是`undefined`（通常是等待服务器response，然后a会被定义）则会抛出异常，这很不好。如果没有Forgiving，我们可能不得不写这样的表达式：
+表达式执行通常是为了数据绑定，形式如`{ { a.b.c } }`，a是`undefined`（通常是等待服务器response，然后a会被定义）则会抛出异常，这很不好。如果没有Forgiving，我们可能不得不写这样的表达式：
 
 ```javascript
-{ {((a||{}).b||{}).c} }
+{ { ((a||{}).b||{}).c } }
 ```
 
 ####No Control Flow Statements
@@ -121,6 +121,32 @@ angular表达式无法访问全局变量如`window`, `document`或者`location`�
 
 - 我们怎么把`$event`传给`clickMe`函数的。
 - `$event`在第一处为什么不能显示？因为`$event`不在绑定的`scope`范围内。
+
+
+
+##数据绑定（Data Binding）
+
+Angular的数据绑定就是**模型（model）**和**视图组件（view components）**之间的数据的自动同步。
+
+angular实现数据绑定的方式让你把模型看作app中唯一真相的来源（lets you treat the model as the single-source-of-truth in your application）。视图是模型的投影，模型的任何改动将会影响视图，反之亦然。
+
+###经典模板系统中的数据绑定
+
+![例图](https://docs.angularjs.org/img/One_Way_Data_Binding.png)
+
+绝大多数模板系统的数据绑定都是单向的：它们把模型组件和模板合并得出视图。一旦合并后，视图或模型某一方的改动都不会影响到另一方，即开发者必须自己写代码去保持两者同步。
+
+###angular模板的数据绑定
+
+![例图](https://docs.angularjs.org/img/Two_Way_Data_Binding.png)
+
+angular模板不同。
+
+首先，angular模板（未编译的html，包括任意额外的标签或指令）是在浏览器端编译。
+
+编译阶段生成活动视图（live view）：视图上的任何改变将反馈给模型，模型的任何改变将传播到视图。模型是app状态的唯一可信来源（single-source-of-truth），这大大简化了编程模型——你可以把视图当作模型的一个投影。
+
+因为视图只是模型的投影，控制器就和视图完全分离了。这又使测试更容易了，因为测试的控制器与视图分离，不依赖DOM/浏览器环境。
 
 ###一次性绑定（One-time binding）
 
@@ -158,30 +184,6 @@ someModule.directive('someDirective', function() {
 });
 </script>
 ```
-
-##数据绑定（Data Binding）
-
-Angular的数据绑定就是**模型（model）**和**视图组件（view components）**之间的数据的自动同步。
-
-angular实现数据绑定的方式让你把模型看作app中唯一真相的来源（lets you treat the model as the single-source-of-truth in your application）。视图是模型的投影，模型的任何改动将会影响视图，反之亦然。
-
-###经典模板系统中的数据绑定
-
-![例图](https://docs.angularjs.org/img/One_Way_Data_Binding.png)
-
-绝大多数模板系统的数据绑定都是单向的：它们把模型组件和模板合并得出视图。一旦合并后，视图或模型某一方的改动都不会影响到另一方，即开发者必须自己写代码去保持两者同步。
-
-###angular模板的数据绑定
-
-![例图](https://docs.angularjs.org/img/Two_Way_Data_Binding.png)
-
-angular模板不同。
-
-首先，angular模板（未编译的html，包括任意额外的标签或指令）是在浏览器端编译。
-
-编译阶段生成活动视图（live view）：视图上的任何改变将反馈给模型，模型的任何改变将传播到视图。模型是app状态的唯一可信来源（single-source-of-truth），这大大简化了编程模型——你可以把视图当作模型的一个投影。
-
-因为视图只是模型的投影，控制器就和视图完全分离了。这又使测试更容易了，因为测试的控制器与视图分离，不依赖DOM/浏览器环境。
 
 ----------------
 

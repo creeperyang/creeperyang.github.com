@@ -110,7 +110,7 @@ table {
 
 // hr
 hr {
-    border-top-color: @gray-lighter2;
+    border-top-color: #ddd;
 }
 
 // quote
@@ -234,22 +234,26 @@ blockquote {
         text-align: center;
         color: white;
 
-        background-color: @theme-green;
-        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
         cursor: pointer;
-        transition: all 1s;
-        transform: rotateZ(0deg);
+        .fa {
+            transition: all 1s;
+            transform: rotateZ(0deg);
+        }
         &:hover {
-            transform: rotateZ(360deg);
-            -webkit-transform: rotateZ(360deg);
+            .fa {
+                transform: rotateZ(360deg);
+                -webkit-transform: rotateZ(360deg);
+            }
         }
     }
     @media screen and (min-width: @screen-md) {
-        right: 8.4%;
+        right: 8.2%;
     }
     @media screen and (min-width: @screen-lg) {
         opacity: 1;
         right: 50%;
-        margin-right: -341.5px;
+        margin-right: -344px;
     }
 }
