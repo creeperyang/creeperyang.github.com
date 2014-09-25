@@ -39,7 +39,7 @@
 @horizontalPadding: 0.5rem;
 
 
-.clearfix {
+.clearfix() {
     &:before, &:after {
         content: " "; // 1
         display: table; // 2
@@ -47,6 +47,9 @@
     &:after {
         clear: both;
     }
+}
+.clearfix {
+    .clearfix();
 }
 
 // base 
@@ -139,23 +142,29 @@ blockquote {
 }
 
 // specific style
-.wrap-inner {
-    padding: 2.4rem 2rem;
+.part-wrap {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+.content-wrap {
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
 }
 .comment-wrap {
     padding-top: 3.2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
     padding-bottom: 2.4rem;
 }
 .info-wrap {
-    padding: 0 2rem;
     .info-top {
-        display: block;
+        display: none;
         height: 4.6rem;
         margin-top: 2.4rem;
 
         border-bottom: 1px solid #ddd;
+
+        @media (min-width: @screen-xs) {
+            display: block;
+        }
     }
     .time-info, .tag-info {
         float: right;
@@ -193,6 +202,14 @@ blockquote {
         overflow: hidden;
 
         font-size: 1.2rem;
+        .tags {
+            text-align: right;
+
+            color: @gray-light;
+        }
+        .tag-label {
+            padding: 0 0.4rem;
+        }
     }
 
     .info-bottom {
@@ -224,6 +241,8 @@ blockquote {
     width: 2rem;
     right: 0;
     bottom: 6rem;
+
+    display: none;
     margin-right: 0;
     a {
         display: inline-block;
@@ -248,12 +267,15 @@ blockquote {
             }
         }
     }
-    @media screen and (min-width: @screen-md) {
-        right: 8.2%;
+    @media screen and (min-width: @screen-xs) {
+        display: block;
     }
-    @media screen and (min-width: @screen-lg) {
+    @media (min-width: @screen-md) {
+        right: 8.1%;
+    }
+    @media (min-width: @screen-lg) {
         opacity: 1;
         right: 50%;
-        margin-right: -344px;
+        margin-right: -345px;
     }
 }
