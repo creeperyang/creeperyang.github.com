@@ -10,7 +10,7 @@ tags: [AngularJs, scope]
 
 ##什么是scope
 
-scope是一个对象。scope是一个指向model的对象。scope是一个执行环境（提供给表达式）。scope是以层次结构来组织的，模拟了app的DOM结构。scope能检测表达式和传播事件。
+scope是一个对象。scope是一个引用模型（refer to model）的对象。scope是一个提供给表达式的执行环境。scope是以层次结构来组织的，模拟了app的DOM结构。scope能检测表达式和传播事件。
 
 >scope is an object that refers to the application model. It is an execution context for expressions. Scopes are arranged in hierarchical structure which mimic the DOM structure of the application. Scopes can watch expressions and propagate events.
 
@@ -18,14 +18,14 @@ scope是一个对象。scope是一个指向model的对象。scope是一个执行
 
 ###Scope的特性（characteristics）
 
-1. scope提供API（`$watch`）检测模型的变化。
-2. scope提供API（`$apply`）把模型的变化从"Angular realm"外面传播给视图。"Angular realm"，angular范围，指controllers, services, Angular event handlers。
+1. scope提供API（`$watch`）观察模型的变化。
+2. scope提供API（`$apply`）把模型在"Angular realm"之外发生的变化从系统传播给视图。"Angular realm"，angular范围，指controllers, services, Angular event handlers。
 3. scope提供执行环境，给表达式计算时使用。如`{ { username } }`是无意义的，除非指定到特定的scope（scope上定义了`username`）上执行时才有意义。
 4. scope可以嵌套来限制对app组件属性的访问，同时也提供对共享模型属性的访问。嵌套的scope不是`child scope`就是`isolated scope`。`child scope`（原型式地）继承`parent scope`的属性。`isolated scope`不继承。
 
 ###Scope as Data-Model
 
-scope是控制器和视图之间的“胶水”。在模板编译的*link阶段*，指令在scope上建立`$watch`表达式。`$watch`允许指令在属性变化时接收通知，然后可以把更新过的值渲染到视图。
+scope是控制器和视图之间的“胶水”。在模板编译的*linking阶段*，指令在scope上建立`$watch`表达式。`$watch`允许指令在属性变化时收到通知，然后可以把更新过的值渲染到视图。
 
 控制器和指令都有scope的引用（have reference to the scope），但它们两者之间没有。这种安排隔离了控制器和指令，同样隔离了控制器和DOM。
 
@@ -49,12 +49,14 @@ scope是控制器和视图之间的“胶水”。在模板编译的*link阶段*
 </script>
 ```
 
-从上面的代码可以看出在控制器中怎么向scope添加属性（`username`）和行为（`sayHello`）。
+在上面的例子中注意到，`MyController`为scope的`username`属性赋值`World`。scope之后就通知`input`这个赋值，然后就会为`input`预先填充username再渲染。这演示了控制器怎么向scope写数据。
+
+同样，控制器也可以向scope添加行为（`sayHello`）。
 
 逻辑上`{ {greeting} }`的渲染包括2步：
 
-1. 检索`{ {greeting} }`在模板中定义所在的DOM node的相关scope。在例子中，该scope就是与传给`MyController`同样的scope。
-2. 以上面找到的scope，执行`greeting`表达式，把值传给DOM。
+1. 检索`{ {greeting} }`在模板中定义位置所在的DOM node的相关scope。在例子中，该scope就是传给`MyController`的scope。
+2. 以上面找到的scope为上下文执行`greeting`表达式，把值传给DOM。
 
 你可以把scope和它的属性视作用来渲染视图的数据。scope是与视图有关的所有事的唯一source-of-truth。
 
@@ -64,7 +66,7 @@ scope是控制器和视图之间的“胶水”。在模板编译的*link阶段*
 
 每个angular应用有且只有一个`root scope`，但也许有多个子scope。
 
-每个app可以有多个scope，因为一些指令会创建新的子scope（参见指令文档去看哪些指令会创建新的scope）。当新的scope被创建，它们以父scope的孩子被添加。这样就创建了一棵树，平行于它们被attached的DOM。
+每个app可以有多个scope，因为一些指令会创建新的子scope（参见指令文档去看哪些指令会创建新的scope）。当新的scope被创建，它们以父scope的孩子被添加。这样就创建了一棵树，平行于它们被attach到的DOM。
 
 1. 当angular执行`{ {name} }`时，它首先查询给定元素相关的scope的name属性。
 2. 如果没有找到，它会查询父scope直到root scope。这就是js中的原型继承。
@@ -93,11 +95,11 @@ Scopes可以以类似DOM事件的方式传播事件. 事件可以被broadcasted�
 
 当浏览器在angular执行上下文以外执行JS代码，这意味着angular不再知道模型的变化。正确处理模型变化应该是用`$apply`进入angular执行上下文，只有这样angular才会知道模型的变化。
 
-在计算完表达式后，`$apply`方法会执行一个`$digest`。在$digest阶段，scope会检查所有的`$watch`表达式，并与之前的值比较。这种脏检查是异步执行的。这意味着`$scope.username="angular"`这种赋值不会立即通知`$watch`，而是延迟等到`$digest`阶段才通知。这种延迟是必要的，因为这可以把多个模型更新合并到一个`$watch`通知，而且还保证了在`$watch`通知时不会有其它的`$watch`运行。如果一个`$watch`改变了模型的值，那么会强制额外的一个`$digest`周期。
+在计算完表达式后，`$apply`方法会执行一个`$digest`。在$digest阶段，scope会检查所有的`$watch`表达式，并与之前的值比较。这种脏检查是异步执行的。这意味着`$scope.username="angular"`这种赋值不会立即通知`$watch`，而是延迟等到`$digest`阶段才通知。这种延迟是必要的，因为这可以把多个模型更新合并到一个`$watch`通知，而且还保证了在`$watch`通知时不会有其它的`$watch`运行。如果一个`$watch`改变了模型的值，那么会强制额外的一个`$digest`循环。
 
 1. Creation
 
-    `root scope`在app bootstrap时被`$injector`创建。在模板link阶段，一些指令会创建新的子scope。
+    `root scope`在app bootstrap时被`$injector`创建。在模板linking阶段，一些指令会创建新的子scope。
 
 2. Watcher registration
 
@@ -109,7 +111,7 @@ Scopes可以以类似DOM事件的方式传播事件. 事件可以被broadcasted�
 
 4. Mutation observation（变化观察）
 
-    在`$apply`结束时，angular会在`root scope`上启动一个`$digest` cycle，这个`$digest`之后会广播到所有子scope。在`$digest`周期，所有`$watch`ed表达式或者函数被检查来判断模型是否变化了;如果一个变化被探测到，`$watch`的listener被调用。
+    在`$apply`结束时，angular会在`root scope`上启动一个`$digest` cycle，这个`$digest`之后会传播到所有子scope。在`$digest` cycle，所有`$watch`ed表达式或者函数被检查来判断模型是否变化了;如果一个变化被探测到，`$watch`的listener被调用。
 
 5. Scope destruction
 
@@ -158,15 +160,14 @@ angular通过提供自己的事件处理回环改变了正常的JavaScript流程
 
 1. 调用`scope.$apply(stimulusFn)`可以进入angular执行上下文，`stimulusFn`是你希望在angular执行上下文中做的工作。
 2. angular执行`stimulusFn`，一般是修改app状态。
-3. angular进入`$digest`回环。这个回环由两个小的回环组成，一个处理`$evalAsync` queue，一个处理`$watch()` list。`$digest`回环一直重复直到模型稳定，即`$evalAsync` queue为空而且`$watch()` list探测不到任何改变。
-4. `$evalAsync` queue用来安排需要在当前栈帧（`current stack frame`）外，但必须在浏览器视图渲染前发生的工作。这通常用`setTimeout(0)`来做，但`setTimeout(0)`可能比较慢，还可能引起视图闪烁，因为浏览器在每个事件之后渲染视图。（The $evalAsync queue is used to schedule work which needs to occur outside of current stack frame, but before the browser's view render. This is usually done with setTimeout(0), but the setTimeout(0) approach suffers from slowness and may cause view flickering since the browser renders the view after each event.）
-5. `$watch()` list是一系列可能在上个循环改变（值）的表达式。如果改变被探测到，`$watch`函数通常会以新值更新视图。
+3. angular进入`$digest`回环。这个回环由两个小的回环组成，一个处理`$evalAsync` queue，一个处理`$watch()` list。`$digest`回环一直重复（keeps iterating）直到模型稳定，即`$evalAsync` queue为空而且`$watch()` list探测不到任何改变。
+4. `$evalAsync` queue用来安排需要在当前栈帧（`current stack frame`）外，但必须在浏览器视图渲染前发生的工作。这通常用`setTimeout(0)`来做，但`setTimeout(0)`可能比较慢，还可能引起视图闪烁，因为浏览器在每个事件之后都会渲染视图。（The $evalAsync queue is used to schedule work which needs to occur outside of current stack frame, but before the browser's view render. This is usually done with setTimeout(0), but the setTimeout(0) approach suffers from slowness and may cause view flickering since the browser renders the view after each event.）
+5. `$watch()` list是一系列可能在上个循环后值改变的表达式。如果改变被探测到，`$watch`函数通常会以新值更新视图。
 6. 一旦angular`$digest`回环结束，则离开angular执行上下文，回到JS上下文。之后会跟着浏览器重新渲染视图。
 
 `hello world`例子的解释。
 
 1. 在编译阶段
-
     - `ng-model`和`input directive`在`<input>`上建立`keydown` listener。
     - `interpolation`建立一个`$watch`（`name`属性变化时被通知）。
 
