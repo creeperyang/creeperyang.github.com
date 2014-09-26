@@ -5,3 +5,4 @@ redcarpet:
 paginate_path: "page:num"
 permalink: /:categories/:year/:month/:title
 highlighter: pygments
+paginate: 5

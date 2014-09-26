@@ -52,6 +52,10 @@
                     </header>
                     <article class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 content-wrap part-wrap">
                         {{content}}
+                        <section class='page-nav'>
+                            <a href="{{page.previous.url}}" id='pre-page'><i class='fa fa-angle-left'></i> 上一篇</a>
+                            <a href="{{page.next.url}}" id='next-page'>下一篇 <i class='fa fa-angle-right'></i></a>
+                        </section>
                     </article>
                     <footer class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 comment-wrap part-wrap">
                         <div id="disqus_thread"></div>
@@ -74,8 +78,6 @@
 
                     </footer>
                     <aside class='side-menu'>
-                        <a href="{{page.previous.url}}" id='pre-page'><i class='fa fa-angle-left'></i></a>
-                        <a href="{{page.next.url}}" id='next-page'><i class='fa fa-angle-right'></i></a>
                         <a href="/" id='back-to-home'><i class='fa fa-home'></i></a>
                         <a id='back-to-top'><i class='fa fa-angle-up'></i></a>
                     </aside>
