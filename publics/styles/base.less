@@ -156,6 +156,15 @@ hr {
 .btn {
     .btn();
 }
+.btn.disabled {
+    color: #999;
+    border-color: #999;
+    &:focus, &:hover {
+        color: #999;
+        background-color: transparent;
+        outline: none;
+    }
+}
 .btn-block {
     height: 3.4rem;
     width: 100%;
@@ -169,16 +178,6 @@ hr {
 
     line-height: 3.98rem;
     font-size: 1.6rem;
-}
-
-// icons
-.icon {
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-}
-.icon-logo {
-    background-image: url("../images/index_logo.png");
 }
 
 // --------------- new ---------------
@@ -318,7 +317,7 @@ body {
         float: right;
     }
     .btn {
-        width: 6.4rem;
+        width: 6.8rem;
     }
 }
 
@@ -335,7 +334,7 @@ footer {
         font-size: 1.6rem;
     }
     .copyright {
-        padding: 2rem 0;
+        padding: 3rem 0 4rem;
 
         color: #ccc;
     }
