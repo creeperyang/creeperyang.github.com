@@ -24,7 +24,7 @@ angular app没有main方法。作为代替，模块声明性地指定一个app�
 
 <!--view-break-->
 
-##基础
+##基础(The Basics)
 
 ```html
 <div ng-app="myApp">
@@ -57,50 +57,14 @@ angular app没有main方法。作为代替，模块声明性地指定一个app�
 - 每个可重用组件一个模块（特别是指令和过滤器）
 - app级别的模块依赖上面的模块，并可以包括任意初始化代码。
 
-```javascript
-angular.module('xmpl.service', [])
-
-  .value('greeter', {
-    salutation: 'Hello',
-    localize: function(localization) {
-      this.salutation = localization.salutation;
-    },
-    greet: function(name) {
-      return this.salutation + ' ' + name + '!';
-    }
-  })
-
-  .value('user', {
-    load: function(name) {
-      this.name = name;
-    }
-  });
-
-angular.module('xmpl.directive', []);
-
-angular.module('xmpl.filter', []);
-
-angular.module('xmpl', ['xmpl.service', 'xmpl.directive', 'xmpl.filter'])
-
-  .run(function(greeter, user) {
-    // This is effectively part of the main method initialization code
-    greeter.localize({
-      salutation: 'Bonjour'
-    });
-    user.load('World');
-  })
-
-  .controller('XmplController', function($scope, greeter, user){
-    $scope.greeting = greeter.greet(user.name);
-  });
-```
+<iframe width="100%" height="300" src="http://jsfiddle.net/creeper/sfd5ag20/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ##模块加载和依赖
 
-模块是configuration和run blocks的集合，这些block在app启动阶段被应用到app。最简形式，模块由两种block的集合组成：
+模块是`configuration`和`run`块（blocks）的集合，这些块在app启动阶段被应用到app。最简形式时，模块由两种block的集合组成：
 
-- 配置block：在provider registrations 和 configuration阶段执行。只有provider和常数可以注入配置block。这可以防止在服务所有的配置完成前被初始化。
-- 运行block：在注入器被创建并用来启动app之后执行。只有实例和常数可以注入到运行block。这可以防止运行阶段做更多配置。
+- 配置blocks：在provider registrations 和 configuration阶段执行。只有provider和常数可以注入配置block。这可以防止在（服务的）所有的配置完成前，服务被初始化。
+- 运行blocks：在注入器被创建并用来启动app之后执行。只有实例和常数可以注入到运行block。这可以防止运行阶段做更多配置。
 
 ```javascript
 angular.module('myModule', []).
