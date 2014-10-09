@@ -41,12 +41,12 @@
                                 {% assign remainpart = {{page.tags.size | minus:part }} %}
                                 <div class='tags top'>
                                     {% for tag in page.tags limit:remainpart offset:part %}
-                                        <span class='tag-label'><i class='fa fa-tag'> {{tag}}</i></span>
+                                        <span class='tag-label'><i class='fa fa-tag'></i> {{tag}}</span>
                                     {% endfor %}
                                 </div>
                                 <div class='tags bottom'>
                                     {% for tag in page.tags limit:part %}
-                                        <span class='tag-label'><i class='fa fa-tag'> {{tag}}</i></span>
+                                        <span class='tag-label'><i class='fa fa-tag'></i> {{tag}}</span>
                                     {% endfor %}
                                 </div>
                             </div>
