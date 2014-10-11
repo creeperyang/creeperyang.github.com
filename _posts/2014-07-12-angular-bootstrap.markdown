@@ -97,11 +97,7 @@ angular表达式无法访问全局变量如`window`, `document`或者`location`�
 
 表达式执行会forgiving to undefined and null。在js中，如果a不是对象，执行`a.b.c`会抛出异常。
 
-表达式执行通常是为了数据绑定，形式如`{ { a.b.c } }`，a是`undefined`（通常是等待服务器response，然后a会被定义）则会抛出异常，这很不好。如果没有Forgiving，我们可能不得不写这样的表达式：
-
-```javascript
-{ { ((a||{}).b||{}).c } }
-```
+表达式执行通常是为了数据绑定，形式如`{ { a.b.c } }`，a是`undefined`（通常是等待服务器response，然后a会被定义）则会抛出异常，这很不好。如果没有Forgiving，我们可能不得不写这样的表达式：`{ { ((a||{}).b||{}).c } }`。
 
 ####No Control Flow Statements
 
@@ -150,7 +146,7 @@ angular模板不同。
 
 ###一次性绑定（One-time binding）
 
-以`::`开头的表达式是一次性绑定，即一旦有稳定值（不是undefined）后不再重新计算。
+以`::`开头的表达式是一次性绑定，即一旦有稳定值（不是`undefined`）后不再重新计算。
 
 ####为什么要有这种特性？
 
@@ -158,7 +154,7 @@ One-time binding的主要目的是提供这样一种绑定：一旦有稳定值�
 
 ####值稳定算法（Value stabilization algorithm）
 
-在每个digest循环结束时，One-time binding会获取表达式的值，只要这个值不是undefined。具体算法如下：
+在每个digest循环结束时，One-time binding会获取表达式的值，只要这个值不是`undefined`。具体算法如下：
 
 1. 给定的表达式以`::`开头，当一次digest循环开始，expression is dirty-checked store the value as V；
 2. 如果V不是undefined，标记表达式结果是stable，计划一个任务（schedule a task ），在一次digest循环结束时去注销监视（deregister the watch）；
@@ -170,7 +166,7 @@ One-time binding的主要目的是提供这样一种绑定：一旦有稳定值�
 当插入文字或属性时，如果这个表达式的值一旦确定就不再改变，那么这就适合用一次性绑定。
 
 ```html
-<div name="attr: {{::color}}">text: {{::name}}</div>
+<div name="attr: { {::color} }">text: { {::name} }</div>
 
 <script>
 someModule.directive('someDirective', function() {
@@ -179,7 +175,7 @@ someModule.directive('someDirective', function() {
       name: '=',
       color: '@'
     },
-    template: '{{name}}: {{color}}'
+    template: '{ {name} }: { {color} }'
   };
 });
 </script>

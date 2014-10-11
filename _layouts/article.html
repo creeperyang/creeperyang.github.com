@@ -11,10 +11,8 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <title>{{page.title}}</title>
 
-        <link rel="stylesheet" type="text/css" href="/publics/styles/article.css" />
+        <link rel="stylesheet" type="text/css" href="/publics/styles/post.css" />
         <link rel="stylesheet" type="text/css" href="/publics/styles/syntax-github.css" />
-        <script type="text/javascript" src="/publics/scripts/lib/jquery-2.1.1.js"></script>
-        <script type="text/javascript" src="/publics/scripts/main.js"></script>
         <script>
         var _hmt = _hmt || [];
         (function() {
@@ -64,8 +62,16 @@
                     <article class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 content-wrap part-wrap">
                         {{content}}
                         <section class='page-nav'>
-                            <a href="{{page.previous.url}}" id='pre-page'><i class='fa fa-angle-left'></i> 上一篇</a>
-                            <a href="{{page.next.url}}" id='next-page'>下一篇 <i class='fa fa-angle-right'></i></a>
+                            {% if page.previous %}
+                                <a href="{{page.previous.url}}" class="btn" id='pre-page'><i class='fa fa-angle-left'></i> Previous</a>
+                            {% else %}
+                                <span class="btn disabled">None</span>
+                            {% endif %}
+                            {% if page.next %}
+                                <a href="{{page.next.url}}" class="btn" id='next-page'>Next <i class='fa fa-angle-right'></i></a>
+                            {% else %}
+                                <span class="btn disabled">None</span>
+                            {% endif %}
                         </section>
                     </article>
                     <footer class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 comment-wrap part-wrap">
@@ -89,12 +95,16 @@
 
                     </footer>
                     <aside class='side-menu'>
-                        <a href="/" id='back-to-home'><i class='fa fa-home'></i></a>
-                        <a id='back-to-top'><i class='fa fa-angle-up'></i></a>
+                        <div class="side-menu-inner-wrap">
+                            <a href="/" id='back-to-home'><i class='fa fa-home'></i></a>
+                            <a id='back-to-top'><i class='fa fa-angle-up'></i></a>
+                        </div>
                     </aside>
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="/publics/scripts/lib/jquery-2.1.1.js"></script>
+        <script type="text/javascript" src="/publics/scripts/main.js"></script>
         <script type="text/javascript">
         var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
         document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fc343aeafcb026d57e649b133a48c1eb0' type='text/javascript'%3E%3C/script%3E"));

@@ -1,12 +1,12 @@
 ---
 layout: article
 comments: true
-title: AngularJs的数据绑定和控制器
+title: AngularJs的数据绑定
 category: frontend
 tags: [AngularJs, data binding, controller]
 ---
 
-这章是对前一章的补充，侧重实际运用。不多说，以最简单的数据绑定例子开始。
+前面两章内容比较多，但看完前两章，对angular应该会有一个比较全面的了解。这章开始，会对angular中的每个部分做细致讲解，首先从数据绑定讲起。
 
 ```html
 <body>
@@ -21,17 +21,19 @@ tags: [AngularJs, data binding, controller]
 
 <!--view-break-->
 
-- 属性`ng-app`指定当前元素以及内部的一切都属于这个app;
-- 绑定可以用`ng-bind`指令或双大括号来表示，但注意，为了防止liquid误解析，在大括号之间插入了空格。
+上面是很简单的例子，关注两点：
 
-###控制器简单运用
+- 属性`ng-app`指定当前元素以及内部的一切都属于这个app;
+- 绑定可以用`ng-bind`指令或双大括号来表示。但注意，为了防止liquid误解析，在大括号之间插入了空格（前面几章包括后面都会如此）。
+
+###通过控制器获取数据
 
 把上面例子中的`ng-model`去除，用控制器来提供数据。
 
 ```html
 <div ng-app="">
   <div ng-controller="FirstCtrl">
-    <h1>{{data.message + " world"}}</h1>
+    <h1>{ {data.message + " world"} }</h1>
     <div class="{{data.message}}">
       Wrap me in a foundation component
     </div>
@@ -45,7 +47,7 @@ function FirstCtrl($scope){
 }
 ```
 
-上面是控制器最简单的运用。
+上面展示了数据绑定时从控制器获取数据。正如之前所说，控制器是一个上下文，表达式可以通过它访问模型。
 
 ###点（dot）在数据绑定中的重要性
 
@@ -58,7 +60,7 @@ function FirstCtrl($scope){
 - 有点时，在3个输入框的输入彼此影响;
 - 无点时，三个`msg`彼此独立不影响。
 
-解释一下原因：scope默认是继承scope的，`FirstCtrl`和`SecondCtrl`都继承了父scope（此处是`rootScope`，并且由于第一个`data.message`而创建了data属性），而`FirstCtrl`和`SecondCtrl`没有覆盖父scope的任何属性：
+解释一下原因：scope默认是继承父scope的，`FirstCtrl`和`SecondCtrl`都继承了父scope（此处是`rootScope`，并且由于第一个`data.message`而创建了data属性），而`FirstCtrl`和`SecondCtrl`没有覆盖父scope的任何属性：
 
 - 有点时，`FirstCtrl`和`SecondCtrl`都仅仅继承（引用）`rootScope`的`data`属性，那么`data.msg`的`data`都指向同一个`data`对象。
 - 无点时，`FirstCtrl`、`SecondCtrl`和`rootScope`都会创建各自的`msg`属性，所以有三个互不影响的`msg`属性。
@@ -72,14 +74,14 @@ function FirstCtrl($scope){
 ```html
 <div ng-app="myApp">
     <input type="text" ng-model="data.message">
-    <h1>{{ data.message }}</h1>
+    <h1>{ { data.message } }</h1>
     <div ng-controller="FirstCtrl">
         <input type="text" ng-model="data.message">
-        <h1>{{ data.message }}</h1>
+        <h1>{ { data.message } }</h1>
     </div>
     <div ng-controller="SecondCtrl">
         <input type="text" ng-model="data.message">
-        <h1>{{ data.message }}</h1>
+        <h1>{ { data.message } }</h1>
     </div>
 </div>
 <script type="text/javascript">
@@ -103,10 +105,12 @@ function FirstCtrl($scope){
 
 ###在scope上定义方法
 
+表达式中可以调用方法。
+
 ```html
 <div ng-controller="SecondCtrl">
     <input type="text" ng-model="data.message">
-    <h1>{{ reversedMessage(data.message) }}</h1>
+    <h1>{ { reversedMessage(data.message) } }</h1>
 </div>
 <script type="text/javascript">
     function SecondCtrl($scope, Data) {
