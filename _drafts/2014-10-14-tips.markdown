@@ -1,0 +1,25 @@
+---
+layout: article
+comments: true
+title: 实践获取的小知识
+category: frontend
+tags: [tips]
+---
+
+###javascript
+
+- `prop() || attr()`
+
+    http://stackoverflow.com/questions/5874652/prop-vs-attr
+
+- mobile emulation 按钮的`click event`
+
+    最好`e.preventDefault();`，因为移动端click button好像会reload page。
+
+- `height:0` --> `height:auto`的transition或者动画
+
+    改用`max-height`。
+
+###css
+
+- flex-box
