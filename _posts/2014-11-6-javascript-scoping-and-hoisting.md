@@ -79,9 +79,9 @@ JS没有块级作用域！所以if内的`x`覆盖了外部的`x`。
 
 ##Declarations, Names, and Hoisting
 
-在js中，一个name进入作用域的方式有4种：
+在js中，一个变量名进入作用域的方式有4种：
 
-1. Language-defined：所有的作用域默认都会给出`this`和`arguments`两个name;
+1. Language-defined：所有的作用域默认都会给出`this`和`arguments`两个变量名;
 2. Formal parameters（形参）：函数有形参，形参会添加到函数的作用域中;
 3. Function declarations（函数声明）：如`function foo() {}`;
 4. Variable declarations（变量声明）：如`var foo`。
@@ -94,7 +94,7 @@ JS没有块级作用域！所以if内的`x`覆盖了外部的`x`。
 
 最重要的特殊情况是变量解析顺序。这个顺序与前面提到的变量进入作用域的4种方式的顺序一致。
 
-这说明，如果一个name已经被定义了，它就再也不会被重新声明。这也意味着，函数声明的优先级要高于变量声明。
+这说明，如果一个变量名已经被定义了，它就再也不会被重新声明。这也意味着，函数声明的优先级要高于变量声明。
 
 当然，这不是说赋值无效了，而是变量声明部分被解释器忽略了。
 
@@ -123,7 +123,7 @@ hello
 
 相信上面的例子已经把意思阐述清楚了。但记住3个例外：
 
-- 内置的name `arguments` 表现有点奇怪。它似乎在形参之后被声明，但在函数声明之前。这意味着如果一个形参叫`arguments`，那么这个形参的优先级比`arguments`要高（覆盖了内置的`arguments`，即使它是`undefined`）。请不要把形参命名为`arguments`。
+- 内置的变量名 `arguments` 表现有点奇怪。它似乎在形参之后被声明，但在函数声明之前。这意味着如果一个形参叫`arguments`，那么这个形参的优先级比`arguments`要高（覆盖了内置的`arguments`，即使它是`undefined`）。请不要把形参命名为`arguments`。
 
     ```javascript
     function arg(arguments, b){
@@ -134,7 +134,7 @@ hello
     // 输出：hi 
     ```
 
-- 在任何地方试图把`this`作为标识符（`identifier`）都会报错。
+- 在任何地方试图把`this`作为标识符（`identifier`，可以理解为变量名）都会报错。
 - 如果多个形参同名，最后一个同名形参优先级高，即使它是`undefined`。
 
 ##How to Code With This Knowledge
