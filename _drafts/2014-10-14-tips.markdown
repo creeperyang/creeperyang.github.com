@@ -23,3 +23,30 @@ tags: [tips]
 ###css
 
 - flex-box
+
+####Margin collapsing
+
+参考： 
+
+1. <https://developer.mozilla.org/en-US/docs/Web/CSS/margin_collapsing>
+2. <http://www.w3.org/TR/CSS21/box.html#collapsing-margins>
+
+>Top and bottom margins of blocks are sometimes combined (collapsed) into a single margin whose size is the largest of the margins combined into it, a behavior known as margin collapsing.
+
+margin合并有3种情况：
+
+- Adjacent siblings（相邻的兄弟姐妹）
+- ...
+
+注意：
+
+- Margins between a floated box and any other box do not collapse (not even between a float and its in-flow children).
+- Margins of elements that establish new block formatting contexts (such as floats and elements with 'overflow' other than 'visible') do not collapse with their in-flow children.
+- Margins of absolutely positioned boxes do not collapse (not even with their in-flow children).
+- Margins of inline-block boxes do not collapse (not even with their in-flow children).
+- The bottom margin of an in-flow block-level element always collapses with the top margin of its next in-flow block-level sibling, unless that sibling has clearance.
+- The top margin of an in-flow block element collapses with its first in-flow block-level child's top margin if the element has no top border, no top padding, and the child has no clearance.
+- The bottom margin of an in-flow block box with a 'height' of 'auto' and a 'min-height' of zero collapses with its last in-flow block-level child's bottom margin if the box has no bottom padding and no bottom border and the child's bottom margin does not collapse with a top margin that has clearance.
+- A box's own margins collapse if the 'min-height' property is zero, and it has neither top or bottom borders nor top or bottom padding, and it has a 'height' of either 0 or 'auto', and it does not contain a line box, and all of its in-flow children's margins (if any) collapse.
+
+可以看到，inline-block的元素不会合并margin。
