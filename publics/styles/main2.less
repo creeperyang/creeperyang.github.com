@@ -1,5 +1,5 @@
 @import "common.less";
-@import "prefixer.less";
+@import url(prefixer.less);
 
 // colors 
 // @gray-base:              #000;
@@ -19,8 +19,9 @@
 // @brand-warning:         #f0ad4e;
 // @brand-danger:          #d9534f;
 
-#poster {
-    padding: 1rem 0;
+
+// =====user info zone=======
+#user-info {
     .logo {
         padding-top: 2rem;
         svg {
@@ -35,29 +36,16 @@
             stroke-dashoffset: 480;
             -webkit-animation: dash 18s linear alternate infinite;
         }
-    }
-}
-#user-info {
-    padding: 1rem 0;
-    background-color: #e04c16;
-    .title {
-        font-weight: normal;
-        font-size: 4rem;
-        text-align: center;
-        color: #fff;
-    }
-    .desc {
-        font-size: 1.4rem;
-        color: #f5f5f5;
-        text-align: center;
-    }
-    #main-nav {
-        text-align: center;
-        .wheel-button {
-            display: inline-block;
-            padding: 1rem;
-            border-radius: 50%;
+        .title {
+            text-align: center;
+            font-weight: normal;
+            font-size: 2rem;
         }
+    }
+    .logo-img {
+        display: block;
+        width: 90%;
+        padding: 5%;
     }
     .cy-menu {
         padding-top: 2rem;
@@ -168,28 +156,5 @@ footer {
         padding: 3rem 0 4rem;
 
         color: #ccc;
-    }
-}
-
-/* Required Stylesheets */
-.wheel-button {
-   position: relative;
-}
-
-.wheel {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    width: 200px; /* this will determine the diameter of the circle  */
-    height: 200px; /* this will determine the diameter of the circle  */
-    visibility: hidden;
-    position: relative;
-    display: none;
-    li {
-        overflow: hidden;
-        float:left;
-        a {
-            display: block;
-        }
     }
 }

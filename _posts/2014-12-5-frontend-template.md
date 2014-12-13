@@ -106,7 +106,7 @@ _.template = function(text, settings, oldSettings) {
     // 组合分隔符为一个正则，分隔符是可选的
     var matcher = RegExp([
         (settings.escape || noMatch).source, (settings.interpolate || noMatch).source, (settings.evaluate || noMatch).source
-    ].join('|') + '|$', 'g');
+    ].join('|') + '|$', 'g'); // '|$'结束符在3种标签都不匹配时匹配，offset就是模板字符串长度，保证模板必然被转义处理（即source正确取到值）。
 
     // 编译模板字符串, 正确转义字符
     var index = 0; // 配合offset来slice出3种标签之外的字符串
