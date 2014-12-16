@@ -16,7 +16,9 @@
         trigger: "click",
         animation: "fade",
         angle: [0, 360],
-        animationSpeed: "medium"
+        animationSpeed: "medium",
+        width: 200,
+        height: 200
     };
 
     $.fn.centerAround = function(button) {
@@ -26,7 +28,7 @@
             buttonX = (offset.left - $(document).scrollLeft()) + width / 2,
             buttonY = (offset.top - $(document).scrollTop()) + height / 2,
             objectOffset = this.offset();
-        this.css("position", "fixed");
+        this.css("position", "absolute");
         this.css("top", buttonY - (this.outerHeight() / 2) + "px");
         this.css("left", buttonX - (this.outerWidth() / 2) + "px");
         return this;
@@ -166,6 +168,50 @@
 
     }
 
+    var displayWheelMenu = function($menuBtn, $menuItems, settings) {
+        var zindex = '6',
+            width = settings.width,
+            height = settings.height;
+        if (settings.trigger === "hover") {
+            zindex = '3';
+        }
+        $menuBtn.addClass("active").css({
+            'z-index': zindex
+        });
+
+        $menuItems.css({ // center menuItems and display:block;
+            'position': 'absolute',
+            'width': width + 'px',
+            'height': height + 'px',
+            'margin-left': -(width / 2) + 'px',
+            'margin-top': -(height / 2) + 'px',
+            'z-index': '5',
+            'padding': '30px' // add safe zone for mouseover
+        }).show().addClass("wheel active").css("visibility", "visible");
+
+        if ($menuItems.attr('data-angle')) {
+            settings.angle = $menuItems.attr('data-angle');
+        }
+
+        settings = predefineAngle(settings);
+        var radius = width / 2,
+            fields = $menuItems.find(".item"),
+            container = $menuItems,
+            angle = 0,
+            step = (settings.angle[1] - settings.angle[0]) / fields.length;
+
+
+        switch (settings.animation) {
+            case 'fade':
+                fields.fadeInIcon($menuItems, $menuBtn, width, height, angle, step, radius, settings)
+                break;
+
+            case 'fly':
+                fields.flyIn($menuItems, $menuBtn, width, height, angle, step, radius, settings)
+                break;
+        }
+    };
+
     $.fn.animateRotate = function(angle, duration, easing, complete) {
         return this.each(function() {
             var $elem = $(this);
@@ -233,60 +279,61 @@
         return settings;
     }
 
-    function predefineSpeed(settings) {
-        if ($.type(settings.animationSpeed) == "string") {
-            switch (settings.animationSpeed) {
+    function processSpeed(speed) {
+        var speed = speed || 'medium';
+        if ($.type(speed) === "string") {
+            switch (speed) {
                 case 'slow':
-                    settings.animationSpeed = [75, 700]
+                    speed = [75, 700];
                     break;
                 case 'medium':
-                    settings.animationSpeed = [50, 500]
+                    speed = [50, 500];
                     break;
                 case 'fast':
-                    settings.animationSpeed = [25, 250]
+                    speed = [25, 250];
                     break;
                 case 'instant':
-                    settings.animationSpeed = [0, 0]
+                    speed = [0, 0];
+                    break;
+                default: 
+                    speed = [50, 500];
                     break;
             }
+        } 
+        if($.type(speed) !== 'array') {
+            speed = [50, 500];
         }
-        return settings;
+        return speed;
     }
 
     $.fn.wheelmenu = function(options) {
-        var settings = $.extend({}, defaults, options);
 
-        settings = predefineSpeed(settings);
+        var settings = $.extend({}, defaults, options);
+        settings.animationSpeed = processSpeed(settings.animationSpeed);
 
         return this.each(function() {
-            var button = $(this)
-            var el = $($(this).attr("href"));
-            el.addClass("wheel");
+            var $menuBtn = $(this);
+            var $target = $($menuBtn.attr("href"));
+            $target.addClass("wheel");
 
-            button.css("opacity", 0).animate({
-                opacity: 1
-            })
-            if (settings.trigger == "hover") {
-
-                button.bind({
-                    mouseenter: function() {
-                        el.showIcon(button, settings);
-                    }
+            if (settings.trigger === "hover") {
+                $menuBtn.on('mouseenter', function() {
+                    $target.showIcon($menuBtn, settings);
                 });
-
-                el.bind({
-                    mouseleave: function() {
-                        el.hideIcon(button, settings);
-                    }
+                $target.on('mouseleave', function() {
+                    $target.hideIcon($menuBtn, settings);
                 });
-
             } else {
-                button.click(function(ev) {
+                $menuBtn.on('click', function(ev) {
                     ev.preventDefault();
-                    if (el.css('visibility') == "visible") {
-                        el.hideIcon(button, settings);
+                    var show = $target.hasClass('wheel-displaying');
+                    if (show) {
+                        $target.removeClass('wheel-displaying');
+                        $target.hideIcon($menuBtn, settings);
                     } else {
-                        el.showIcon(button, settings);
+                        $target.addClass('wheel-displaying');
+                        //$target.showIcon($menuBtn, settings);
+                        displayWheelMenu($menuBtn, $target, settings);
                     }
                 });
             }

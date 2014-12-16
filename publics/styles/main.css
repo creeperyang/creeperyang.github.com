@@ -3153,9 +3153,11 @@ img {
   color: #fff;
 }
 #main-nav {
+  position: relative;
   text-align: center;
 }
 #main-nav .wheel-button {
+  position: relative;
   display: inline-block;
   width: 3.6rem;
   height: 3.6rem;
@@ -3166,6 +3168,13 @@ img {
 }
 #main-nav .wheel-button .fa {
   line-height: 3.6rem;
+}
+#wheel-menu {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: 0;
+  margin-top: 0;
 }
 #wheel-menu .unstyled-link {
   display: inline-block;
@@ -3178,6 +3187,22 @@ img {
 }
 #wheel-menu .unstyled-link .fa {
   line-height: 2.4rem;
+}
+/* Required Stylesheets */
+.wheel {
+  width: 200px;
+  /* this will determine the diameter of the circle  */
+  height: 200px;
+  /* this will determine the diameter of the circle  */
+  visibility: hidden;
+  display: none;
+}
+.wheel li {
+  overflow: hidden;
+  float: left;
+}
+.wheel li a {
+  display: block;
 }
 @-webkit-keyframes dash {
   from {
@@ -3376,27 +3401,4 @@ footer #back-to-top {
 footer .copyright {
   padding: 3rem 0 4rem;
   color: #ccc;
-}
-/* Required Stylesheets */
-.wheel-button {
-  position: relative;
-}
-.wheel {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  width: 200px;
-  /* this will determine the diameter of the circle  */
-  height: 200px;
-  /* this will determine the diameter of the circle  */
-  visibility: hidden;
-  position: relative;
-  display: none;
-}
-.wheel li {
-  overflow: hidden;
-  float: left;
-}
-.wheel li a {
-  display: block;
 }
