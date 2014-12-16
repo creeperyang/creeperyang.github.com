@@ -119,7 +119,7 @@ parent.appendChild(element);
 为了理解，以真实的`ngRepeat`为例：
 
 ```html
-Hello {{user.name}}, you have these actions:
+Hello { {user.name} }, you have these actions:
 <ul>
   <li ng-repeat="action in user.actions">
     { { action.description } }
@@ -179,7 +179,7 @@ Hello {{user.name}}, you have these actions:
 ```html
 <!-- dialog template -->
 <div ng-show="visible">
-<h3>{{title}}</h3>
+<h3>{ {title} }</h3>
 <div class="body" ng-transclude></div>
 <div class="footer">
   <button ng-click="onOk()">Save changes</button>
