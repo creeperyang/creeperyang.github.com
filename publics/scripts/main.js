@@ -20,7 +20,7 @@ $(function() {
     });
 
     // wheel menu
-    $(".wheel-button").wheelmenu({
+    $(".wheel-button").wheelMenu({
         trigger: "click", // Can be "click" or "hover". Default: "click"
         animation: "fly", // Entrance animation. Can be "fade" or "fly". Default: "fade"
         animationSpeed: "fast", // Entrance animation speed. Can be "instant", "fast", "medium", or "slow". Default: "medium"

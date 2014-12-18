@@ -3190,18 +3190,13 @@ img {
 }
 /* Required Stylesheets */
 .wheel {
-  width: 200px;
-  /* this will determine the diameter of the circle  */
-  height: 200px;
-  /* this will determine the diameter of the circle  */
-  visibility: hidden;
   display: none;
 }
-.wheel li {
+.wheel .item {
   overflow: hidden;
   float: left;
 }
-.wheel li a {
+.wheel .item a {
   display: block;
 }
 @-webkit-keyframes dash {
