@@ -2,7 +2,7 @@
 title: Creeper-Blog
 layout: default
 ---
-
+{% if paginator.page == 1 %}
 <header class="cy-zone" id="poster">
     <div class="container clearfix">
         <div class="row">
@@ -136,9 +136,9 @@ layout: default
         <div class="row">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
                 <h1 class="title">Creeper's Blog</h1>
-                <p class="desc">Creeper is a front-end developer, working at Shanghai, China.</p>
+                <p class="desc">Creeper is a front-end developer, working in Shanghai, China.<br>He loves coding and sharing, and it's why the blog exists.</p>
                 <nav id="main-nav">
-                    <a href='#wheel-menu' class="wheel-button s"><i class='fa fa-plus'></i></a>
+                    <a href='#wheel-menu' class="wheel-button s"><i class='fa fa-bars'></i></a>
                     <ul id='wheel-menu' class="unstyled-list clearfix wheel">
                         <li class="item">
                             <a class="unstyled-link" href="/" title="Home"><i class="fa fa-home"></i></a>
@@ -161,6 +161,33 @@ layout: default
         </div>
     </div>
 </section>
+{% else %}
+<header class="cy-zone" id="menu-list">
+    <div class="container clearfix">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <ul class="unstyled-list clearfix cy-menu">
+                    <li class="menu-item">
+                        <a class="unstyled-link" href="/"><i class="fa fa-home"></i>首页</a>
+                    </li>
+                    <li class="menu-item active">
+                        <a class="unstyled-link" href="/articles.html"><i class="fa fa-html5"></i>博客</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="unstyled-link" href=""><i class="fa fa-code"></i>项目</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="unstyled-link" href=""><i class="fa fa-link"></i>友链</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="unstyled-link" href=""><i class="fa fa-paw"></i>关于</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+{% endif %}
 <section class="cy-zone" id="article-list">
     <div class="container">
         <div class="row">
@@ -186,18 +213,13 @@ layout: default
                 {% endfor %}
             </div>
         </div>
-    </div>
-</section>
-<footer class='cy-zone'>
-    <div class="container">
         <div class="row">
             {% if paginator.page == 1 %}
-                <div class="bottom-btns col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                <div class="view-more-zone col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
                     <a class='view-more btn btn-large' href="/articles.html"><i class='fa fa-pagelines'></i> 更多文章</a>
-                    <span class='btn' id='back-to-top'><i class='fa fa-angle-up'></i></span>
                 </div>
             {% else %}
-                <div class='col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3'>
+                <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
                     <div class='pager'>
                         {% if paginator.previous_page %}
                             <a class="btn" href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}" id='pre-page'><i class='fa fa-angle-left'></i> Previous</a>
@@ -214,9 +236,16 @@ layout: default
                 </div>
             {% endif %}
         </div>
-        <div class="row">
-            <div class="copyright col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-                <span>Copyright &copy; 2014 Creeper</span>
+    </div>
+</section>
+<footer class='cy-zone'>
+    <div class="container">
+        <div class="row bottom-zone">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <div class="copyright">
+                    <span>Copyright &copy; 2014 Creeper</span>
+                </div>
+                <div class='btn' id='back-to-top'><i class='fa fa-angle-up'></i></div>
             </div>
         </div>
     </div>

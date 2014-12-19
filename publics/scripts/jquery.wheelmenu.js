@@ -15,21 +15,32 @@
         var self = this,
             settings = self.settings,
             trigger = settings.trigger,
+            angle = settings.angle,
             $el = self.$el,
-            $container = self.$container;
+            $container = self.$container,
+            $items = $container.find('.item'),
+            count = $items.length;
+        
+        if(!count) return;
 
         self.width = settings.width;
         self.height = settings.height;
         self.radius = self.width / 2;
         self.active = false;
-        self.$items = $container.find('.item');
-        self.count = self.$items.length;
+        self.$items = $items;
+        self.count = count;
+        if(settings.smartAdjust && count > 1) {
+            self.step = (angle[1] - angle[0]) / (count - 1);
+        } else {
+            self.step = (angle[1] - angle[0]) / count;
+        }
 
         if(trigger === 'hover') {
             self.zindex = 3;
             $el.on('mouseenter', function() {
                 self.show();
-            }).on('mouseleave', function() {
+            });
+            $container.on('mouseleave', function() {
                 self.hide();
             });
         } else {
@@ -54,38 +65,53 @@
             'z-index': '5',
             'padding': '30px' // add safe zone for mouseover
         });
+
     };
 
     WheelMenu.prototype.show = function() {
         var self = this,
             $container = self.$container,
             $el = self.$el,
+            $items = self.$items,
             settings = self.settings,
             angle = settings.angle,
-            animation = settings.animation,
-            step = (angle[1] - angle[0]) / self.count;
+            count = self.count,
+            step = self.step;
         
         $el.css('z-index', self.zindex);
+        $el.addClass('active');
         $container.show().addClass("active");
-
-        if(animation === 'fly') {
-            flyIn(self.$items, self.width, self.height, angle, step, self.radius, settings.animationSpeed);
+        if(!self.itemWidth) {
+            self.itemWidth = $items.width();
+            self.itemHeight = $items.height();
+            self.cx = self.width / 2 - self.itemWidth / 2;
+            self.cy = self.height / 2 - self.itemHeight / 2;
+            self.itemStyle = {
+                opacity: 0,
+                left: self.cx + 'px',
+                top: self.cy + 'px',
+                transform: 'rotateZ(0)'
+            };
         }
+
+        flyIn(self.$items, self.cx, self.cy, angle, step, 
+            self.radius, settings.animationSpeed, self.itemStyle);
+
         self.active = true;
     };
 
     WheelMenu.prototype.hide = function() {
         var self = this,
-            settings = self.settings,
-            animation = settings.animation;
-        
-        if(animation === 'fly') {
-            flyOut(self.$items, self.$el);
-        }
+            settings = self.settings;
+
+        flyOut(self.$items, self.$el, self.itemStyle, function() {
+            self.$container.hide().removeClass('active');
+        });
         self.active = false;
     };
 
-    var flyIn = function($items, width, height, angle, step, radius, animationSpeed) {
+    var flyIn = function($items, cx, cy,
+        angle, step, radius, animationSpeed, style) {
         var deltaTime = 0,
             deltaAngle = 0,
             $item;
@@ -93,58 +119,29 @@
         $items.each(function(index) {
             $item = $(this);
             deltaAngle = (angle[0] + (step * index)) * (Math.PI / 180);
-            var x = Math.round(width / 2 + radius * Math.cos(deltaAngle) - $item.outerWidth() / 2),
-                y = Math.round(height / 2 + radius * Math.sin(deltaAngle) - $item.outerHeight() / 2);
-            $item.animateRotate(360).css({
-                position: 'absolute',
-                opacity: 0,
-                left: "50%",
-                top: "50%",
-                marginLeft: "-" + $item.outerWidth() / 2,
-                marginTop: "-" + $item.outerHeight() / 2
-            }).delay(deltaTime).animate({
-                opacity: 1,
-                left: x + 'px',
-                top: y + 'px'
-            }, animationSpeed[1]);
+            var x = Math.round(cx + radius * Math.cos(deltaAngle) ),
+                y = Math.round(cy + radius * Math.sin(deltaAngle) );
+            $item.css(style)
+                .delay(deltaTime)
+                .animate({
+                    opacity: 1,
+                    left: x + 'px',
+                    top: y + 'px',
+                    transform: 'rotateZ(360deg)'
+                }, animationSpeed[1]);
             deltaTime += animationSpeed[0];
         });
     };
 
-    var flyOut = function($items, $menuBtn) {
+    var flyOut = function($items, $menuBtn, style, cb) {
         var d = 0;
         $items.stop(true, true);
         $($items.get().reverse()).each(function() {
-            $(this).animateRotate(-360).delay(d).animate({
-                opacity: 0,
-                left: 100 + "px",
-                top: 100 + "px"
-            }, 150);
+            $(this).delay(d).animate(style, 150);
             d += 15;
         }).promise().done(function() {
-            $items.removeClass("active");
             $menuBtn.removeClass("active");
-        });
-    };
-
-    $.fn.animateRotate = function(angle, duration, easing, complete) {
-        return this.each(function() {
-            var $elem = $(this);
-
-            $({
-                deg: 0
-            }).animate({
-                deg: angle
-            }, {
-                duration: duration,
-                easing: easing,
-                step: function(now) {
-                    $elem.css({
-                        transform: 'rotate(' + now + 'deg)'
-                    });
-                },
-                complete: complete || $.noop
-            });
+            cb && cb();
         });
     };
 
@@ -152,25 +149,25 @@
         if($.type(angle) === 'array') return angle;
         switch (angle) {
             case 'N':
-                angle = [180, 380]
+                angle = [180, 360];
                 break;
             case 'NE':
                 angle = [270, 380]
                 break;
             case 'E':
-                angle = [270, 470]
+                angle = [270, 450]
                 break;
             case 'SE':
                 angle = [360, 470]
                 break;
             case 'S':
-                angle = [360, 560]
+                angle = [360, 540]
                 break;
             case 'SW':
                 angle = [90, 200]
                 break;
             case 'W':
-                angle = [90, 290]
+                angle = [90, 270]
                 break;
             case 'NW':
                 angle = [180, 290]
@@ -213,11 +210,9 @@
     }
 
     $.fn.wheelMenu = function(options) {
-
         var settings = $.extend({}, defaults, options);
         settings.animationSpeed = processSpeed(settings.animationSpeed);
-        settings.angle = processAngle(self.angle);
-
+        settings.angle = processAngle(settings.angle);
         return this.each(function() {
             var $menuBtn = $(this);
             var target = $menuBtn.attr("href");
@@ -230,11 +225,11 @@
 
     var defaults = $.fn.wheelMenu.defaults = {
         trigger: "click",
-        animation: "fade",
         angle: [0, 360],
         animationSpeed: "medium",
-        width: 200,
-        height: 200
+        smartAdjust: true, // 如果n/s/e/w, 尽可能方向更正
+        width: 160,
+        height: 160
     };
 
 })(jQuery);

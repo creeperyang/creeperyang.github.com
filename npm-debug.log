@@ -1,0 +1,119 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'update',
+1 verbose cli   '-g',
+1 verbose cli   'less' ]
+2 info using npm@1.4.3
+3 info using node@v0.10.26
+4 verbose url raw less
+5 verbose url resolving [ 'https://registry.npmjs.org/', './less' ]
+6 verbose url resolved https://registry.npmjs.org/less
+7 info trying registry request attempt 1 at 22:05:09
+8 verbose etag "DPXUJMQCN2312YBAGEUQ3YVTJ"
+9 http GET https://registry.npmjs.org/less
+10 http 304 https://registry.npmjs.org/less
+11 silly registry.get cb [ 304,
+11 silly registry.get   { date: 'Mon, 15 Dec 2014 14:05:10 GMT',
+11 silly registry.get     server: 'Apache',
+11 silly registry.get     via: '1.1 varnish',
+11 silly registry.get     'last-modified': 'Mon, 15 Dec 2014 14:04:29 GMT',
+11 silly registry.get     'cache-control': 'max-age=60',
+11 silly registry.get     etag: '"DPXUJMQCN2312YBAGEUQ3YVTJ"',
+11 silly registry.get     age: '41',
+11 silly registry.get     'x-served-by': 'cache-ty66-TYO',
+11 silly registry.get     'x-cache': 'HIT',
+11 silly registry.get     'x-cache-hits': '2',
+11 silly registry.get     'x-timer': 'S1418652310.613362,VS0,VE0',
+11 silly registry.get     vary: 'Accept',
+11 silly registry.get     'content-length': '0',
+11 silly registry.get     'keep-alive': 'timeout=10, max=50',
+11 silly registry.get     connection: 'Keep-Alive' } ]
+12 verbose etag less from cache
+13 info outdated updating [ [ '/usr/local/lib', 'less', '1.7.0', '2.1.1', '2.1.1', '*' ] ]
+14 verbose install where,what [ '/usr/local/lib', [ 'less@2.1.1' ] ]
+15 verbose cache add [ 'less@2.1.1', null ]
+16 verbose cache add name=undefined spec="less@2.1.1" args=["less@2.1.1",null]
+17 verbose parsed url { protocol: null,
+17 verbose parsed url   slashes: null,
+17 verbose parsed url   auth: null,
+17 verbose parsed url   host: null,
+17 verbose parsed url   port: null,
+17 verbose parsed url   hostname: null,
+17 verbose parsed url   hash: null,
+17 verbose parsed url   search: null,
+17 verbose parsed url   query: null,
+17 verbose parsed url   pathname: 'less@2.1.1',
+17 verbose parsed url   path: 'less@2.1.1',
+17 verbose parsed url   href: 'less@2.1.1' }
+18 verbose cache add name="less" spec="2.1.1" args=["less","2.1.1"]
+19 verbose parsed url { protocol: null,
+19 verbose parsed url   slashes: null,
+19 verbose parsed url   auth: null,
+19 verbose parsed url   host: null,
+19 verbose parsed url   port: null,
+19 verbose parsed url   hostname: null,
+19 verbose parsed url   hash: null,
+19 verbose parsed url   search: null,
+19 verbose parsed url   query: null,
+19 verbose parsed url   pathname: '2.1.1',
+19 verbose parsed url   path: '2.1.1',
+19 verbose parsed url   href: '2.1.1' }
+20 verbose addNamed [ 'less', '2.1.1' ]
+21 verbose addNamed [ '2.1.1', '2.1.1' ]
+22 silly lockFile 752eb025-less-2-1-1 less@2.1.1
+23 verbose lock less@2.1.1 /home/jerry/.npm/752eb025-less-2-1-1.lock
+24 verbose url raw less/2.1.1
+25 verbose url resolving [ 'https://registry.npmjs.org/', './less/2.1.1' ]
+26 verbose url resolved https://registry.npmjs.org/less/2.1.1
+27 info trying registry request attempt 1 at 22:05:15
+28 verbose etag "DPXUJMQCN2312YBAGEUQ3YVTJ"
+29 http GET https://registry.npmjs.org/less/2.1.1
+30 http 304 https://registry.npmjs.org/less/2.1.1
+31 silly registry.get cb [ 304,
+31 silly registry.get   { date: 'Mon, 15 Dec 2014 14:05:17 GMT',
+31 silly registry.get     server: 'Apache',
+31 silly registry.get     via: '1.1 varnish',
+31 silly registry.get     'last-modified': 'Mon, 15 Dec 2014 14:05:17 GMT',
+31 silly registry.get     'cache-control': 'max-age=60',
+31 silly registry.get     etag: '"DPXUJMQCN2312YBAGEUQ3YVTJ"',
+31 silly registry.get     age: '0',
+31 silly registry.get     'x-served-by': 'cache-ty68-TYO',
+31 silly registry.get     'x-cache': 'MISS',
+31 silly registry.get     'x-cache-hits': '0',
+31 silly registry.get     'x-timer': 'S1418652317.129244,VS0,VE182',
+31 silly registry.get     vary: 'Accept',
+31 silly registry.get     'content-length': '0',
+31 silly registry.get     'keep-alive': 'timeout=10, max=50',
+31 silly registry.get     connection: 'Keep-Alive' } ]
+32 verbose etag less/2.1.1 from cache
+33 silly lockFile 53197aab-ry-npmjs-org-less-less-2-1-1-tgz https://registry.npmjs.org/less/-/less-2.1.1.tgz
+34 verbose lock https://registry.npmjs.org/less/-/less-2.1.1.tgz /home/jerry/.npm/53197aab-ry-npmjs-org-less-less-2-1-1-tgz.lock
+35 verbose addRemoteTarball [ 'https://registry.npmjs.org/less/-/less-2.1.1.tgz',
+35 verbose addRemoteTarball   '7ba1fd7698e7b4eb46286c3954aed43e54da41b6' ]
+36 info retry fetch attempt 1 at 22:05:17
+37 verbose fetch to= /home/jerry/tmp/npm-3870-CG2x3Hcn/1418652317359-0.8922740840353072/tmp.tgz
+38 http GET https://registry.npmjs.org/less/-/less-2.1.1.tgz
+39 http 200 https://registry.npmjs.org/less/-/less-2.1.1.tgz
+40 silly lockFile 53197aab-ry-npmjs-org-less-less-2-1-1-tgz https://registry.npmjs.org/less/-/less-2.1.1.tgz
+41 silly lockFile 53197aab-ry-npmjs-org-less-less-2-1-1-tgz https://registry.npmjs.org/less/-/less-2.1.1.tgz
+42 silly lockFile 752eb025-less-2-1-1 less@2.1.1
+43 silly lockFile 752eb025-less-2-1-1 less@2.1.1
+44 error Error: shasum check failed for /home/jerry/tmp/npm-3870-CG2x3Hcn/1418652317359-0.8922740840353072/tmp.tgz
+44 error Expected: 7ba1fd7698e7b4eb46286c3954aed43e54da41b6
+44 error Actual:   48f93ef8ebc6bdd330af449eb6c7348c9a8065e0
+44 error From:     https://registry.npmjs.org/less/-/less-2.1.1.tgz
+44 error     at /usr/local/lib/node_modules/npm/node_modules/sha/index.js:38:8
+44 error     at ReadStream.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/sha/index.js:85:7)
+44 error     at ReadStream.EventEmitter.emit (events.js:117:20)
+44 error     at _stream_readable.js:920:16
+44 error     at process._tickCallback (node.js:415:13)
+45 error If you need help, you may report this *entire* log,
+45 error including the npm and node versions, at:
+45 error     <http://github.com/npm/npm/issues>
+46 error System Linux 3.13.0-39-generic
+47 error command "/usr/local/bin/node" "/usr/local/bin/npm" "update" "-g" "less"
+48 error cwd /home/jerry/creeperdoc/creeperyang.github.com
+49 error node -v v0.10.26
+50 error npm -v 1.4.3
+51 verbose exit [ 1, true ]

@@ -22,8 +22,9 @@ $(function() {
     // wheel menu
     $(".wheel-button").wheelMenu({
         trigger: "click", // Can be "click" or "hover". Default: "click"
-        animation: "fly", // Entrance animation. Can be "fade" or "fly". Default: "fade"
         animationSpeed: "fast", // Entrance animation speed. Can be "instant", "fast", "medium", or "slow". Default: "medium"
-        angle: "S", // Angle which the menu will appear. Can be "all", "N", "NE", "E", "SE", "S", "SW", "W", "NW", or even array [0, 360]. Default: "all" or [0, 360]
+        angle: [200, 340],
+        width: 120,
+        height: 120
     });
 });

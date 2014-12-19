@@ -3,14 +3,11 @@ title: Creeper-Blog
 layout: default
 ---
 
-<header class="cy-zone" id="user-info">
+<header class="cy-zone" id="menu-list">
     <div class="container clearfix">
         <div class="row">
-            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-                <div class="logo col-xs-2">
-                    <img class="logo-img" src="/publics/images/head.jpg">
-                </div>
-                <ul class="unstyled-list clearfix cy-menu col-xs-10">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <ul class="unstyled-list clearfix cy-menu">
                     <li class="menu-item">
                         <a class="unstyled-link" href="/"><i class="fa fa-home"></i>首页</a>
                     </li>
@@ -19,6 +16,9 @@ layout: default
                     </li>
                     <li class="menu-item">
                         <a class="unstyled-link" href=""><i class="fa fa-code"></i>项目</a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="unstyled-link" href=""><i class="fa fa-link"></i>友链</a>
                     </li>
                     <li class="menu-item">
                         <a class="unstyled-link" href=""><i class="fa fa-paw"></i>关于</a>
@@ -31,7 +31,7 @@ layout: default
 <section class="cy-zone" id="article-list">
     <div class="container">
         <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
                 {% for post in site.posts limit:5 %}
                     <div class="article-view">
                         <div class="article-title">
@@ -54,7 +54,7 @@ layout: default
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
                 <div class='pager clearfix'>
                     <span class="btn disabled" id='pre-page'>None</span>
                     <a class="btn" href="/page2/index.html" id='next-page'>Next <i class='fa fa-angle-right'></i></a>
@@ -65,9 +65,12 @@ layout: default
 </section>
 <footer class='cy-zone'>
     <div class="container">
-        <div class="row">
-            <div class="copyright col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-                <span>Copyright &copy; 2014 Creeper</span>
+        <div class="row bottom-zone">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                <div class="copyright">
+                    <span>Copyright &copy; 2014 Creeper</span>
+                </div>
+                <div class='btn' id='back-to-top'><i class='fa fa-angle-up'></i></div>
             </div>
         </div>
     </div>
