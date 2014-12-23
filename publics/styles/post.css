@@ -387,7 +387,7 @@ hr {
     width: 100%;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1040px) {
   .container {
     width: 1024px;
   }
@@ -3027,19 +3027,35 @@ img {
 }
 .cy-menu {
   text-align: center;
-  color: #63c29a;
+  color: #fff;
 }
 .cy-menu .menu-item {
   display: inline-block;
   padding: 4px 8px;
   float: left;
+  cursor: pointer;
 }
-.cy-menu .menu-item i,
-.cy-menu .menu-item a {
-  color: #63c29a;
+.cy-menu .menu-item.active,
+.cy-menu .menu-item:hover {
+  background-color: #c94414;
+}
+.cy-menu .menu-item > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #fff;
 }
 .cy-menu .menu-item i {
   margin-right: 0.8rem;
+  color: #fff;
+}
+@media screen and (max-width: 384px) {
+  .cy-menu .menu-item {
+    padding: 0;
+  }
+  .cy-menu .menu-item i {
+    margin-right: 0.4rem;
+  }
 }
 .text-input {
   display: inline-block;
@@ -3053,7 +3069,7 @@ img {
 }
 .text-input:focus {
   outline: none;
-  border-color: #63c29a;
+  border-color: #e04c16;
 }
 .text-input-large {
   width: 22.8rem;
@@ -3069,13 +3085,13 @@ img {
   font-size: 1.2rem;
   color: #fff;
   text-align: center;
-  background-color: #63c29a;
+  background-color: #e04c16;
   border: 0;
   cursor: pointer;
 }
 .btn:focus,
 .btn:hover {
-  background-color: #44ae81;
+  background-color: #b23c11;
   outline: none;
 }
 .btn.disabled {
@@ -3104,6 +3120,7 @@ img {
 .part-wrap {
   padding-left: 2rem;
   padding-right: 2rem;
+  background-color: #fff;
 }
 .content-wrap {
   padding-top: 2.4rem;
@@ -3212,32 +3229,23 @@ img {
   position: relative;
   display: inline-block;
   width: 2rem;
-  height: 2rem;
-  margin-bottom: 20px;
+  height: 3rem;
+  margin-bottom: 0.4rem;
   text-align: center;
-  color: #a7a7a7;
-  background-color: #f7f7f7;
+  color: #fff;
+  background-color: #e04c16;
   cursor: pointer;
 }
-.side-menu a:before {
-  content: "";
-  position: absolute;
-  top: -8px;
-  left: -8px;
-  bottom: -8px;
-  right: -8px;
-  z-index: -1;
-  display: block;
-  background: #fff;
-  border-top: 2px solid #d0d0d0;
-  box-shadow: inset 0px 8px 48px #ddd;
+.side-menu a:hover,
+.side-menu a:active {
+  background-color: #c94414;
 }
 .side-menu a .fa {
   transition: all 1s;
   text-align: center;
-}
-.side-menu a .fa:hover {
-  color: #000;
+  width: 100%;
+  height: 100%;
+  line-height: 3rem;
 }
 @media (min-width: 768px) {
   .side-menu {
