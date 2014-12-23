@@ -387,7 +387,7 @@ hr {
     width: 100%;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1040px) {
   .container {
     width: 1024px;
   }
@@ -2853,6 +2853,9 @@ h5 {
 h6 {
   font-size: 1.4rem;
 }
+p.leading {
+  font-size: 1.6rem;
+}
 table {
   border: 1px solid #999999;
 }
@@ -3437,4 +3440,11 @@ footer #back-to-top {
   width: 20%;
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
+}
+#links-zone .links a {
+  color: #555555;
+}
+#links-zone .links a em {
+  display: inline-block;
+  padding: 0 0.4rem;
 }

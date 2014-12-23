@@ -1,8 +1,8 @@
 ---
-title: Creeper-Blog
-layout: default
+title: Creeper-Blog Links
+layout: other
 ---
-{% if paginator.page == 1 %}
+
 <header class="cy-zone" id="poster">
     <div class="container clearfix">
         <div class="row">
@@ -131,113 +131,24 @@ layout: default
         </div>
     </div>
 </header>
-<section class='cy-zone' id="user-info">
+<section class='cy-zone' id="links-zone">
     <div class="container clearfix">
         <div class="row">
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-                <h1 class="title">Creeper's Blog</h1>
-                <p class="desc">Creeper is a front-end developer, working in Shanghai, China.<br>He loves coding and sharing, and it's why the blog exists.</p>
-                <nav id="main-nav">
-                    <a href='#wheel-menu' class="wheel-button s"><i class='fa fa-bars'></i></a>
-                    <ul id='wheel-menu' class="unstyled-list clearfix wheel">
-                        <li class="item">
-                            <a class="unstyled-link" href="/" title="Home"><i class="fa fa-home"></i></a>
-                        </li>
-                        <li class="item">
-                            <a class="unstyled-link" href="/articles.html" title="Articles"><i class="fa fa-html5"></i></a>
-                        </li>
-                        <li class="item">
-                            <a class="unstyled-link" href="" title="Projects"><i class="fa fa-code"></i></a>
-                        </li>
-                        <li class="item">
-                            <a class="unstyled-link" href="/links.html" title="Links"><i class="fa fa-link"></i></a>
-                        </li>
-                        <li class="item">
-                            <a class="unstyled-link" href="" title="About me"><i class="fa fa-paw"></i></a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</section>
-{% else %}
-<header class="cy-zone" id="menu-list">
-    <div class="container clearfix">
-        <div class="row">
-            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-                <ul class="unstyled-list clearfix cy-menu">
-                    <li class="menu-item">
-                        <a class="unstyled-link" href="/"><i class="fa fa-home"></i>首页</a>
-                    </li>
-                    <li class="menu-item active">
-                        <a class="unstyled-link" href="/articles.html"><i class="fa fa-html5"></i>博客</a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="unstyled-link" href=""><i class="fa fa-code"></i>项目</a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="unstyled-link" href="/links.html"><i class="fa fa-link"></i>友链</a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="unstyled-link" href=""><i class="fa fa-paw"></i>关于</a>
-                    </li>
+                <p class="leading">博客类</p>
+                <ul class="links">
+                    <li><a href="http://www.zhangxinxu.com/wordpress/"><em>张鑫旭</em>的博客：幽默，深入浅出。</a></li>
+                    <li><a href="http://www.cnblogs.com/aaronjs/"><em>Aaron</em>的博客：从看他的jQuery源码分析，就知道是大牛了。</a></li>
+                </ul>
+                <p class="leading">资源类</p>
+                <ul class="links">
+                    <li><a href="http://fortawesome.github.io/Font-Awesome/icons/"><em>Font-Awesome</em>，font icon的集大成者。</a></li>
                 </ul>
             </div>
         </div>
     </div>
-</header>
-{% endif %}
-<section class="cy-zone" id="article-list">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-                {% for post in paginator.posts %}
-                    <div class="article-view">
-                        <div class="article-title">
-                            <h1>
-                                <a href="{{post.url}}">{{ post.title }}</a>
-                            </h1>
-                            <div class="article-time">
-                                <p>
-                                    <span>时间：{{post.date | date: "%F"}}</span>
-                                    &nbsp;|&nbsp;
-                                    <span>字数：{{ post.content | strip_html | strip_newlines | split: "" | size }}</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="article-des">
-                            {{ post.content | split:'<!--view-break-->' | first }}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="row">
-            {% if paginator.page == 1 %}
-                <div class="view-more-zone col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-                    <a class='view-more btn btn-large' href="/articles.html"><i class='fa fa-pagelines'></i> 更多文章</a>
-                </div>
-            {% else %}
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-                    <div class='pager'>
-                        {% if paginator.previous_page %}
-                            <a class="btn" href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}" id='pre-page'><i class='fa fa-angle-left'></i> Previous</a>
-                        {% else %}
-                            <span class="btn disabled">None</span>
-                        {% endif %}
-
-                        {% if paginator.next_page %}
-                            <a class="btn" href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}" id='next-page'>Next <i class='fa fa-angle-right'></i></a>
-                        {% else %}
-                            <span class="btn disabled" id='next-page'>None</span>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-    </div>
 </section>
+
 <footer class='cy-zone'>
     <div class="container">
         <div class="row bottom-zone">
@@ -245,7 +156,7 @@ layout: default
                 <div class="copyright">
                     <span>Copyright &copy; 2014 Creeper</span>
                 </div>
-                <div class='btn' id='back-to-top'><i class='fa fa-angle-up'></i></div>
+                <!-- <div class='btn' id='back-to-top'><i class='fa fa-angle-up'></i></div> -->
             </div>
         </div>
     </div>
