@@ -2898,6 +2898,9 @@ blockquote .small {
 img {
   max-width: 100%;
 }
+a {
+  word-break: break-all;
+}
 .unstyled-list {
   padding-left: 0;
   margin: 0;
@@ -3440,6 +3443,15 @@ footer #back-to-top {
   width: 20%;
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
+}
+#links-zone {
+  margin-top: 24px;
+  padding: 24px 0;
+  background-color: #fff;
+}
+#links-zone .link-container {
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 #links-zone .links a {
   color: #555555;

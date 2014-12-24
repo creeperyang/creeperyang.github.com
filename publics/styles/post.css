@@ -2853,6 +2853,9 @@ h5 {
 h6 {
   font-size: 1.4rem;
 }
+p.leading {
+  font-size: 1.6rem;
+}
 table {
   border: 1px solid #999999;
 }
@@ -2894,6 +2897,9 @@ blockquote .small {
 }
 img {
   max-width: 100%;
+}
+a {
+  word-break: break-all;
 }
 .unstyled-list {
   padding-left: 0;
