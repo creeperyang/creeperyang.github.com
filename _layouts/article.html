@@ -55,7 +55,7 @@
                             <h1 class='title-info'>{{ page.title }}</h1>
                             <ul class='status-info clearfix'>
                                 <li><b>字数：</b><span>{{ page.content | strip_html | strip_newlines | split: "" | size }}</span></li>
-                                <li><b>作者：</b><span>Jerry</span></li>
+                                <li><b>分类：</b><span>{{page.categories}}</span></li>
                             </ul>
                         </section>
                     </header>
