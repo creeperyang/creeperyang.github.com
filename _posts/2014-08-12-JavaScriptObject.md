@@ -18,8 +18,9 @@ JS对象是动态的，属性可以添加或删除。除去string、number、tru
 
 <!--view-break-->
 
-> null is not an object, it is a primitive value. For example, you cannot add properties to it. Sometimes people wrongly assume that it is an object, because typeof null returns "object". But that is actually a bug (that might even be fixed in ECMAScript 6).    ------From <http://stackoverflow.com/questions/801032/why-is-null-an-object-and-whats-the-difference-between-null-and-undefined/802371#802371>
-> null不是对象，是基础类型。不要被`typeof null;  // object`迷惑，这是js解释器的错误。 
+> null is not an object, it is a primitive value. For example, you cannot add properties to it. Sometimes people wrongly assume that it is an object, because typeof null returns "object". But that is actually a bug (that might even be fixed in ECMAScript 6).     <small>[参见stackoverflow](http://stackoverflow.com/questions/801032/why-is-null-an-object-and-whats-the-difference-between-null-and-undefined/802371#802371)</small>
+
+null不是对象，是基础类型。不要被`typeof null;  // object`迷惑，这是js解释器的错误。 
 
 property有name和value，name可以是任意字符串，包括空字符串（empty string），但一个对象不可能有相同的name。value可以任意js value，或者setter或/和getter方法（ecma5）。但除去name和value，对象还有3个相关的“属性特性”（*property attribute*）：
 

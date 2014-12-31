@@ -122,28 +122,30 @@ hr {
 
 // quote
 blockquote {
-    position: relative;
-    margin: 0 0 1.2rem;
-    padding: 0.8rem 1.6rem;
-
-    background-color: @gray-lighter2;
-    border-left: 0.4rem solid @gray-light;
-
-    color: @gray-light;
-    font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
-
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    padding-left: 1.6rem;
+    border-left: 0.4rem solid @gray-lighter2;
+    font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif, FontAwesome, serif;
     p:last-of-type {
         margin-top: 0;
     }
     p:first-of-type {
         margin-bottom: 0;
     }
+    small, .small {
+        display: block;
+        margin-top: 0.4rem;
 
-    footer, small, .small {
-        font-size: 80%;
+        color: @gray-light2;
+        font-size: 90%;
         text-align: right;
+        &>a {
+            color: @gray-light2;
+        }
     }
 }
+
 
 // img
 img {
