@@ -23,7 +23,7 @@ JavaScript是一门弱类型语言，这意味着你*不需要提前声明变量
 
 ###变量与变量声明
 
-JS的数据类型有7种，其中基本类型6种，分别是`Boolean,NUll,Undefined,Number,String,Symbol（ECMAScript6新提出）`;然后对象`Object`一种。
+JS的数据类型有7种，其中基本类型6种，分别是`Boolean`,`NUll`,`Undefined`,`Number`,`String`,`Symbol`（ECMAScript6新提出）`;然后对象`Object`一种。
 
 在JS中，我们通过`var`关键字即可声明一个局部变量：
 
@@ -40,7 +40,7 @@ var foo = "bar"; // foo is a String now
 
 与变量密切相关的一个概念就是作用域。JS的作用域容易困惑的一点就是：JS本身是类C语言，但它的作用域体系与C完全不同。
 
-在C中，一个`if`语句块可以有自己的作用域，但在JS中，没有块级作用域，JS中**唯一能创建新的作用域的只有函数**。所以JS中只有全局作用域和函数级作用域。而基于这一点，匿名自执行函数就成了绝大多数JS类库创建自己作用域的唯一选择。
+在C中，一个`if`语句块可以有自己的作用域，但在JS中，没有块级作用域，JS中**唯一能创建新的作用域的只有函数**。所以JS中只有**全局作用域**和**函数级作用域**。而基于这一点，匿名自执行函数就成了绝大多数JS类库创建自己作用域的唯一选择。
 
 ```javascript
 // 匿名自执行函数
@@ -64,7 +64,9 @@ namespace.BModule = {};
 
 ##3. 预编译
 
-JS的预编译听起来很高大上，但在我看来，一句话概括：JS引擎并不是一句一句执行JS代码，而是一段一段执行，而一段一段执行，JS会对要执行的这段JS代码有个预处理，这个预处理就是所谓的预编译。
+JavaScript预编译听起来高大上，但其实还是比较简单的。
+
+首先，对一段JS代码，JS引擎并不是读一句执行一句，而是读取一段、解释执行一段。而一段一段执行，JS会对读取的这段JS代码整体有个预处理，这个预处理就是所谓的预编译。
 
 预编译阶段，JS引擎会进行变量提升，详细可看[JavaScript Scoping and Hoisting](/frontend/2014/11/javascript-scoping-and-hoisting/)。
 
@@ -82,7 +84,9 @@ sayHi(name);  // 输出 'Hello Jerry!'
 </script>
 ```
 
-如上，因为JS的预编译，所以执行第一个`sayHi(name);`可以正常输出而不是`sayHi`未定义。
+如上，因为JS的预编译，所以执行第一个`sayHi(name);`可以正常输出`Hi Jerry!`而不是`sayHi`未定义。而第二个`sayHi(name);` 执行时函数`sayHi`也被重新赋值，会输出`Hello Jerry!`。
+
+再看下面一段代码：
 
 ```html
 <script type="text/javascript">
@@ -101,4 +105,5 @@ function sayHi(name) {
 }
 </script>
 ```
-正因为JS的预编译，即一段一段执行（`script`标签分段执行了），所以两个`script`标签内我们都可以得到预期输出，而不是第二个`sayHi`覆盖了第一个`sayHi`。
+
+因为JS的预编译，两个`script`标签分成2段代码读取解释执行，所以两个`script`标签内我们都可以得到预期的输出，而不是第二个`sayHi`覆盖了第一个`sayHi`。
