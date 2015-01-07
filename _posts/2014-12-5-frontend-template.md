@@ -9,16 +9,16 @@ tags: [template, string-based template, 模板]
 以一段简单的代码开始：
 
 ```javascript
-    $.ajax({/*...*/}).done(function(data) {
-        var list = data.list, // will be like ['文艺', '博客', '摄影', '电影', '民谣', '旅行', '吉他']
-            tmp = '',
-            i, 
-            len = list.length;
-        for(i = 0; i < len; i++) {
-            tmp += '<li> index: ' + (i + 1) + ', content: ' + list[i] + '</li>';
-        }
-        $('#wrap').append(tmp);
-    });
+$.ajax({/*...*/}).done(function(data) {
+    var list = data.list, // will be like ['文艺', '博客', '摄影', '电影', '民谣', '旅行', '吉他']
+        tmp = '',
+        i, 
+        len = list.length;
+    for(i = 0; i < len; i++) {
+        tmp += '<li> index: ' + (i + 1) + ', content: ' + list[i] + '</li>';
+    }
+    $('#wrap').append(tmp);
+});
 ```
 
 这段代码就是实现*根据数据拼接字符串，修改文档DOM*的功能，很简单，大概每个前端程序员都写过，或至少感到熟悉。
@@ -64,7 +64,7 @@ tags: [template, string-based template, 模板]
     - 插值标签（interpolate tag），输出变量的对应值，如`<%= game.id %>`；
     - 转义标签（escape tag），输出变量前先转义，如`<%- game.name %>`。注意：部分模板引擎可能省略这个标签。
 
-2. 模板一般可以写在`script`标签里，但注意改写type为`text/template`之类的。当然，用ajax加载等其它方法也可以，模板只是含有模板标签的字符串而已。
+2. 模板一般可以写在`script`标签里（即内联模板），但要注意改写type，可以是`text/template`及类似的（不写或写成`text/script`的话浏览器会当成脚本解析执行）。当然，用ajax加载等其它方法也可以，模板只是含有模板标签的字符串而已。
 
 3. 模板引擎的接口基本一致： `template(tpl, data, options)`。如果模板和数据都传入，返回渲染好的html字符串;如果只传了模板，则返回一个模板函数，该函数接收data返回字符串。
 
@@ -130,7 +130,7 @@ _.template = function(text, settings, oldSettings) {
     // 如果settings.variable没有指定，那么用with来限制data到本地作用域
     if (!settings.variable) source = 'with(obj||{}){\n' + source + '}\n';
     // 完整的source
-    // print函数可以用来代替`=`： <%= a %> --> <% print(a) %>
+    // print函数可以用来代替`=`： <%= a %> ==> <% print(a) %>
     source = "var __t,__p='',__j=Array.prototype.join," +
         "print=function(){__p+=__j.call(arguments,'');};\n" +
         source + 'return __p;\n';
@@ -286,7 +286,7 @@ function compiler(source, options) {
         if (compress) { // 压缩多余空白与注释
             code = code.replace(/\s+/g, ' ').replace(/<!--[\w\W]*?-->/g, '');
         }
-        if (code) { // $out+= 转义后的code ; 或者 $out.push(转义后的code);
+        if (code) { // `$out+=`+转义后的code+`;` 或者 `$out.push(`+转义后的code+`);`
             code = replaces[1] + stringify(code) + replaces[2] + "\n";
         }
         return code;
@@ -294,9 +294,9 @@ function compiler(source, options) {
     // 处理逻辑语句
     function logic(code) {
         var thisLine = line;
-        if (parser) {
+        if (parser) { // 逻辑语句的钩子
             code = parser(code, options);// artTemplate的语法转换插件钩子，如果原生语法用不到，当然，也可以自己挂进来另一套语法处理规则。
-        } else if (debug) {
+        } else if (debug) { // debug时处理行号
             code = code.replace(/\n/g, function() { // 记录行号
                 line++;
                 return "$line=" + line + ";";
@@ -304,10 +304,13 @@ function compiler(source, options) {
         }
         // 输出语句. 编码: <%=value%> 不编码:<%=#value%>
         // <%=#value%> 等同 v2.0.3 之前的 <%==value%>
-        if (code.indexOf('=') === 0) {
-            var escapeSyntax = escape && !/^=[=#]/.test(code); // escape为true，且标签不是 不编码输出 标签
-            code = code.replace(/^=[=#]?|[\s;]*$/g, '');
+        // 此时的code已去除openTag(<%)和closeTag(%>)
+        if (code.indexOf('=') === 0) { // 验证是模板标签
+            var escapeSyntax = escape && !/^=[=#]/.test(code); // escape为true，且标签不是 `<%=#value%><%==value%>`（不编码直接输出） 标签
+            code = code.replace(/^=[=#]?|[\s;]*$/g, ''); // 去除残余标签（=，==，=#之类）
             if (escapeSyntax) { // 需要对内容编码
+                // /\s*\([^\)]+\)/ ===> 是否是`（something）`这种形式
+                // 即删除括号及里面内容，例如`include('/tpl.html')`==>`include`
                 var name = code.replace(/\s*\([^\)]+\)/, '');
                 // 排除 utils.* | include | print
                 if (!utils[name] && !/^(include|print)$/.test(name)) {
@@ -316,13 +319,13 @@ function compiler(source, options) {
             } else { // 不编码
                 code = "$string(" + code + ")";
             } 
-            // code = $out+= "$escape/string(" + code + ")" ;
+            // code = `$out+=`+`$escape/string( + code + )`+`;`
             code = replaces[1] + code + replaces[2];
         }
         if (debug) {
             code = "$line=" + thisLine + ";" + code;
         }
-        // 提取模板中的变量名
+        // 提取模板中的变量名，然后（1）除print/include外，为变量名添加`$data`等前缀（2）把变量声明加到headerCode
         forEach(getVariable(code), function(name) {
             // name 值可能为空，在安卓低版本浏览器下
             if (!name || uniq[name]) { // 该name已经在变量声明中声明，直接返回
@@ -383,7 +386,6 @@ var toString = function (value, type) {
     return value;
 };
 
-
 var escapeMap = {
     "<": "&#60;",
     ">": "&#62;",
@@ -392,22 +394,24 @@ var escapeMap = {
     "&": "&#38;"
 };
 
-
+// 转义escapeMap中的五个字符为html实体
 var escapeFn = function (s) {
     return escapeMap[s];
 };
 
+// /&(?![\w#]+;)/g  当且仅当 是`&`且`&`后面不是`[\w#]+;`
+// /[<>"']/g 有`<>"'`4字符中任意一个
+// 函数功能：转义`<>"'`以及`&`（`&`后面不是`[\w#]+;`——即已经转义）
 var escapeHTML = function (content) {
     return toString(content)
     .replace(/&(?![\w#]+;)|[<>"']/g, escapeFn);
 };
 
-
 var isArray = Array.isArray || function (obj) {
     return ({}).toString.call(obj) === '[object Array]';
 };
 
-
+// 遍历对象或数组
 var each = function (data, callback) {
     var i, len;        
     if (isArray(data)) {
@@ -421,3 +425,132 @@ var each = function (data, callback) {
     }
 };
 ```
+
+artTemplate的变量提取：
+
+```javascript
+// 静态分析模板变量
+var KEYWORDS =
+    // 关键字
+    'break,case,catch,continue,debugger,default,delete,do,else,false'
+    + ',finally,for,function,if,in,instanceof,new,null,return,switch,this'
+    + ',throw,true,try,typeof,var,void,while,with'
+
+    // 保留字
+    + ',abstract,boolean,byte,char,class,const,double,enum,export,extends'
+    + ',final,float,goto,implements,import,int,interface,long,native'
+    + ',package,private,protected,public,short,static,super,synchronized'
+    + ',throws,transient,volatile'
+
+    // ECMA 5 - use strict
+    + ',arguments,let,yield'
+
+    + ',undefined';
+
+// REMOVE_RE匹配注释（//  /**/）以及字符串（`"string"` `'string'`）
+var REMOVE_RE = /\/\*[\w\W]*?\*\/|\/\/[^\n]*\n|\/\/[^\n]*$|"(?:[^"\\]|\\[\w\W])*"|'(?:[^'\\]|\\[\w\W])*'|\s*\.\s*[$\w\.]+/g;
+// 匹配[A-Za-z0-9_$]之外的
+var SPLIT_RE = /[^\w$]+/g;
+// 匹配关键字 `\bkeyword\b` 匹配 `var str='str'`中的`var`
+var KEYWORDS_RE = new RegExp(["\\b" + KEYWORDS.replace(/,/g, '\\b|\\b') + "\\b"].join('|'), 'g');
+// 匹配以数字(或,数字)开头的字符串(`200s` ',200s')
+var NUMBER_RE = /^\d[^,]*|,\d[^,]*/g;
+// 开头或结尾的逗号
+var BOUNDARY_RE = /^,+|,+$/g;
+var SPLIT2_RE = /^$|,+/;
+
+
+// 获取变量
+function getVariable (code) {
+    return code
+    .replace(REMOVE_RE, '') // 删除注释和字符串
+    .replace(SPLIT_RE, ',') // js代码把[空格 ; ,]等待替换成`,`，即把合法的js代码切分
+    .replace(KEYWORDS_RE, '') // 删除所有的关键字
+    .replace(NUMBER_RE, '') // 删除以数字开头的字符串（显然不是合法的变量名）
+    .replace(BOUNDARY_RE, '') // 删除开头或结尾的逗号
+    .split(SPLIT2_RE); // 以逗号分割
+};
+/*
+    getVariable('var m = list;'); // ["m", "list"]
+*/
+```
+
+至此，`artTemplate`的（核心）源码分析完毕，原理与`underscore`模板基本一致。
+
+`underscore`模板处理逻辑很简单，基本就是：html转义后输出;插值和js代码原样输出。处理逻辑中只有一个简单的`null/undefined`不输出。
+
+`artTemplate`模板处理更为复杂：
+
+1. html字符串根据设置来原样或转义输出;
+2. 逻辑字符串通用根据设置来原样或转义输出，但逻辑字符串中需要提取变量加到头部。
+
+`artTemplate`相比`underscore template`在逻辑字符串上处理的不同也正是性能差异的关键：
+
+1. `underscore template`几乎原样输出，这种简单处理导致了`with`的引进，或者说基于`with`才可以这样简单处理;
+2. `artTemplate`在逻辑字符串（js代码）中提取变量然后在顶部声明，弃用`with`。
+
+####artTemplate模板引擎高效——with
+
+正如上面所说，抛弃`with`是artTemplate高效的最大原因。那么`with`为什么对性能影响如此之大？
+
+首先确认`with`的确会显著降低js性能：
+
+```javascript
+var funWith = function(data) {
+    with(data) {
+        index = 1;
+    }
+};
+
+var funNoWith = function(data) {
+    data.index = 1;
+};
+
+function getExecuteTime(fun, args, times) {
+    var i = 0,
+        start = Date.now();
+    for (; i < times; i++) {
+        fun(args);
+    }
+    return Date.now() - start;
+}
+
+var timeWith = getExecuteTime(funWith, {index: 0}, 1000000);
+var timeNoWith = getExecuteTime(funNoWith, {index: 0}, 1000000);
+
+console.log('timeWith', timeWith, ' timeNoWith', timeNoWith);
+```
+
+![测试结果](http://creeper-static.qiniudn.com/stc-with-test.png)
+
+`with`影响性能的两个原因：
+
+#####1. 影响作用域链
+
+在一个给定的执行环境中作用域链通常是不变的，但有两种情况会暂时增强作用域链（增加一级）。两种情形一个是`try catch`，另一个就是`with`。
+
+`with`会在当前作用域链的最底层添加一个对象（即变成作用域链上第一个对象），这个对象的所有属性都可以直接访问而不必通过`.`操作符访问，这显然很方便。但作用域链上多出的这个对象会影响（hurt）本地变量解析，因为一旦`with`语句执行，本地变量将位于[作用域链](http://archive.oreilly.com/pub/a/server-administration/excerpts/even-faster-websites/writing-efficient-javascript.html#scope_chain_augmentation_using_the_with_)上的第二个对象。
+
+
+#####2. `with`阻止js引擎的优化编译器的优化
+
+[V8引擎](https://github.com/petkaantonov/bluebird/wiki/Optimization-killers)有两个不同的编译器：通用编译器和优化编译器。`with`语句所在的函数不会被优化编译器优化。
+
+总而言之，`with`非常影响性能。
+
+####artTemplate模板引擎高效——字符串相加
+
+可以看到artTemplate中有`array.push`和一般的`+=`两种字符串相加方式。
+
+很多人误以为数组 push 方法拼接字符串会比 += 快，但这仅仅是 IE6-8 的浏览器下。实测表明现代浏览器使用 += 会比数组 push 方法快，而在 v8 引擎中，使用 += 方式比数组拼接快 4.7 倍。所以 artTemplate 根据 javascript 引擎特性采用了两种不同的字符串拼接方式。
+
+
+###结束语
+
+本篇博文中，我分析了`underscore template`和`artTemplate`两个模板引擎，借助这两个模板引擎，基于字符串的模板引擎的特征和原理应该清楚了。
+
+我们可以看到`artTemplate`对于`underscore template`在性能上的优化，但模板非常耗费时间的一点——`dom.innerHTML = compiledString`，基于字符串的模板引擎都没有涉及到（也无法涉及，因为基于字符串的模板从始至终都只是字符串的处理）。
+
+另外，当数据变化时，字符串模板引擎只是不断的重复`dom.innerHTML = compiledString`，而这里有很大的性能浪费，毕竟大部分情况不需要替换所有dom元素，可能只需要更新文本而已。而一旦替换全部dom元素，那么事件等等也都需要重新绑定。
+
+为了解决这些问题，第二代模板——基于dom的模板如angularjs、avalonjs等等出现了，前端模板系列的下一篇的重点就将关注它们的实现原理。
