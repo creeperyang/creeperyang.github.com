@@ -2875,13 +2875,11 @@ hr {
   border-top-color: #ddd;
 }
 blockquote {
-  position: relative;
-  margin: 0 0 1.2rem;
-  padding: 0.8rem 1.6rem;
-  background-color: #e3e3e3;
-  border-left: 0.4rem solid #777777;
-  color: #777777;
-  font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+  padding-left: 1.6rem;
+  border-left: 0.4rem solid #e3e3e3;
+  font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif, FontAwesome, serif;
 }
 blockquote p:last-of-type {
   margin-top: 0;
@@ -2889,11 +2887,17 @@ blockquote p:last-of-type {
 blockquote p:first-of-type {
   margin-bottom: 0;
 }
-blockquote footer,
 blockquote small,
 blockquote .small {
-  font-size: 80%;
+  display: block;
+  margin-top: 0.4rem;
+  color: #999999;
+  font-size: 90%;
   text-align: right;
+}
+blockquote small > a,
+blockquote .small > a {
+  color: #999999;
 }
 img {
   max-width: 100%;
