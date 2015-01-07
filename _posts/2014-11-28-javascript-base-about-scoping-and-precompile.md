@@ -23,7 +23,7 @@ JavaScript是一门弱类型语言，这意味着你*不需要提前声明变量
 
 ###变量与变量声明
 
-JS的数据类型有7种，其中基本类型6种，分别是`Boolean`,`NUll`,`Undefined`,`Number`,`String`,`Symbol`（ECMAScript6新提出）`;然后对象`Object`一种。
+JS的数据类型有7种，其中基本类型6种，分别是`Boolean`,`NUll`,`Undefined`,`Number`,`String`,`Symbol`（ECMAScript6新提出）;然后对象`Object`一种。
 
 在JS中，我们通过`var`关键字即可声明一个局部变量：
 
@@ -48,6 +48,8 @@ var foo = "bar"; // foo is a String now
     // 创建new scope, 不会污染全局作用域
 })(args);
 ```
+
+以上写法是包括`jQuery`在内的很多类库采用的。
 
 ## 2. 命名空间
 
@@ -106,4 +108,4 @@ function sayHi(name) {
 </script>
 ```
 
-因为JS的预编译，两个`script`标签分成2段代码读取解释执行，所以两个`script`标签内我们都可以得到预期的输出，而不是第二个`sayHi`覆盖了第一个`sayHi`。
+因为JS的预编译，两个`script`标签分成2段代码分别读取解释执行，所以两个`script`标签内我们都可以得到预期的输出，而不是第二个`sayHi`覆盖了第一个`sayHi`。
