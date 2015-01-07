@@ -489,7 +489,7 @@ function getVariable (code) {
 1. `underscore template`几乎原样输出，这种简单处理导致了`with`的引进，或者说基于`with`才可以这样简单处理;
 2. `artTemplate`在逻辑字符串（js代码）中提取变量然后在顶部声明，弃用`with`。
 
-####artTemplate模板引擎高效——with
+####artTemplate模板引擎高效原因1——with
 
 正如上面所说，抛弃`with`是artTemplate高效的最大原因。那么`with`为什么对性能影响如此之大？
 
@@ -523,6 +523,8 @@ console.log('timeWith', timeWith, ' timeNoWith', timeNoWith);
 
 ![测试结果](http://creeper-static.qiniudn.com/stc-with-test.png)
 
+如上可以看出，`with`对性能的影响巨大。
+
 `with`影响性能的两个原因：
 
 #####1. 影响作用域链
@@ -534,11 +536,33 @@ console.log('timeWith', timeWith, ' timeNoWith', timeNoWith);
 
 #####2. `with`阻止js引擎的优化编译器的优化
 
-[V8引擎](https://github.com/petkaantonov/bluebird/wiki/Optimization-killers)有两个不同的编译器：通用编译器和优化编译器。`with`语句所在的函数不会被优化编译器优化。
+[V8引擎](https://github.com/petkaantonov/bluebird/wiki/Optimization-killers)有两个不同的编译器：通用编译器（generic）和优化编译器（optimizing）。这意味着你的js代码被编译并直接以原生代码执行。那么，这是不是说你的代码会非常快？
 
-总而言之，`with`非常影响性能。
+错了，（js）代码被编译为原生代码本身并不意味着性能大大提升，编译只是消除了解释器开销，如果没有优化的话，（原生）代码可能仍然很慢。注意，这里的编译指通过通用编译器编译。
 
-####artTemplate模板引擎高效——字符串相加
+例如：js代码`a + b`通过通用编译器编译后可能是这样子的：
+
+```javascript
+mov eax, a
+mov ebx, b
+call RuntimeAdd
+```
+
+也就是说，它只是调用了运行时的函数。如果`a`和`b`是整数的话，可能是这样的：
+
+```javascript
+mov eax, a
+mov ebx, b
+add eax, ebx
+```
+
+显然，这会极大地提高性能。通常情况下，通用编译器编译出来的就是前一种代码，而优化编译器编译出来的就是后一种代码。优化编译器编译后通常会有`100X`的性能提升。
+
+那么具体到我们的`with`，`with`语句所在的函数不会被优化编译器优化。这是因为`with`块内是`dynamical scoped`，不是通常的`Lexical scoped`，这导致无法在编译时决定是绑定到哪个变量的（只能在运行时动态检测）。
+
+所以，`with`非常影响性能。
+
+####artTemplate模板引擎高效原因2——字符串相加
 
 可以看到artTemplate中有`array.push`和一般的`+=`两种字符串相加方式。
 
