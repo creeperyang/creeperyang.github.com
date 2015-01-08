@@ -98,7 +98,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
   font-size: 1em;
 }
 button,
@@ -3161,7 +3161,7 @@ a {
 }
 #main-nav {
   position: relative;
-  padding: 4rem 0 2.4rem;
+  padding: 0 0 2.4rem;
   text-align: center;
 }
 #main-nav .wheel-button {
@@ -3244,6 +3244,7 @@ a {
   margin-bottom: 2rem;
   background-color: #fff;
   border-radius: 0.1rem;
+  border-bottom: 1px solid #e3e3e3;
 }
 .article-view .article-title {
   border-bottom: 1px solid #e3e3e3;

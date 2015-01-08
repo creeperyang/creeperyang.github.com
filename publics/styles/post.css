@@ -98,7 +98,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
   font-size: 1em;
 }
 button,
@@ -3190,6 +3190,7 @@ a {
 }
 .info-wrap .tag-info .tag-label {
   padding: 0 0.4rem;
+  cursor: pointer;
 }
 .info-wrap .info-bottom {
   width: 100%;
@@ -3212,12 +3213,22 @@ a {
   position: relative;
   font-weight: normal;
 }
+.info-wrap .status-info .category {
+  display: inline-block;
+  margin-right: 4px;
+  cursor: pointer;
+}
 .page-nav {
   margin-top: 2rem;
-  text-align: right;
 }
 .page-nav a {
   width: 8rem;
+}
+.page-nav .previous {
+  float: left;
+}
+.page-nav .next {
+  float: right;
 }
 .side-menu {
   position: fixed;

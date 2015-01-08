@@ -89,6 +89,8 @@
         }
         .tag-label {
             padding: 0 0.4rem;
+
+            cursor: pointer;
         }
     }
 
@@ -114,14 +116,25 @@
 
             font-weight: normal;
         }
+        .category {
+            display: inline-block;
+            margin-right: 4px;
+
+            cursor: pointer;
+        }
     }
 }
 .page-nav {
     margin-top: 2rem;
 
-    text-align: right;
     a {
         width: 8rem;
+    }
+    .previous {
+        float: left;
+    }
+    .next {
+        float: right;
     }
 }
 .side-menu {

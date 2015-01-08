@@ -5,8 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
         <meta name="author" content="creeperyang" />
-        <meta name="description" content="creeperyang's blog, 前端博客, frontend" />
-        <meta name="keywords" content="creeperyang's blog 前端博客 github">
+        <meta name="description" content="creeperyang's blog，creeper的前端博客，关注JavaScript/Html(5)/Css(3)" />
+        <meta name="keywords" content="creeperyang's|blog|前端博客|github|frontend">
         <meta name="baidu-site-verification" content="cRhS93CD93" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <title>{{page.title}}</title>
@@ -55,22 +55,28 @@
                             <h1 class='title-info'>{{ page.title }}</h1>
                             <ul class='status-info clearfix'>
                                 <li><b>字数：</b><span>{{ page.content | strip_html | strip_newlines | split: "" | size }}</span></li>
-                                <li><b>分类：</b><span>{{page.categories}}</span></li>
+                                <li><b>分类：</b>
+                                {% for cate in page.categories %}
+                                    <span class="category">{{cate}}</span>
+                                {% endfor %}
+                                </li>
                             </ul>
                         </section>
                     </header>
                     <article class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2 content-wrap part-wrap">
+
                         {{content}}
-                        <section class='page-nav'>
+
+                        <section class='page-nav clearfix'>
                             {% if page.previous %}
-                                <a href="{{page.previous.url}}" class="btn" id='pre-page'><i class='fa fa-angle-left'></i> Previous</a>
+                                <a href="{{page.previous.url}}" class="btn previous" id='pre-page'><i class='fa fa-angle-left'></i> Previous</a>
                             {% else %}
-                                <span class="btn disabled">None</span>
+                                <span class="btn disabled previous">None</span>
                             {% endif %}
                             {% if page.next %}
-                                <a href="{{page.next.url}}" class="btn" id='next-page'>Next <i class='fa fa-angle-right'></i></a>
+                                <a href="{{page.next.url}}" class="btn next" id='next-page'>Next <i class='fa fa-angle-right'></i></a>
                             {% else %}
-                                <span class="btn disabled">None</span>
+                                <span class="btn disabled next">None</span>
                             {% endif %}
                         </section>
                     </article>
