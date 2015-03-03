@@ -1,0 +1,97 @@
+@charset "utf-8";
+
+// font awesome
+@import url("fa/variables.less");
+@import url("fa/font-awesome.less");
+
+// bootstrap grid, normalize, utilities
+@import url("variables.less");
+@import url("mixins.less");
+@import url("normalize.less");
+@import url("scaffolding.less");
+@import url("utilities.less");
+@import url("grid.less");
+
+@font-face{ 
+	font-family: 'CyRobot';
+	src: url('/assets/fonts/robot/Roboto-Light-webfont.eot');
+	src: url('/assets/fonts/robot/Roboto-Light-webfont.eot?iefix') format('eot'),
+	     url('/assets/fonts/robot/Roboto-Light-webfont.woff') format('woff'),
+	     url('/assets/fonts/robot/Roboto-Light-webfont.ttf') format('truetype'),
+	     url('/assets/fonts/robot/Roboto-Light-webfont.svg#webfont') format('svg');
+}
+@z-shadow-1: 0.1rem;
+@z-shadow-2: 0.2rem;
+@z-shadow-3: 0.4rem;
+@z-shadow-4: 0.8rem;
+@z-shadow-5: 1.6rem;
+@shadow-color: rgba(0, 0, 0, 0.5);
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'CyRobot', @font-family-sans-serif;
+}
+.unstyled-list {
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+.cy-header {
+	padding: 0 @grid-gutter-width / 2;
+	background-color: @brand-primary;
+	color: #fff;
+
+	box-shadow: 0 0 @z-shadow-1 @shadow-color;
+	.toolbar-row {
+		padding: @grid-gutter-width/2 @grid-gutter-width/2 @grid-gutter-width*1.5;
+	}
+	.title-row { 
+		.title-wrap {
+			position: relative;
+		}
+		.head {
+			position: absolute;
+			left: 0;
+			margin-left: -6.4rem;
+			width: 6.4rem;
+			height: 6.4rem;
+		}
+		.head-title {
+			margin: 0;
+
+			font-family: 'CyRobot';
+			font-size: 36px;
+			font-weight: normal;
+			line-height: 6.4rem;
+		}
+	}
+	.menu-row {
+		padding-top: @grid-gutter-width;
+	}
+}
+.cy-menu {
+	.clearfix();
+	.menu-item {
+		float: left;
+		cursor: pointer;
+		&>a {
+			display: block;
+			padding: 0.6rem 2rem;
+			color: @body-bg;
+
+			border-bottom: 0.4rem solid transparent;
+			transition: all 0.5s ease;
+			&:hover, &:active, &.active {
+				color: #fff;
+				border-bottom-color: @brand-danger;
+			}
+		}
+	}
+}
+
+.article-view {
+	margin: @grid-gutter-width auto;
+	padding: @grid-gutter-width;
+	background-color: #fff;
+	border-radius: 0.1rem;
+	box-shadow: 0.1rem 0.1rem @z-shadow-2 @shadow-color;
+}

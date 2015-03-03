@@ -38,7 +38,7 @@ testScope(); // 还是输出 "global"
 
 （Lexial） scope的明确定义是*the portion of source code in which a binding of a name with an entity applies*，即scope就是一段源码（代码块），在这段代码内，变量到值的绑定应用。
 
-###具体到JavaScript的变量、值与作用域
+###JavaScript中的变量、值与作用域
 
 在JavaScript中，当你定义一个变量，这个变量的作用域要么是全局作用域（global scope），要么属于函数作用域。
 
@@ -77,6 +77,8 @@ function testScope() {
 
 既然所有的变量都可以在编译期间解析出（all variable references can be resolved at compile-time），*lexical scope*有时也叫*static scope*。
 
+// 通常来说，由于变量在编译期间都解析完毕，*lexical scope*有更好的性能。
+
 Lexical scoping目前为止广泛运用于`ALGOL-influenced`语言，包括C/Java/JavaScript等等。
 
 ###Dynamic Scope
@@ -97,7 +99,7 @@ Lisp，Perl等使用Dynamic Scope。
 
 那么这意味着，函数`testScope`调用单独定义的`printStr`，
 
-- 在*lexical scoping*中，`printStr`无法访问`testScope`的局部变量，假设`printStr`不是在`testScope`内部定义的。
+- 在*lexical scoping*中，`printStr`无法访问`testScope`的局部变量（`printStr`不是在`testScope`内部定义的）。
 - 在*dynamic scoping*中，`printStr`可以访问`testScope`的局部变量，因为`printStr`的调用是在`testScope`执行期间。
 
 ##JavaScript的作用域体系
