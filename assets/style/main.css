@@ -1938,39 +1938,39 @@ hr {
 .container {
   margin-right: auto;
   margin-left: auto;
-  padding-left: 15;
-  padding-right: 15;
-}
-@media (min-width: 480px) {
-  .container {
-    width: 100%;
-  }
+  padding-left: 15px;
+  padding-right: 15px;
 }
 @media (min-width: 768px) {
   .container {
     width: 100%;
   }
 }
-@media (min-width: 1040px) {
+@media (min-width: 992px) {
   .container {
-    width: 1054px;
+    width: 100%;
+  }
+}
+@media (min-width: 1216px) {
+  .container {
+    width: 1170px;
   }
 }
 .container-fluid {
   margin-right: auto;
   margin-left: auto;
-  padding-left: 15;
-  padding-right: 15;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .row {
-  margin-left: -15;
-  margin-right: -15;
+  margin-left: -15px;
+  margin-right: -15px;
 }
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
   position: relative;
   min-height: 1px;
-  padding-left: 15;
-  padding-right: 15;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
   float: left;
@@ -2128,7 +2128,7 @@ hr {
 .col-xs-offset-0 {
   margin-left: 0%;
 }
-@media (min-width: 480px) {
+@media (min-width: 768px) {
   .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
     float: left;
   }
@@ -2286,7 +2286,7 @@ hr {
     margin-left: 0%;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
     float: left;
   }
@@ -2444,7 +2444,7 @@ hr {
     margin-left: 0%;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
     float: left;
   }
@@ -2614,20 +2614,35 @@ h4,
 h5,
 h6 {
   font-family: 'CyRobot', "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+  font-weight: normal;
 }
 .unstyled-list {
   list-style: none;
   margin: 0;
   padding-left: 0;
 }
+.z-shadow-1 {
+  box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.3);
+}
+.z-shadow-2 {
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.3);
+}
+.z-shadow-3 {
+  box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+.z-shadow-4 {
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.3);
+}
+.z-shadow-5 {
+  box-shadow: 0 0.5rem 1.6rem rgba(0, 0, 0, 0.3);
+}
 .cy-header {
-  padding: 0 15;
   background-color: #5677fc;
   color: #fff;
-  box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.3);
 }
 .cy-header .toolbar-row {
-  padding: 15 15 45;
+  padding: 1rem 1rem 3rem;
 }
 .cy-header .title-row .title-wrap {
   position: relative;
@@ -2647,7 +2662,7 @@ h6 {
   line-height: 6.4rem;
 }
 .cy-header .menu-row {
-  padding-top: 30;
+  padding-top: 1rem;
 }
 .cy-menu:before,
 .cy-menu:after {
@@ -2677,15 +2692,38 @@ h6 {
   transition: all 0.5s ease;
 }
 .cy-menu .menu-item > a:hover,
-.cy-menu .menu-item > a:active,
-.cy-menu .menu-item > a.active {
+.cy-menu .menu-item > a:active {
   color: #fff;
   border-bottom-color: #d9534f;
 }
+.cy-menu .menu-item.active > a {
+  color: #fff;
+  border-bottom-color: #d9534f;
+}
+.article-list {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.article-list .highlight {
+  background-color: #ffffff;
+}
 .article-view {
-  margin: 30 auto;
-  padding: 30;
+  margin: 2rem auto;
+  padding: 1rem 1rem;
   background-color: #fff;
   border-radius: 0.1rem;
-  box-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.3);
+  color: #5c5c5c;
+}
+@media (min-width: 992px) {
+  .article-view {
+    padding: 2rem 2rem;
+  }
+}
+.article-view .article-title {
+  margin: 0.8rem 0 0;
+  font-size: 24px;
+}
+.article-view .article-title > a {
+  color: #333333;
 }

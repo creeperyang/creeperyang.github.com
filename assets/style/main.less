@@ -20,29 +20,54 @@
 	     url('/assets/fonts/robot/Roboto-Light-webfont.ttf') format('truetype'),
 	     url('/assets/fonts/robot/Roboto-Light-webfont.svg#webfont') format('svg');
 }
-@z-shadow-1: 0.1rem;
-@z-shadow-2: 0.2rem;
-@z-shadow-3: 0.4rem;
-@z-shadow-4: 0.8rem;
+@z-shadow-1: 0.2rem;
+@z-shadow-2: 0.4rem;
+@z-shadow-3: 0.6rem;
+@z-shadow-4: 1.0rem;
 @z-shadow-5: 1.6rem;
-@shadow-color: rgba(0, 0, 0, 0.5);
+@shadow-color: rgba(0, 0, 0, 0.3);
+
+@base-padding: 1rem;
+
+@large-padding-hor: @base-padding * 2;
+@base-padding-hor: @base-padding;
+@small-padding-hor: @base-padding * 0.6;
+@large-padding-ver: @base-padding * 2;
+@base-padding-ver: @base-padding;
+@small-padding-ver: @base-padding * 0.6;
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'CyRobot', @font-family-sans-serif;
+	font-weight: normal;
 }
 .unstyled-list {
 	list-style: none;
 	margin: 0;
 	padding-left: 0;
 }
+.z-shadow-1 {
+	box-shadow: 0 0.1rem @z-shadow-1 @shadow-color;
+}
+.z-shadow-2 {
+	box-shadow: 0 0.2rem @z-shadow-2 @shadow-color;
+}
+.z-shadow-3 {
+	box-shadow: 0 0.3rem @z-shadow-3 @shadow-color;
+}
+.z-shadow-4 {
+	box-shadow: 0 0.4rem @z-shadow-4 @shadow-color;
+}
+.z-shadow-5 {
+	box-shadow: 0 0.5rem @z-shadow-5 @shadow-color;
+}
+
 .cy-header {
-	padding: 0 @grid-gutter-width / 2;
 	background-color: @brand-primary;
 	color: #fff;
 
-	box-shadow: 0 0 @z-shadow-1 @shadow-color;
+	box-shadow: 0 0.1rem @z-shadow-1 @shadow-color;
 	.toolbar-row {
-		padding: @grid-gutter-width/2 @grid-gutter-width/2 @grid-gutter-width*1.5;
+		padding: @base-padding-ver @base-padding-hor @base-padding-ver*3;
 	}
 	.title-row { 
 		.title-wrap {
@@ -65,7 +90,7 @@ h1, h2, h3, h4, h5, h6 {
 		}
 	}
 	.menu-row {
-		padding-top: @grid-gutter-width;
+		padding-top: @base-padding-ver;
 	}
 }
 .cy-menu {
@@ -80,7 +105,13 @@ h1, h2, h3, h4, h5, h6 {
 
 			border-bottom: 0.4rem solid transparent;
 			transition: all 0.5s ease;
-			&:hover, &:active, &.active {
+			&:hover, &:active {
+				color: #fff;
+				border-bottom-color: @brand-danger;
+			}
+		}
+		&.active {
+			&>a {
 				color: #fff;
 				border-bottom-color: @brand-danger;
 			}
@@ -88,10 +119,28 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
+.article-list {
+	padding-top: @base-padding-ver;
+	padding-bottom: @base-padding-ver;
+	.highlight {
+		background-color: lighten(@body-bg, 10%);
+	}
+}
 .article-view {
-	margin: @grid-gutter-width auto;
-	padding: @grid-gutter-width;
+	margin: @base-padding-ver*2 auto;
+	padding: @base-padding-ver @base-padding-hor;
 	background-color: #fff;
 	border-radius: 0.1rem;
-	box-shadow: 0.1rem 0.1rem @z-shadow-2 @shadow-color;
+	box-shadow: 0 0.1rem @z-shadow-2 @shadow-color;
+	color: lighten(@text-color, 16%);
+	@media (min-width: @screen-md-min) {
+	    padding: @large-padding-ver @large-padding-hor;
+	}
+	.article-title {
+		margin: 0.8rem 0 0;
+		font-size: 24px;
+		&>a {
+			color: @text-color;
+		}
+	}
 }

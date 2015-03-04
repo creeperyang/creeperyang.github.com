@@ -2,6 +2,7 @@
 //
 // Used only by Bootstrap to generate the correct number of grid classes given
 // any value of `@grid-columns`.
+@base-padding: 1rem;
 
 .make-grid-columns() {
   // Common styles for all sizes of grid columns, widths 1-12
@@ -19,8 +20,8 @@
       // Prevent columns from collapsing when empty
       min-height: 1px;
       // Inner gutter via padding
-      padding-left:  (@grid-gutter-width / 2);
-      padding-right: (@grid-gutter-width / 2);
+      padding-left:  @base-padding;
+      padding-right: @base-padding;
     }
   }
   .col(1); // kickstart it

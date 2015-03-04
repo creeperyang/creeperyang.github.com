@@ -1,6 +1,7 @@
 // Grid system
 //
 // Generate semantic grid columns with these mixins.
+@base-padding: 1rem;
 
 // Centered container element
 .container-fixed(@gutter: @grid-gutter-width) {
@@ -24,8 +25,8 @@
   float: left;
   width: percentage((@columns / @grid-columns));
   min-height: 1px;
-  padding-left:  (@gutter / 2);
-  padding-right: (@gutter / 2);
+  padding-left:  @base-padding;
+  padding-right: @base-padding;
 }
 .make-xs-column-offset(@columns) {
   margin-left: percentage((@columns / @grid-columns));
@@ -41,8 +42,8 @@
 .make-sm-column(@columns; @gutter: @grid-gutter-width) {
   position: relative;
   min-height: 1px;
-  padding-left:  (@gutter / 2);
-  padding-right: (@gutter / 2);
+  padding-left:  @base-padding;
+  padding-right: @base-padding;
 
   @media (min-width: @screen-sm-min) {
     float: left;
@@ -69,8 +70,8 @@
 .make-md-column(@columns; @gutter: @grid-gutter-width) {
   position: relative;
   min-height: 1px;
-  padding-left:  (@gutter / 2);
-  padding-right: (@gutter / 2);
+  padding-left:  @base-padding;
+  padding-right: @base-padding;
 
   @media (min-width: @screen-md-min) {
     float: left;
@@ -97,8 +98,8 @@
 .make-lg-column(@columns; @gutter: @grid-gutter-width) {
   position: relative;
   min-height: 1px;
-  padding-left:  (@gutter / 2);
-  padding-right: (@gutter / 2);
+  padding-left:  @base-padding;
+  padding-right: @base-padding;
 
   @media (min-width: @screen-lg-min) {
     float: left;

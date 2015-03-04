@@ -1,13 +1,10 @@
-<html>
+---
+title: Creeper-Blog
+layout: home
+---
 
-<head>
-    <title>Index</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/assets/style/main.css">
-</head>
-
-<body>
-    <header class='cy-header'>
+<header class='cy-header'>
+    <div class='container'>
         <div class='row toolbar-row'>
             <div class='pull-right'>
                 <div class=''>
@@ -24,7 +21,7 @@
         <div class='row menu-row'>
             <div class='col-md-8 col-md-offset-2'>
                 <ul class='unstyled-list cy-menu'>
-                    <li class='menu-item'>
+                    <li class='menu-item active'>
                         <a href="">Home</a>
                     </li>
                     <li class='menu-item'>
@@ -36,34 +33,28 @@
                 </ul>
             </div>
         </div>
-    </header>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-9 col-md-offset-2">
-                <article>
-                    <section class='article-view'>
-                        <h2 class='article-title'>初识AngularJS</h2>
-                        <div class='article-info'></div>
-                        <div class='article-content-view'><p>表单和表单控件提供验证服务，所以无效输入时会提示用户。这会提高用户体验，因为用户可以获得连续的提示来改正错误。但注意，客户端的验证不能代替服务端验证，因为客户端验证容易被绕过而不太可信，必须在服务端再次验证以保证安全。</p>
-                        </div>
-                    </section>
-                    <section class='article-view'>
-                        <h2 class='article-title'>初识AngularJS</h2>
-                        <div class='article-info'></div>
-                        <div class='article-content-view'><p>表单和表单控件提供验证服务，所以无效输入时会提示用户。这会提高用户体验，因为用户可以获得连续的提示来改正错误。但注意，客户端的验证不能代替服务端验证，因为客户端验证容易被绕过而不太可信，必须在服务端再次验证以保证安全。</p>
-                        </div>
-                    </section>
-                    <section class='article-view'>
-                        <h2 class='article-title'>初识AngularJS</h2>
-                        <div class='article-info'></div>
-                        <div class='article-content-view'><p>表单和表单控件提供验证服务，所以无效输入时会提示用户。这会提高用户体验，因为用户可以获得连续的提示来改正错误。但注意，客户端的验证不能代替服务端验证，因为客户端验证容易被绕过而不太可信，必须在服务端再次验证以保证安全。</p>
-                        </div>
-                    </section>
-                </article>
-            </div>
-        </div>
     </div>
-    <script type="text/javascript" src="/publics/scripts/lib/jquery-2.1.1.js"></script>
-</body>
-
-</html>
+</header>
+<div class="container">
+    <div class="row">
+        <article class="col-md-6 col-lg-6 col-md-offset-2 article-list">
+            {% for post in paginator.posts %}
+                <div class="article-view">
+                    <h1 class="article-title">
+                        <a href="{{post.url}}">{{ post.title }}</a>
+                    </h1>
+                    <div class="article-info">
+                        <p>
+                            <span>时间：{{post.date | date: "%F"}}</span>
+                            &nbsp;|&nbsp;
+                            <span>字数：{{ post.content | strip_html | strip_newlines | split: "" | size }}</span>
+                        </p>
+                    </div>
+                    <div class="article-content-view">
+                        {{ post.content | split:'<!--view-break-->' | first }}
+                    </div>
+                </div>
+            {% endfor %}
+        </article>
+    </div>
+</div>
