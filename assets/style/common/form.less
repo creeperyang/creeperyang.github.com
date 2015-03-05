@@ -1,0 +1,45 @@
+.form-control {
+  border: 0;
+  background-image: linear-gradient(@brand-primary, @brand-primary), linear-gradient(#D2D2D2, #D2D2D2);
+  background-size: 0 2px, 100% 1px;
+  background-repeat: no-repeat;
+  background-position: center bottom, center calc(~"100% - 1px");
+  background-color: transparent;
+  background-color: rgba(0,0,0,0);
+}
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  background-color: transparent;
+  background-color: rgba(0,0,0,0);
+}
+fieldset[disabled] .form-control:disabled, .form-control-wrapper .form-control:disabled, .form-control:disabled, fieldset[disabled] .form-control:focus:disabled, .form-control-wrapper .form-control:focus:disabled, .form-control:focus:disabled, fieldset[disabled] .form-control.focus:disabled, .form-control-wrapper .form-control.focus:disabled, .form-control.focus:disabled {
+  border: 0;
+}
+
+.form-control:focus, .form-control.focus {
+  outline: none;
+  background-image: linear-gradient(@brand-primary, @brand-primary), linear-gradient(#D2D2D2, #D2D2D2);
+  -webkit-animation: input-highlight 0.5s forwards;
+  animation: input-highlight 0.5s forwards;
+  box-shadow: none;
+  background-size: 0 2px, 100% 1px;
+}
+
+
+@keyframes input-highlight {
+  0% {
+    background-size: 0 2px, 100% 1px;
+  }
+
+  100% {
+    background-size: 100% 2px, 100% 1px;
+  }
+}
+@-webkit-keyframes input-highlight {
+  0% {
+    background-size: 0 2px, 100% 1px;
+  }
+
+  100% {
+    background-size: 100% 2px, 100% 1px;
+  }
+}

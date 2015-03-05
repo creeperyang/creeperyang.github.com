@@ -1,15 +1,19 @@
 ---
-title: Creeper-Blog
+title: Creeper's Blog
 layout: home
 ---
 
-<header class='cy-header'>
+<header class='cy-header z-shadow-1'>
     <div class='container'>
         <div class='row toolbar-row'>
             <div class='pull-right'>
-                <div class=''>
+                <input class='form-control search-input' type='text' placeholder='search'>
+                <span class='btn btn-fab withripple deep-color'>
                     <i class='fa fa-search'></i>
-                </div>
+                </span>
+                <span class='btn btn-fab withripple deep-color'>
+                    <i class='fa fa-github-square'></i>
+                </span>
             </div>
         </div>
         <div class='row title-row'>
@@ -21,21 +25,21 @@ layout: home
         <div class='row menu-row'>
             <div class='col-md-8 col-md-offset-2'>
                 <ul class='unstyled-list cy-menu'>
-                    <li class='menu-item active'>
-                        <a href="">Home</a>
+                    <li class='menu-item withripple active'>
+                        <a>Home</a>
                     </li>
-                    <li class='menu-item'>
-                        <a href="">Archives</a>
+                    <li class='menu-item withripple'>
+                        <a>Archives</a>
                     </li>
-                    <li class='menu-item'>
-                        <a href="">About</a>
+                    <li class='menu-item withripple'>
+                        <a>About</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 </header>
-<div class="container">
+<div class="container index-container">
     <div class="row">
         <article class="col-md-6 col-lg-6 col-md-offset-2 article-list">
             {% for post in paginator.posts %}

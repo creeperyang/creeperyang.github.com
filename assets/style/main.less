@@ -12,6 +12,13 @@
 @import url("utilities.less");
 @import url("grid.less");
 
+// common style, custom from bs
+@import url("common/buttons.less");
+@import url("common/form.less");
+
+// material 
+@import url("material/ripple.less");
+
 @font-face{ 
 	font-family: 'CyRobot';
 	src: url('/assets/fonts/robot/Roboto-Light-webfont.eot');
@@ -61,13 +68,36 @@ h1, h2, h3, h4, h5, h6 {
 	box-shadow: 0 0.5rem @z-shadow-5 @shadow-color;
 }
 
+
+
 .cy-header {
 	background-color: @brand-primary;
 	color: #fff;
 
-	box-shadow: 0 0.1rem @z-shadow-1 @shadow-color;
 	.toolbar-row {
 		padding: @base-padding-ver @base-padding-hor @base-padding-ver*3;
+		.btn {
+			color: darken(@brand-primary, 12%);
+		}
+		.search-input {
+			color: #fff;
+			&::-webkit-input-placeholder { /* WebKit browsers */
+			    color: darken(@brand-primary, 12%);
+			}
+			&:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+			    color: darken(@brand-primary, 12%);
+			}
+			&::-moz-placeholder { /* Mozilla Firefox 19+ */
+			    color: darken(@brand-primary, 12%);
+			}
+			&:-ms-input-placeholder { /* Internet Explorer 10+ */
+			    color: darken(@brand-primary, 12%);
+			}
+			background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), linear-gradient(darken(@brand-primary, 12%), darken(@brand-primary, 12%));
+			&:focus, &.focus {
+				background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), linear-gradient(darken(@brand-primary, 12%), darken(@brand-primary, 12%));
+			}
+		}
 	}
 	.title-row { 
 		.title-wrap {
@@ -76,9 +106,10 @@ h1, h2, h3, h4, h5, h6 {
 		.head {
 			position: absolute;
 			left: 0;
-			margin-left: -6.4rem;
-			width: 6.4rem;
-			height: 6.4rem;
+			margin-left: -6rem;
+			margin-top: 0.3rem;
+			width: 5.4rem;
+			height: 5.4rem;
 		}
 		.head-title {
 			margin: 0;
@@ -86,7 +117,7 @@ h1, h2, h3, h4, h5, h6 {
 			font-family: 'CyRobot';
 			font-size: 36px;
 			font-weight: normal;
-			line-height: 6.4rem;
+			line-height: 6rem;
 		}
 	}
 	.menu-row {
@@ -105,10 +136,6 @@ h1, h2, h3, h4, h5, h6 {
 
 			border-bottom: 0.4rem solid transparent;
 			transition: all 0.5s ease;
-			&:hover, &:active {
-				color: #fff;
-				border-bottom-color: @brand-danger;
-			}
 		}
 		&.active {
 			&>a {
@@ -144,3 +171,15 @@ h1, h2, h3, h4, h5, h6 {
 		}
 	}
 }
+
+
+// header.cy-header {
+// 	position: fixed;
+// 	left: 0;
+// 	top: 0;
+// 	right: 0;
+// 	z-index: @zindex-fixed;
+// }
+// .index-container {
+// 	margin-top: 18rem;
+// }
