@@ -1,0 +1,100 @@
+@charset "utf-8";
+
+// font awesome
+@import url("fa/variables.less");
+@import url("fa/font-awesome.less");
+
+// bootstrap grid, normalize, utilities
+@import url("variables.less");
+@import url("mixins.less");
+@import url("normalize.less");
+@import url("scaffolding.less");
+@import url("utilities.less");
+@import url("grid.less");
+
+// common style, custom from bs
+@import url("common/buttons.less");
+@import url("common/form.less");
+@import url("common/syntax.less");
+
+// material 
+@import url("material/ripple.less");
+
+@font-face{ 
+	font-family: 'CyRobot';
+	src: url('/assets/fonts/robot/Roboto-Light-webfont.eot');
+	src: url('/assets/fonts/robot/Roboto-Light-webfont.eot?iefix') format('eot'),
+	     url('/assets/fonts/robot/Roboto-Light-webfont.woff') format('woff'),
+	     url('/assets/fonts/robot/Roboto-Light-webfont.ttf') format('truetype'),
+	     url('/assets/fonts/robot/Roboto-Light-webfont.svg#webfont') format('svg');
+}
+
+@base-padding: 1rem;
+
+@large-padding-hor: @base-padding * 2;
+@base-padding-hor: @base-padding;
+@small-padding-hor: @base-padding * 0.6;
+@large-padding-ver: @base-padding * 2;
+@base-padding-ver: @base-padding;
+@small-padding-ver: @base-padding * 0.6;
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'CyRobot', @font-family-sans-serif;
+	font-weight: normal;
+}
+.unstyled-list {
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+.paper-shadow-z-1 {
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.16), 0 1px 3px 0 rgba(0, 0, 0, 0.26);
+}
+.paper-shadow-z-2 {
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.19), 0 4px 9px 0 rgba(0, 0, 0, 0.2);
+}
+.paper-shadow-z-3 {
+  box-shadow: 0 9px 25px 0 rgba(0, 0, 0, 0.19), 0 6px 8px 0 rgba(0, 0, 0, 0.24);
+}
+.paper-shadow-z-4 {
+  box-shadow: 0 13px 28px 0 rgba(0, 0, 0, 0.21), 0 8px 14px 0 rgba(0, 0, 0, 0.22);
+}
+.paper-shadow-z-5 {
+  box-shadow: 0 20px 39px 0 rgba(0, 0, 0, 0.22), 0 14px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+
+#welcome-panel {
+	margin: @base-padding-ver*3 auto @base-padding-ver*2;
+	background-color: #fff;
+	border-radius: 0.2rem;
+	color: lighten(@text-color, 16%);
+	img {
+		.border-top-radius(0.2rem);
+	}
+	.desc {
+		padding: @base-padding-ver @base-padding-hor;
+	}
+}
+
+.cy-zone {
+	margin-top: @base-padding-ver;
+	margin-bottom: @base-padding-ver;
+	padding: @base-padding-ver @base-padding-hor;
+	background-color: #fff;
+	border-radius: 0.2rem;
+	color: @text-color;
+	&.primary {
+		background-color: @brand-primary;
+		color: #fff;
+	}
+}
+.pagination {
+	padding: @base-padding;
+	text-align: right;
+
+	.btn {
+		width: 6rem;
+	}
+}
