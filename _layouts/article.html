@@ -13,70 +13,52 @@
 
         <link rel="stylesheet" type="text/css" href="/assets/style/article.css" />
         <script>
-        // var _hmt = _hmt || [];
-        // (function() {
-        //   var hm = document.createElement("script");
-        //   hm.src = "//hm.baidu.com/hm.js?c343aeafcb026d57e649b133a48c1eb0";
-        //   var s = document.getElementsByTagName("script")[0]; 
-        //   s.parentNode.insertBefore(hm, s);
-        // })();
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "//hm.baidu.com/hm.js?c343aeafcb026d57e649b133a48c1eb0";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
         </script>
     </head>
     <body>
         <div class="container">
             <div class="row clearfix">
-                <header class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 info-wrap cy-zone primary paper-shadow-z-1">
-                    <section class='info-top'>
-                        <div class='time-info'>
-                            <span class='time-part time-day'>{{ page.date | date: "%d" }}</span>
-                            <span class="time-part">
-                                <i class='time-month'>{{ page.date | date: "%b" }}</i>
-                                <i class='time-year'>{{ page.date | date: "%Y" }}</i>
-                            </span>
-                        </div>
-                        <div class='tag-info'>
-                            {% assign part = {{page.tags.size | divided_by:2 }} %}
-                            {% assign remainpart = {{page.tags.size | minus:part }} %}
-                            <div class='tags top'>
-                                {% for tag in page.tags offset:part %}
-                                    <span class='tag-label'><i class='fa fa-tag'></i> {{tag}}</span>
+                <article class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 paper-shadow-z-1 cy-zone">
+                    <header class="info-wrap bg-primary">
+                        <h1 class='title'>{{ page.title }}</h1>
+                        <div class='status-info'>
+                            <ul class='clearfix'>
+                                <li>发布于：
+                                    <span>{{ page.date | date: "%Y-%m-%d" }}</span>
+                                </li>
+                                <li>字数：<span>{{ page.content | strip_html | strip_newlines | split: "" | size }}</span></li>
+                                <li>分类：
+                                {% for cate in page.categories %}
+                                    <span class="category">{{cate}}</span>
                                 {% endfor %}
-                            </div>
-                            <div class='tags bottom'>
-                                {% for tag in page.tags limit:part %}
-                                    <span class='tag-label'><i class='fa fa-tag'></i> {{tag}}</span>
-                                {% endfor %}
-                            </div>
+                                </li>
+                                <li>标签：
+                                    {% for tag in page.tags %}
+                                    <span class='tag'>{{tag}}</span>
+                                    {% endfor %}
+                                </li>
+                            </ul>
                         </div>
+                    </header>
+                    <section class="content-wrap">
+                        {{content}}
                     </section>
-                    <section id='info-bottom'>
-                        <h1 class='title-info'>{{ page.title }}</h1>
-                        <ul class='status-info clearfix'>
-                            <li><b>字数：</b><span>{{ page.content | strip_html | strip_newlines | split: "" | size }}</span></li>
-                            <li><b>分类：</b>
-                            {% for cate in page.categories %}
-                                <span class="category">{{cate}}</span>
-                            {% endfor %}
-                            </li>
-                        </ul>
-                    </section>
-                </header>
-                <article class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 content-wrap cy-zone paper-shadow-z-1">
-
-                    {{content}}
-
-                    <section class='page-nav clearfix'>
+                    <footer class='pagination'>
                         {% if page.previous %}
-                            <a href="{{page.previous.url}}" class="btn previous" id='pre-page'><i class='fa fa-angle-left'></i> Previous</a>
-                        {% else %}
-                            <span class="btn disabled previous">None</span>
+                            <a class='btn btn-primary withripple' href="{{ page.previous.url }}" ><i class='fa fa-long-arrow-left'></i></a>
                         {% endif %}
+                        <a class='btn btn-primary withripple' href="/"><i class='fa fa-home'></i></a>
                         {% if page.next %}
-                            <a href="{{page.next.url}}" class="btn next" id='next-page'>Next <i class='fa fa-angle-right'></i></a>
-                        {% else %}
-                            <span class="btn disabled next">None</span>
+                            <a class='btn btn-primary withripple' href="{{ page.next.url }}"><i class='fa fa-long-arrow-right'></i></a>
                         {% endif %}
-                    </section>
+                    </footer>
                 </article>
                 <footer class="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 comment-wrap cy-zone paper-shadow-z-1">
                     <div id="disqus_thread"></div>
@@ -97,18 +79,12 @@
                     </noscript>
                     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
                 </footer>
-                <!-- <aside class='side-menu'>
-                    <div class="side-menu-inner-wrap">
-                        <a href="/" id='back-to-home'><i class='fa fa-home'></i></a>
-                        <a id='back-to-top'><i class='fa fa-angle-up'></i></a>
-                    </div>
-                </aside> -->
             </div>
         </div>
         <script type="text/javascript" src="/publics/scripts/lib/jquery-2.1.1.js"></script>
         <script type="text/javascript">
-        // var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-        // document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fc343aeafcb026d57e649b133a48c1eb0' type='text/javascript'%3E%3C/script%3E"));
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fc343aeafcb026d57e649b133a48c1eb0' type='text/javascript'%3E%3C/script%3E"));
         </script>
     </body>
 </html>

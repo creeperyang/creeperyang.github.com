@@ -3141,6 +3141,11 @@ h6 {
 #welcome-panel .desc {
   padding: 1rem 1rem;
 }
+@media (max-width: 992px) {
+  #welcome-panel {
+    display: none;
+  }
+}
 .article-list {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -3183,6 +3188,11 @@ h6 {
 }
 .pagination .btn {
   width: 6rem;
+}
+.pagination .page-num {
+  padding: 0 1rem;
+  letter-spacing: 0.2em;
+  color: #5677fc;
 }
 footer {
   margin-top: 2rem;

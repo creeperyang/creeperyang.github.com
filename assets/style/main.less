@@ -159,6 +159,9 @@ h1, h2, h3, h4, h5, h6 {
 	.desc {
 		padding: @base-padding-ver @base-padding-hor;
 	}
+	@media (max-width: @screen-md-min) {
+	    display: none;
+	}
 }
 .article-list {
 	padding-top: @base-padding-ver;
@@ -201,6 +204,11 @@ h1, h2, h3, h4, h5, h6 {
 
 	.btn {
 		width: 6rem;
+	}
+	.page-num {
+		padding: 0 @base-padding;
+		letter-spacing: 0.2em;
+		color: @brand-primary; //@gray-light;
 	}
 }
 footer {
