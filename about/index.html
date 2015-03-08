@@ -9,7 +9,7 @@
         <meta name="keywords" content="creeperyang's|blog|前端博客|github|frontend">
         <meta name="baidu-site-verification" content="cRhS93CD93" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <title>{{ page.title }}</title>
+        <title>About</title>
         <link rel="stylesheet" type="text/css" href="/assets/style/main.css" />
         <script>
         var _hmt = _hmt || [];
@@ -21,10 +21,15 @@
         })();
         </script>
     </head>
-    <body>
-        {{ content }}
+    <body class='state-wrap'>
+        <ul class='unstyled-list stage-list'>
+            <li class='stage bg-primary'></li>
+            <li class='stage bg-success'></li>
+            <li class='stage bg-danger'></li>
+        </ul>
         <script type="text/javascript" src="/assets/script/lib/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="/assets/script/ripples.js"></script>
+        <script type="text/javascript" src="/assets/script/pageScroll.js"></script>
         <script type="text/javascript">
             $('.withripple').ripples();
         </script>

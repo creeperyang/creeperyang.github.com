@@ -1,0 +1,85 @@
+---
+title: Creeper's Blog
+layout: home
+---
+
+<header class='cy-header z-shadow-1'>
+    <div class='container'>
+        <div class='row toolbar-row'>
+            <div class='pull-right'>
+                <input class='form-control search-input' type='text' placeholder='search'>
+                <span class='btn btn-fab withripple deep-color'>
+                    <i class='fa fa-search'></i>
+                </span>
+                <a href='https://github.com/creeperyang' class='btn btn-fab withripple deep-color'>
+                    <i class='fa fa-github-square'></i>
+                </a>
+            </div>
+        </div>
+        <div class='row title-row'>
+            <div class='col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-2 title-wrap'>
+                <img class='head img-responsive img-circle' src="/assets/images/head.jpg">
+                <h1 class='head-title'>Creeper's Blog</h1>
+            </div>
+        </div>
+        <div class='row menu-row'>
+            <div class='col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2'>
+                <ul class='unstyled-list cy-menu'>
+                    <li class='menu-item withripple'>
+                        <a href='/'>Home</a>
+                    </li>
+                    <li class='menu-item withripple active'>
+                        <a href='/archives/'>Archives</a>
+                    </li>
+                    <li class='menu-item withripple'>
+                        <a href='/about/'>About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container index-container">
+    <div class="row">
+        <article class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 archive-list">
+            {% assign yearMonth = null %}
+            {% for post in site.posts %}
+                {% assign curYearMonth = post.date | date:"%Y%m" %}
+
+                {% if yearMonth != curYearMonth %}
+                    <div class='row'>
+                        <div class='col-sm-12'>
+                            <div class='year-month-spliter'>{{post.date | date:"%b %Y" | upcase}}</div>
+                        </div>
+                    </div>
+                    {% assign yearMonth = curYearMonth %}
+                {% endif %}
+                <div class="row archive-view paper-shadow-z-1 withripple">
+                    <div class='archive-time col-sm-2'>
+                        <b>{% assign d = post.date | date: "%-d"  %}
+                        {{ post.date | date: "%B" }} 
+                        {% case d %}
+                            {% when '1' or '21' or '31' %}{{ d }}st
+                            {% when '2' or '22' %}{{ d }}nd
+                            {% when '3' or '23' %}{{ d }}rd
+                            {% else %}{{ d }}th
+                        {% endcase %}</b>
+                    </div>
+                    <div class="archive-content col-sm-10 ">
+                        <a class="title" href="{{post.url}}">{{ post.title }}</a>
+                        <span class='content'>——{{ post.content | strip_html | strip_newlines | truncate: 80 }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </article>
+    </div>
+</div>
+<footer>
+    <div class='container'>
+        <div class='row'>
+            <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 copyright-zone">
+                <p>This is a simple blog powered by Jekyll. <i class='fa fa-copyright'></i> All rights reversed.</p>
+            </div>
+        </div>
+    </div>
+</footer>

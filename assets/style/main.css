@@ -3394,6 +3394,28 @@ h6 {
   color: #fff;
   border-bottom-color: #d9534f;
 }
+.pagination {
+  padding: 1rem;
+  text-align: right;
+}
+.pagination .btn {
+  width: 6rem;
+}
+.pagination .page-num {
+  padding: 0 1rem;
+  letter-spacing: 0.2em;
+  color: #5677fc;
+}
+footer {
+  margin-top: 2rem;
+  padding: 4rem 0;
+  background-color: #333333;
+}
+footer .copyright-zone {
+  color: #fff;
+  text-align: right;
+  font-family: 'CyRobot';
+}
 #welcome-panel {
   margin: 3rem auto 2rem;
   background-color: #fff;
@@ -3448,25 +3470,57 @@ h6 {
   padding-left: 0.1rem;
   padding-right: 0.6rem;
 }
-.pagination {
-  padding: 1rem;
-  text-align: right;
+.archive-list {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 }
-.pagination .btn {
-  width: 6rem;
+.archive-view {
+  margin: 2rem auto;
+  padding: 1rem 1rem;
+  background-color: #fff;
+  border-radius: 0.2rem;
+  color: #5c5c5c;
 }
-.pagination .page-num {
+@media (min-width: 992px) {
+  .archive-view {
+    padding: 2rem 2rem;
+  }
+}
+.archive-view .archive-time {
+  line-height: 25px;
+}
+.archive-view .archive-content .title {
+  font-size: 18px;
+}
+.archive-view .archive-content .content {
+  line-height: 25px;
+}
+.year-month-spliter {
   padding: 0 1rem;
-  letter-spacing: 0.2em;
-  color: #5677fc;
-}
-footer {
   margin-top: 2rem;
-  padding: 4rem 0;
-  background-color: #333333;
+  margin-bottom: -1rem;
+  color: #777777;
 }
-footer .copyright-zone {
-  color: #fff;
-  text-align: right;
-  font-family: 'CyRobot';
+.stage-wrap {
+  overflow: hidden;
+}
+.stage-list {
+  position: relative;
+  width: 100%;
+}
+.stage-list .stage {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+.bg-primary {
+  background-color: #5677fc;
+}
+.bg-success {
+  background-color: #8bc34a;
+}
+.bg-danger {
+  background-color: #d9534f;
 }
