@@ -1725,18 +1725,6 @@ mark {
   background: #ffff00;
   color: #000000;
 }
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, serif;
-  font-size: 1em;
-}
-pre {
-  white-space: pre;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
 q {
   quotes: "\201C" "\201D" "\2018" "\2019";
 }
@@ -2979,12 +2967,14 @@ em > code {
   border-radius: 4px;
 }
 code,
-pre {
+kbd,
+pre,
+samp {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
-  font-size: .95em;
-  margin: 1em 0 1.5em;
+  font-size: 1em;
 }
 pre {
+  white-space: pre;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
