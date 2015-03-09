@@ -17,7 +17,7 @@
         this.$container = $(container);
         this.timeStamp = new Date().getTime();
 
-        this.step = opt.step || $window.height(); //每次滚动位移
+        this.step = $window.height(); //每次滚动位移
         this.animating = false;
         this.upOrDown = "";
         this.ratio = opt.ratio > 1 ? 0.6 : opt.ratio; //缓动系数
@@ -36,70 +36,92 @@
 
             self.stages.css("height", self.step + 'px');
             self.count = self.stages.length;
-            $scrollEl.animate({
-                "scrollTop": 0
-            }, 500);
+
+            // scroll to top
+            self.doScroll(0, 500);
             if(self.count <=1) {
                 return;
             }
+
+            $window.on('resize', function() {
+                self.step = $window.height();
+                self.stages.css("height", self.step + 'px');
+                self.doScroll(self.current * self.step, 500);
+            });
             $container.on('mousewheel', function(e){
                 e.preventDefault();
                 e.stopPropagation();
+                if(self.animating) {
+                    return;
+                }
                 execute(e.originalEvent.wheelDelta);
             });
-            self.indicators.each(function(item, i) {
-                $(this).on('click', function(e) {
-                    var current = self.current;
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if(i === current) {
-                        return;
-                    } else {
-                        execute(i < current ? -120 : 120);
-                    }
-                })
+            self.indicators.each(function(i) {
+                $(this).data('index', i);
+            });
+            self.indicators.on('click', function(e) {
+                var current = self.current,
+                    i = $(this).data('index');
+                e.preventDefault();
+                e.stopPropagation();
+                if(i === current || self.animating) {
+                    return;
+                } else {
+                    execute(current - i, Math.abs(i - current));
+                }
             });
 
-            function execute(wheelDelta) {
+            function execute(wheelDelta, pages) {
                 var scrollTop = $window.scrollTop(),
                     current = self.current,
                     max = self.count - 1;
-                console.log(wheelDelta);
+                pages = pages || 1;
                 if(wheelDelta > 0) {
-                    if(scrollTop < 1) return;
+                    //if(scrollTop < 1) return;
                     self.upOrDown = 'up';
-                    current--;
+                    current -= pages;
                 } else {
-                    if(scrollTop + self.step + 10 >= $body.height()) return;
+                    //if(scrollTop + self.step + 10 >= $body.height()) return;
                     self.upOrDown = 'down';
-                    current++;
+                    current += pages;
                 }
-                self.current = current < 0 ? 0 : current > max ? max : current;
-                console.log('handle scroll', self.current);
-                self.scrollHander(scrollTop, self.ratio);
+                current = current < 0 ? 0 : current > max ? max : current;
+                if(current === self.current) {
+                    return;
+                }
+                self.current = current;
+                //self.current = current < 0 ? 0 : current > max ? max : current;
+                self.scrollHander(scrollTop, self.ratio, pages);
             }
         },
-        scrollHander: function(scrollTop, ratio) {
-            var self = this, 
+        scrollHander: function(scrollTop, ratio, pages) {
+            var self = this,
                 step = self.step * (self.upOrDown == "up" ? -1 : 1),
-                terminal = scrollTop + step;
+                terminal = scrollTop + step * pages;
             self.indicators.removeClass(self.indicatorActiveClass);
-            if (scrollTop + step < $body.height() - 10) {
-                if (!$scrollEl.is(":animated")) { //避免多次滚轮造成的多次滚动
-                    $scrollEl.animate({
-                        "scrollTop": terminal + "px"
-                    }, 800, 'linear', function() {
-                        if (self.upOrDown == "up") { //代表转轮往上，文本内容其实是往下
-                            bounce(terminal, 20, 150, ratio);
-                        } else {
-                            bounce(terminal, -20, 150, ratio);
-                        }
-                    });
-                    self.indicators.eq(self.current).addClass(self.indicatorActiveClass);
+            
+            self.doScroll(terminal + "px", 500, function() {
+                if (self.upOrDown == "up") { //代表转轮往上，文本内容其实是往下
+                    bounce(terminal, 20, 150, ratio);
+                } else {
+                    bounce(terminal, -20, 150, ratio);
                 }
-            }
+            });
+            self.indicators.eq(self.current).addClass(self.indicatorActiveClass);
+            
+        },
+        doScroll: function(scrollTop, duration, cb) {
+            var self = this;
+            self.animating = true;
+            $scrollEl.animate({
+                scrollTop: scrollTop
+            }, duration, function() {
+                self.animating = false;
+                cb && cb();
+            });
         }
     };
+
 
     function bounce(terminal, distant, time, ratio) {
         $scrollEl.animate({
@@ -116,7 +138,6 @@
     }
 
     $.fn.pageScroll = function(options) {
-        console.log(this);
         return this.each(function() {
             if (!$.data(this, "pluginPageScroll")) {
                 $.data(this, "pluginPageScroll", new SmoothScroll(this, options));

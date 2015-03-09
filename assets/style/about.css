@@ -3353,20 +3353,32 @@ h6 {
 .bg-danger {
   background-color: #d9534f;
 }
-.bg-info {
-  background-color: #738ffe;
+.bg-bluegrey {
+  background-color: #607D8B;
 }
 .user-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
   width: 100%;
-  padding-top: 10rem;
+  height: 34rem;
   text-align: center;
 }
 .user-info .head {
   width: 8rem;
 }
 .skill-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 35.4rem;
   text-align: center;
-  padding-top: 10rem;
 }
 .skill-info .chart div {
   height: 2rem;
@@ -3392,7 +3404,13 @@ h6 {
   width: 25%;
 }
 .preject-info {
-  padding-top: 10rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 36.6rem;
 }
 .preject-info > h1 {
   text-align: center;
