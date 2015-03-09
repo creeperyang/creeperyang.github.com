@@ -1,9 +1,16 @@
-(function($, window, document, undefined) {
+/*
+ * @name: pageScroll
+ * @description: a simple jQuery plugin to scroll page.
+ * @version: 0.0.1
+ * @date: 2015-03-09 
+ * @author: creeperyang <pashanhu6@hotmail.com>
+ */
+
+;(function($, window, document, undefined) {
     "use strict";
 
     var $window = $(window);
     var $body = $(document.body);
-    var isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
     var $scrollEl = $body;
     var config = {
         step: null,
@@ -12,7 +19,7 @@
         indicatorActiveClass: 'active'
     };
 
-    function SmoothScroll(container, options) {
+    function PageScroller(container, options) {
         var opt = $.extend({}, config, options);
         this.$container = $(container);
         this.timeStamp = new Date().getTime();
@@ -22,23 +29,24 @@
         this.upOrDown = "";
         this.ratio = opt.ratio > 1 ? 0.6 : opt.ratio; //缓动系数
         this.stages = this.$container.find('.stage');
+        this.count = this.stages.length;
         this.indicators = $(opt.indicator);
         this.indicatorActiveClass = opt.indicatorActiveClass;
         this.current = 0;
         this.init();
     }
 
-    SmoothScroll.prototype = {
-        constructor: SmoothScroll,
+    PageScroller.prototype = {
+        constructor: PageScroller,
         init: function() {
             var self = this,
                 $container = self.$container;
 
+            // set scrollTop 0 and set stages correct height
             self.stages.css("height", self.step + 'px');
-            self.count = self.stages.length;
-
-            // scroll to top
             self.doScroll(0, 500);
+            
+            // break if only one stage
             if(self.count <=1) {
                 return;
             }
@@ -48,6 +56,7 @@
                 self.stages.css("height", self.step + 'px');
                 self.doScroll(self.current * self.step, 500);
             });
+
             $container.on('mousewheel', function(e){
                 e.preventDefault();
                 e.stopPropagation();
@@ -77,11 +86,9 @@
                     max = self.count - 1;
                 pages = pages || 1;
                 if(wheelDelta > 0) {
-                    //if(scrollTop < 1) return;
                     self.upOrDown = 'up';
                     current -= pages;
                 } else {
-                    //if(scrollTop + self.step + 10 >= $body.height()) return;
                     self.upOrDown = 'down';
                     current += pages;
                 }
@@ -90,11 +97,10 @@
                     return;
                 }
                 self.current = current;
-                //self.current = current < 0 ? 0 : current > max ? max : current;
-                self.scrollHander(scrollTop, self.ratio, pages);
+                self.scrollHandler(scrollTop, self.ratio, pages);
             }
         },
-        scrollHander: function(scrollTop, ratio, pages) {
+        scrollHandler: function(scrollTop, ratio, pages) {
             var self = this,
                 step = self.step * (self.upOrDown == "up" ? -1 : 1),
                 terminal = scrollTop + step * pages;
@@ -122,7 +128,7 @@
         }
     };
 
-
+    // bounce animation
     function bounce(terminal, distant, time, ratio) {
         $scrollEl.animate({
             "scrollTop": (terminal + distant) + "px"
@@ -137,12 +143,16 @@
         });
     }
 
+    // expose plugin
     $.fn.pageScroll = function(options) {
         return this.each(function() {
             if (!$.data(this, "pluginPageScroll")) {
-                $.data(this, "pluginPageScroll", new SmoothScroll(this, options));
+                $.data(this, "pluginPageScroll", new PageScroller(this, options));
             }
         });
     };
+
+    // expose default setting
+    $.fn.pageScroll.config = config;
 
 })(jQuery, window, document);
