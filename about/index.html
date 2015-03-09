@@ -10,7 +10,7 @@
         <meta name="baidu-site-verification" content="cRhS93CD93" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <title>About</title>
-        <link rel="stylesheet" type="text/css" href="/assets/style/main.css" />
+        <link rel="stylesheet" type="text/css" href="/assets/style/about.css" />
         <script>
         var _hmt = _hmt || [];
         (function() {
@@ -21,17 +21,58 @@
         })();
         </script>
     </head>
-    <body class='state-wrap'>
+    <body class='stage-wrap'>
         <ul class='unstyled-list stage-list'>
-            <li class='stage bg-primary'></li>
-            <li class='stage bg-success'></li>
-            <li class='stage bg-danger'></li>
+            <li class='stage bg-primary'>
+                <div class="user-info">
+                    <img class='head img-responsive img-circle paper-shadow-z-2' src="/assets/images/head.jpg">
+                    <h3>Creeper</h3>
+                    <h2>Front End Developer</h2>
+                    <p>Graduated from Nanjing University of Posts and Telecommunications, Working at Shanghai from 2014/06.</p>
+                </div>
+            </li>
+            <li class='stage bg-success'>
+                <div class="skill-info row">
+                    <h1>Skills</h1>
+                    <div class="chart col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
+                        <div class="length-4">JavaScript</div>
+                        <div class="length-3">Html+CSS</div>
+                        <div class="length-3">Node.js</div>
+                        <div class="length-3">Front-end develop tools: yeoman,grunt,bower</div>
+                        <div class="length-3">Framework: jQuery,Angularjs, d3.js</div>
+                    </div>
+                </div>
+            </li>
+            <li class='stage bg-info'>
+                <div class="preject-info row">
+                    <h1>Projects</h1>
+                    <ul class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
+                        <li>
+                            <h4>基于AngularJs的后台管理系统(<a href="http://admin.xiaoluwifi.com/">admin.xiaoluwifi.com</a>)</h4>
+                            <p>ajax参数处理，统一的权限处理，自定义tree/table指令，基于d3.js的图表指令等待。</p>
+                        </li>
+                        <li>
+                            <h4>基于node.js的简单爬虫(<a href="https://github.com/creeperyang/zCrawler">zCrawler</a>，in progress)</h4>
+                            <p>压缩文档的解压，编码处理，基于纯文档/cheerio的文档分析。</p>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <ul class='unstyled-list indicator-list'>
+            <li class='indicator active'></li>
+            <li class='indicator'></li>
+            <li class='indicator'></li>
         </ul>
         <script type="text/javascript" src="/assets/script/lib/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="/assets/script/ripples.js"></script>
         <script type="text/javascript" src="/assets/script/pageScroll.js"></script>
         <script type="text/javascript">
             $('.withripple').ripples();
+            $('.stage-list').pageScroll({
+                indicator: '.indicator',
+                indicatorActiveClass: 'active'
+            });
         </script>
         <script type="text/javascript">
         var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");

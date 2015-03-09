@@ -272,6 +272,26 @@ footer {
         overflow: hidden;
 	}
 }
+.indicator-list {
+	position: absolute;
+	z-index: 1;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	.indicator {
+		display: block;
+		width: 1rem;
+		height: 1rem;
+		margin: 1rem;
+		border-radius: 50%;
+		border: 1px solid #000;
+		transition: background-color 0.3s;
+		&:active {
+			background-color: #000;
+		}
+	}
+}
 .bg-primary {
 	background-color: @brand-primary;
 }

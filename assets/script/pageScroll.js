@@ -1,35 +1,30 @@
-(function(global, factory) {
-    if (typeof module === 'object') {
-        module.exports = factory();
-    } else if (typeof define === 'function' && define.amd) {
-        define(factory);
-    } else {
-        if (global.jQuery) {
-            global.jQuery.fn.module = factory();
-        }
-    }
-})(this, function(undefined) {
+(function($, window, document, undefined) {
+    "use strict";
 
     var $window = $(window);
     var $body = $(document.body);
+    var isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    var $scrollEl = $body;
     var config = {
         step: null,
-        f: 1
+        ratio: 0.6,
+        indicator: '.indicator',
+        indicatorActiveClass: 'active'
     };
 
     function SmoothScroll(container, options) {
         var opt = $.extend({}, config, options);
         this.$container = $(container);
         this.timeStamp = new Date().getTime();
-        //每次滚动位移
-        this.step = opt.step || $window.height();
-        //缓动系数
-        this.f = opt.f;
-        this.upOrDown = "";
 
-        // -----------
+        this.step = opt.step || $window.height(); //每次滚动位移
         this.animating = false;
-        this.stages = this.container.find('.stage');
+        this.upOrDown = "";
+        this.ratio = opt.ratio > 1 ? 0.6 : opt.ratio; //缓动系数
+        this.stages = this.$container.find('.stage');
+        this.indicators = $(opt.indicator);
+        this.indicatorActiveClass = opt.indicatorActiveClass;
+        this.current = 0;
         this.init();
     }
 
@@ -40,142 +35,93 @@
                 $container = self.$container;
 
             self.stages.css("height", self.step + 'px');
-
+            self.count = self.stages.length;
+            $scrollEl.animate({
+                "scrollTop": 0
+            }, 500);
+            if(self.count <=1) {
+                return;
+            }
             $container.on('mousewheel', function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                self.upOrDown = e.wheelDelta > 0 ? "up" : "down";
-                if(self.stages.length <=1) {
-                    return;
-                }
-                self.scrollHander();
+                execute(e.originalEvent.wheelDelta);
             });
+            self.indicators.each(function(item, i) {
+                $(this).on('click', function(e) {
+                    var current = self.current;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if(i === current) {
+                        return;
+                    } else {
+                        execute(i < current ? -120 : 120);
+                    }
+                })
+            });
+
+            function execute(wheelDelta) {
+                var scrollTop = $window.scrollTop(),
+                    current = self.current,
+                    max = self.count - 1;
+                console.log(wheelDelta);
+                if(wheelDelta > 0) {
+                    if(scrollTop < 1) return;
+                    self.upOrDown = 'up';
+                    current--;
+                } else {
+                    if(scrollTop + self.step + 10 >= $body.height()) return;
+                    self.upOrDown = 'down';
+                    current++;
+                }
+                self.current = current < 0 ? 0 : current > max ? max : current;
+                console.log('handle scroll', self.current);
+                self.scrollHander(scrollTop, self.ratio);
+            }
         },
-        scrollHander: function() {
+        scrollHander: function(scrollTop, ratio) {
             var self = this, 
                 step = self.step * (self.upOrDown == "up" ? -1 : 1),
-                scrollTop = $window.scrollTop();
-            var tar = scrollTop + step;
-
-            if (tar < $body.height() - 10) {
-                if (!$(windowobject).is(":animated")) { //避免多次滚轮造成的多次滚动
-
-                    $(windowobject).animate({
-                        "scrollTop": "+=" + step + "px"
-                    }, 600, function() {
+                terminal = scrollTop + step;
+            self.indicators.removeClass(self.indicatorActiveClass);
+            if (scrollTop + step < $body.height() - 10) {
+                if (!$scrollEl.is(":animated")) { //避免多次滚轮造成的多次滚动
+                    $scrollEl.animate({
+                        "scrollTop": terminal + "px"
+                    }, 800, 'linear', function() {
                         if (self.upOrDown == "up") { //代表转轮往上，文本内容其实是往下
-                            crash_bottom(1, scrollTop, 20, 150);
+                            bounce(terminal, 20, 150, ratio);
                         } else {
-                            crash(0, scrollTop, 20, 150);
+                            bounce(terminal, -20, 150, ratio);
                         }
                     });
+                    self.indicators.eq(self.current).addClass(self.indicatorActiveClass);
                 }
             }
-
         }
     };
 
-    function crash_bottom(direction, termin, distant, time) {
-        if (!stop) {
-            var scrollTop = $(window).scrollTop();
-            if (direction == 1) { //向上
-                direction = 0;
-                $(windowobject).animate({
-                    "scrollTop": "+=" + distant + "px"
-                }, time, function() {
-                    crash_bottom(direction, termin, distant * 0.6, time);
-                    if (distant <= 15 || time > 150) {
-                        stop = 1; //代表开始停止碰撞
-
-                        $(windowobject).animate({
-                            "scrollTop": termin + "px"
-                        }, time, function() {
-                            //为0代表碰撞结束
-                            crollNow = termin;
-                            stop = 0;
-                            /*setTimeout(function(){
-                                setTimeDown();
-                            },500);*/
-                        });
-                    }
-                });
-            } else if (direction == 0) { //向下
-                direction = 1;
-                $(windowobject).animate({
-                    "scrollTop": termin + "px"
-                }, time, function() {
-                    crash_bottom(direction, termin, distant * 0.6, time);
-                    if (distant <= 15 || time > 150) {
-                        stop = 1;
-                        $(windowobject).animate({
-                            "scrollTop": termin + "px"
-                        }, time, function() {
-                            crollNow = termin;
-                            stop = 0;
-                        });
-                    }
-                });
+    function bounce(terminal, distant, time, ratio) {
+        $scrollEl.animate({
+            "scrollTop": (terminal + distant) + "px"
+        }, time, function() {
+            if (distant <= 15) {
+                $scrollEl.animate({
+                    "scrollTop": terminal + "px"
+                }, time, function() {});
+            } else {
+                bounce(terminal, -distant * ratio, time);
             }
-        }
+        });
     }
 
-    function crash(direction, termin, distant, time) {
-        if (!stop) {
-            var scrollTop = $(window).scrollTop();
-            if (direction == 0) { //向下
-                direction = 1;
-                $(windowobject).animate({
-                    "scrollTop": "-=" + distant + "px"
-                }, time, function() {
-                    crash(direction, termin, distant * 0.6, time);
-                    if (distant <= 15 || time > 150) {
-                        stop = 1;
-                        $(windowobject).animate({
-                            "scrollTop": termin + "px"
-                        }, time, function() {
-                            crollNow = termin;
-                            stop = 0;
-                        });
-                    }
-                });
-            } else if (direction == 1) { //向上
-                direction = 0;
-                $(windowobject).animate({
-                    "scrollTop": termin + "px"
-                }, time, function() {
-                    crash(direction, termin, distant * 0.6, time);
-                    if (distant <= 15 || time > 150) {
-                        stop = 1;
-                        $(windowobject).animate({
-                            "scrollTop": termin + "px"
-                        }, time, function() {
-                            crollNow = termin;
-                            stop = 0;
-                        });
-                    }
-                });
+    $.fn.pageScroll = function(options) {
+        console.log(this);
+        return this.each(function() {
+            if (!$.data(this, "pluginPageScroll")) {
+                $.data(this, "pluginPageScroll", new SmoothScroll(this, options));
             }
-        }
-    }
+        });
+    };
 
-
-
-
-
-
-
-
-
-    //-------------------
-    return SmoothScroll;
-});
-
-
-var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-if (is_chrome) {
-    //判断是chrome、搜狗chrome内核, 供scrollTop兼容性使用
-    windowobject = "body";
-} else {
-    //支持ie和ff
-    windowobject = "html";
-}
+})(jQuery, window, document);
