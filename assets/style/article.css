@@ -1856,7 +1856,7 @@ img {
   vertical-align: middle;
 }
 .img-responsive {
-  display: block;
+  display: inline-block;
   width: 100%;
   height: auto;
 }
@@ -3287,6 +3287,9 @@ h6 {
   font-family: 'CyRobot', "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
   font-weight: normal;
 }
+h6 {
+  font-size: 14px;
+}
 img {
   max-width: 100% !important;
 }
@@ -3363,7 +3366,7 @@ img {
   margin-right: -1rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  background-color: #eeeeee;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 .info-wrap ul {
   padding-left: 0;
@@ -3373,16 +3376,18 @@ img {
 .info-wrap ul li {
   float: left;
   margin: 1rem 2rem 0;
-  color: #777777;
+  color: #fff;
 }
 .info-wrap ul li > span {
-  color: #333333;
+  color: #fff;
   padding: 0.2rem;
   border-radius: 0.2rem;
 }
 .info-wrap ul li .tag,
 .info-wrap ul li .category {
-  background-color: #ddd;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 0.2rem;
 }
 .pagination {

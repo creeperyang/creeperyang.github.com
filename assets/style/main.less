@@ -234,13 +234,24 @@ footer {
 	background-color: #fff;
 	border-radius: 0.2rem;
 	color: lighten(@text-color, 16%);
+	.clearfix();
 	@media (min-width: @screen-md-min) {
 	    padding: @large-padding-ver @large-padding-hor;
 	}
 	.archive-time {
+		width: 100%;
+		@media (min-width: @screen-xs-min) {
+		    float: left;
+			width: 16.666666%;
+		}
 		line-height: floor((@font-size-large * @line-height-base));
 	}
 	.archive-content {
+		width: 100%;
+		@media (min-width: @screen-xs-min) {
+		    float: left;
+			width: 83.333333%;
+		}
 		.title {
 			font-size: @font-size-large;
 		}

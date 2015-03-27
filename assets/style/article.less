@@ -42,6 +42,9 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: 'CyRobot', @font-family-sans-serif;
 	font-weight: normal;
 }
+h6 {
+	font-size: @font-size-base;
+}
 img {
 	max-width: 100% !important;
 }
@@ -116,7 +119,7 @@ img {
 		padding-left: @base-padding;
 		padding-right: @base-padding;
 
-		background-color: @gray-lighter;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
 	}
 	ul {
 		padding-left: 0;
@@ -125,14 +128,16 @@ img {
 		li {
 			float: left;
 			margin: @base-padding @base-padding*2 0;
-			color: @gray-light;
+			color: #fff;
 			&>span {
-				color: @text-color;
+				color: #fff;
 				padding: 0.2rem;
 				border-radius: 0.2rem;
 			}
 			.tag, .category {
-				background-color: #ddd;
+				padding-left: 0.4rem;
+				padding-right: 0.4rem;
+				background-color: rgba(0, 0, 0, 0.1);
 				border-radius: 0.2rem;
 			}
 		}

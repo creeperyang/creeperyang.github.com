@@ -47,15 +47,11 @@ layout: home
                 {% assign curYearMonth = post.date | date:"%Y%m" %}
 
                 {% if yearMonth != curYearMonth %}
-                    <div class='row'>
-                        <div class='col-sm-12'>
-                            <div class='year-month-spliter'>{{post.date | date:"%b %Y" | upcase}}</div>
-                        </div>
-                    </div>
+                    <div class='year-month-spliter'>{{post.date | date:"%b %Y" | upcase}}</div>
                     {% assign yearMonth = curYearMonth %}
                 {% endif %}
-                <div class="row archive-view paper-shadow-z-1 withripple">
-                    <div class='archive-time col-sm-2'>
+                <div class="archive-view paper-shadow-z-1 withripple">
+                    <div class='archive-time'>
                         <b>{% assign d = post.date | date: "%-d"  %}
                         {{ post.date | date: "%B" }} 
                         {% case d %}
@@ -65,7 +61,7 @@ layout: home
                             {% else %}{{ d }}th
                         {% endcase %}</b>
                     </div>
-                    <div class="archive-content col-sm-10 ">
+                    <div class="archive-content">
                         <a class="title" href="{{post.url}}">{{ post.title }}</a>
                         <span class='content'>——{{ post.content | strip_html | strip_newlines | truncate: 80 }}</span>
                     </div>
