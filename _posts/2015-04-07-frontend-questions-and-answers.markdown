@@ -94,6 +94,28 @@ tags: [questions, 问题]
 
     搜索此题答案时，[颜海镜的一篇博客](http://yanhaijing.com/javascript/2012/04/05/javascript-continuous-assignment-operator/)关于此题也有讲述，不过没有讲清楚（或许是我没有领会 :P）。
 
+### 1.4 逗号操作符(*updated: 2015-04-29*)
+
+- 问题： javascript comma operator，下面的代码返回什么，为什么？
+    
+    ```javascript
+    var x = 20;
+    var temp = {
+        x: 40,
+        foo: function() {
+            var x = 10;
+            return this.x;
+        }
+    };
+    (temp.foo, temp.foo)(); // 20，而不是40
+    ```
+
+- 原因： 
+    
+    [MDN逗号操作符](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comma_Operator): The comma operator evaluates each of its operands (from left to right) and returns the value of the last operand.
+
+    即逗号操作符会从左到右计算它的操作数，返回最后一个操作数的值。所以`(temp.foo, temp.foo)();`等价于`var fun = temp.foo; fun();`，`fun`调用时`this`指向`window`，所以返回20。
+
 ## 2. JavaScript内置API相关问题
 
 ### 2.1 parseInt的问题(*updated: 2015-04-13*)
