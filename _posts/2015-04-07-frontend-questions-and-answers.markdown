@@ -94,7 +94,7 @@ tags: [questions, 问题]
 
     搜索此题答案时，[颜海镜的一篇博客](http://yanhaijing.com/javascript/2012/04/05/javascript-continuous-assignment-operator/)关于此题也有讲述，不过没有讲清楚（或许是我没有领会 :P）。
 
-### 1.4 逗号操作符(*updated: 2015-04-29*)
+### 1.5 逗号操作符(*updated: 2015-04-29*)
 
 - 问题： javascript comma operator，下面的代码返回什么，为什么？
     
