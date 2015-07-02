@@ -2599,6 +2599,8 @@ hr {
   touch-action: manipulation;
   cursor: pointer;
   background-image: none;
+  background-color: transparent;
+  border: none;
   white-space: nowrap;
   transition: background-color 0.3s;
   padding: 0.6rem 1.2rem;
@@ -3317,9 +3319,13 @@ h6 {
 .cy-header .toolbar-row .btn {
   color: #1a47fb;
 }
+.cy-header .toolbar-row .search-form {
+  float: left;
+}
 .cy-header .toolbar-row .search-input {
   color: #fff;
   padding: 0.3rem 0.6rem;
+  width: 180px;
   background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), linear-gradient(#1a47fb, #1a47fb);
 }
 .cy-header .toolbar-row .search-input::-webkit-input-placeholder {
