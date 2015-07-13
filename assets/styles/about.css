@@ -114,7 +114,7 @@ h4 {
     text-align: center;
 }
 
-.preject-info {
+.project-info {
     position: absolute;
     left: 0;
     right: 0;
@@ -126,16 +126,16 @@ h4 {
     opacity: 0;
 }
 
-.preject-info h3 {
-    margin: 12px 0;
+.project-info h3 {
+    text-align: center;
 }
 
-.preject-info a {
+.project-info a {
     text-decoration: none;
     color: #333;
 }
 
-.animating .skill-info, .animating .preject-info{
+.animating .skill-info, .animating .project-info{
     animation: zoomIn 1s linear 0s 1;
     opacity: 1;
 }
