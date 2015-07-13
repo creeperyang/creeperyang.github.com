@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>AngularJs控制器 | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">AngularJs控制器</span> 
+
+            </div>
+            <h3>AngularJs控制器</h3>
+            <p>控制器可能是angular中最常接触的部分，前面几章都说到或者在用控制器，这章具体说一说。</p>
+<h2 id="理解控制器">理解控制器</h2><p>在angular中，控制器是一个js构造函数<strong>（<code>constructor function</code>）</strong>，这个构造函数用来扩张<strong>Angular Scope</strong>(augment the Angular Scope，为scope添加属性)。</p>
+<!--view-break-->
+<p>当一个控制器通过<code>ng-controller</code>指令被附加（attach）到DOM，angular会用指定的控制器的<code>constructor function</code>实例化一个新的控制器对象（Controller object）。一个新的子scope会作为注入参数（<code>$scope</code>）传给构造函数。</p>
+<p>我们用控制器来：</p>
+<ul>
+<li>设置<code>$scope</code>对象的初始状态;</li>
+<li>为<code>$scope</code>对象添加行为。</li>
+</ul>
+<p>不要用控制器来：</p>
+<ul>
+<li>操作DOM——控制器只应该包含业务逻辑（business logic）。把任何展示逻辑（presentation logic）放入控制器会严重影响控制器的可测试性。angular的数据绑定可以应付绝大多数情况，并且指令封装了DOM操作。</li>
+<li>格式化输入——用<a href="https://code.angularjs.org/1.3.0-rc.4/docs/guide/forms" target="_blank" rel="external">angular form controls</a>代替。</li>
+<li>格式化输出——用过滤器代替。</li>
+<li>在控制器之间共享代码或者状态——用服务代替。</li>
+<li>控制其它组件的生命周期（例如，创建服务实例）。</li>
+</ul>
+<h2 id="设置$scope对象的初始状态">设置<code>$scope</code>对象的初始状态</h2><p>一般的，当你创建app时你需要设置<code>$scope</code>的初始状态。你通过为<code>$scope</code>对象添加属性来设置初始状态。这些属性包括<strong>view model</strong>(the model that will be presented by the view)。在控制器注册到的DOM的范围内，<code>$scope</code>的所有属性都是模板可访问的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myApp = angular.module(<span class="string">'myApp'</span>,[]);</span><br><span class="line"></span><br><span class="line">myApp.controller(<span class="string">'GreetingController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>) </span>&#123;</span><br><span class="line">  $scope.greeting = <span class="string">'Hola!'</span>;</span><br><span class="line">&#125;]);</span><br></pre></td></tr></table></figure>
+<p>我们创建了<code>GreetingController</code>控制器，为其附加属性<code>greeting</code>。</p>
+<p>我们创建模块<code>myApp</code>，用<code>controller</code>方法把控制器的构造函数添加到模块上。这样使构造函数不会暴露到全局。</p>
+<h2 id="为scope对象添加行为">为scope对象添加行为</h2><p>为了与事件交互或者在视图中执行运算，必须为scope添加行为。我们通过为<code>$scope</code>对象添加方法来添加行为。这些方法可以在模板/视图中调用。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"DoubleController"</span>&gt;</span></span><br><span class="line">Two times <span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"num"</span>&gt;</span> equals &#123; &#123; double(num) &#125; &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="php"></span><br><span class="line"><span class="keyword">var</span> myApp = angular.module(<span class="string">'myApp'</span>,[]);</span><br><span class="line"></span><br><span class="line">myApp.controller(<span class="string">'DoubleController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span> </span>&#123;</span><br><span class="line">  <span class="variable">$scope</span>.double = <span class="function"><span class="keyword">function</span><span class="params">(value)</span> </span>&#123; <span class="keyword">return</span> value * <span class="number">2</span>; &#125;;</span><br><span class="line">&#125;]);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如之前所说，附加到scope上的任意对象/基本类型（objects/primitives）都会成为模型属性，任何附加到scope的方法都可以在模板/视图中访问，通过表达式或<code>ng</code>事件处理指令（如<code>ng-click</code>）调用。</p>
+<h2 id="正确使用控制器">正确使用控制器</h2><p>总体来说，一个控制器不要尝试做太多的事。一个控制器只应该包含一个单独的视图所需要的业务逻辑。</p>
+<p>保持控制器瘦身的最通常做法是把不属于控制器的工作封装到服务，然后通过依赖注入来使用这些服务。具体的可以看看<a href="https://code.angularjs.org/1.3.0-rc.4/docs/guide/di" target="_blank" rel="external">Dependency Injection</a>和<a href="https://code.angularjs.org/1.3.0-rc.4/docs/guide/services" target="_blank" rel="external">Services</a>。</p>
+<h2 id="Associating_Controllers_with_Angular_Scope_Objects">Associating Controllers with Angular Scope Objects</h2><p>你可以通过<code>ngController</code>指令和<code>$route</code>服务来显示地把控制器和scope联系起来。</p>
+<h3 id="简单的”辣味“控制器例子">简单的”辣味“控制器例子</h3><p>为进一步描述控制器在angular中怎么工作的，让我们创建一个有以下组件的简单app：</p>
+<ul>
+<li>有2个buttons和一个简单的message的模板</li>
+<li>一个模型，有叫spice的字符串</li>
+<li>有2个函数设置spice值的控制器</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"SpicyController"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"chiliSpicy()"</span>&gt;</span>Chili<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"jalapenoSpicy()"</span>&gt;</span>Jalapeño<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>The food is &#123; &#123;spice&#125; &#125; spicy!<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="php"></span><br><span class="line">  <span class="keyword">var</span> myApp = angular.module(<span class="string">'spicyApp1'</span>, []);</span><br><span class="line"></span><br><span class="line">  myApp.controller(<span class="string">'SpicyController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span> </span>&#123;</span><br><span class="line">    <span class="variable">$scope</span>.spice = <span class="string">'very'</span>;</span><br><span class="line">    <span class="variable">$scope</span>.chiliSpicy = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="variable">$scope</span>.spice = <span class="string">'chili'</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="variable">$scope</span>.jalapenoSpicy = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="variable">$scope</span>.spice = <span class="string">'jalapeño'</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;]);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>由上面例子可知：</p>
+<ul>
+<li><code>ng-controller</code>指令（显然是）用来为模板创建一个scope的，并且这个scope会传给<code>SpicyController</code>控制器。</li>
+<li><code>SpicyController</code>仅仅是个JS函数。作为可选的命名惯例，名字以大写字母开头，以”Controller”结尾。</li>
+<li>为<code>$scope</code>赋值一个属性会创建/更新模型。Assigning a property to <code>$scope</code> creates or updates the model.</li>
+<li>控制器的方法可以通过直接为scope赋值来创建，如<code>chiliSpicy</code>方法。</li>
+<li>控制器的方法/属性在模板中可以访问。</li>
+</ul>
+<h3 id="”辣味“有参数的例子">”辣味“有参数的例子</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"SpicyController"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"customSpice"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"spicy('chili')"</span>&gt;</span>Chili<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"spicy(customSpice)"</span>&gt;</span>Custom spice<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">p</span>&gt;</span>The food is &#123; &#123;spice&#125; &#125; spicy!<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="php"></span><br><span class="line">  <span class="keyword">var</span> myApp = angular.module(<span class="string">'spicyApp2'</span>, []);</span><br><span class="line"></span><br><span class="line">  myApp.controller(<span class="string">'SpicyController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span> </span>&#123;</span><br><span class="line">      <span class="variable">$scope</span>.customSpice = <span class="string">"wasabi"</span>;</span><br><span class="line">      <span class="variable">$scope</span>.spice = <span class="string">'very'</span>;</span><br><span class="line"></span><br><span class="line">      <span class="variable">$scope</span>.spicy = <span class="function"><span class="keyword">function</span><span class="params">(spice)</span> </span>&#123;</span><br><span class="line">          <span class="variable">$scope</span>.spice = spice;</span><br><span class="line">      &#125;;</span><br><span class="line">  &#125;]);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>注意一下，<code>ng-click=&quot;spicy(&#39;chili&#39;)&quot;</code>是直接传入字符串，<code>ng-click=&quot;spicy(customSpice)&quot;</code>传入模型属性。</p>
+<h3 id="scope继承的例子">scope继承的例子</h3><p>在不同层级的DOM上附加不同级别的控制器很正常。因为<code>ng-controller</code>指令会创建新的子scope（new child scope），因而控制器有继承体系。低级别的控制器可以访问高级别的控制器的属性。具体可参考<a href="https://github.com/angular/angular.js/wiki/Understanding-Scopes" target="_blank" rel="external">Understanding Scopes</a>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"spicy"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"MainController"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">p</span>&gt;</span>Good &#123; &#123;timeOfDay&#125; &#125;, &#123; &#123;name&#125; &#125;!<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"ChildController"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">p</span>&gt;</span>Good &#123; &#123;timeOfDay&#125; &#125;, &#123; &#123;name&#125; &#125;!<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"GrandChildController"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">p</span>&gt;</span>Good &#123; &#123;timeOfDay&#125; &#125;, &#123; &#123;name&#125; &#125;!<span class="tag">&lt;/<span class="title">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="php"></span><br><span class="line"><span class="keyword">var</span> myApp = angular.module(<span class="string">'scopeInheritance'</span>, []);</span><br><span class="line">myApp.controller(<span class="string">'MainController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span> </span>&#123;</span><br><span class="line">  <span class="variable">$scope</span>.timeOfDay = <span class="string">'morning'</span>;</span><br><span class="line">  <span class="variable">$scope</span>.name = <span class="string">'Nikki'</span>;</span><br><span class="line">&#125;]);</span><br><span class="line">myApp.controller(<span class="string">'ChildController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span> </span>&#123;</span><br><span class="line">  <span class="variable">$scope</span>.name = <span class="string">'Mattie'</span>;</span><br><span class="line">&#125;]);</span><br><span class="line">myApp.controller(<span class="string">'GrandChildController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span> </span>&#123;</span><br><span class="line">  <span class="variable">$scope</span>.timeOfDay = <span class="string">'evening'</span>;</span><br><span class="line">  <span class="variable">$scope</span>.name = <span class="string">'Gingerbread Baby'</span>;</span><br><span class="line">&#125;]);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>子scope中有同名属性则覆盖父scope的属性，没有则继承。</p>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2014/09/angular-forms/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/08/classes-and-modules/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2014/09/angular-controller/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

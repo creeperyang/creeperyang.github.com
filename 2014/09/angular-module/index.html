@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>AngularJs Modules | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">AngularJs Modules</span> 
+
+            </div>
+            <h3>AngularJs Modules</h3>
+            <h2 id="什么是模块">什么是模块</h2><p>你可以把模块当作你app不同部分（控制器、指令、过滤器等等）的容器。</p>
+<h2 id="为什么需要模块">为什么需要模块</h2><p>大多应用有个main方法实例化app的各个部分并把它们联系起来。</p>
+<p>angular app没有main方法。作为代替，模块声明性地指定一个app怎么启动。这样做的几个优点：</p>
+<ul>
+<li>声明性的处理更易理解;</li>
+<li>可以打包代码作为可复用模块;</li>
+<li>因为模块的延迟执行，不同模块可以以任意顺序（甚至并行）加载;</li>
+<li>单元测试更快;</li>
+<li>端到端测试可以用模块来覆写配置。</li>
+</ul>
+<!--view-break-->
+<h2 id="基础(The_Basics)">基础(The Basics)</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-app</span>=<span class="value">"myApp"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">div</span>&gt;</span></span><br><span class="line">    &#123; &#123; 'World' | greet &#125; &#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="actionscript"></span><br><span class="line">    <span class="keyword">var</span> myAppModule = angular.module(<span class="string">'myApp'</span>, []);</span><br><span class="line"></span><br><span class="line">    myAppModule.filter(<span class="string">'greet'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">(name)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'hello, '</span> + name + <span class="string">'!'</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<ul>
+<li><code>module</code> API;</li>
+<li><code>&lt;div ng-app=&quot;myApp&quot;&gt;</code>引用<code>myApp</code>模块。这是用<code>myApp</code>模块启动应用。</li>
+<li><code>angular.module(&#39;myApp&#39;, [])</code>的空数组是<code>myApp</code>的依赖。</li>
+</ul>
+<h2 id="推荐形式">推荐形式</h2><p>上面的例子是简单的，但不容易适配大型应用。相反，我们推荐你把app分解成多个模块：</p>
+<ul>
+<li>每个特性一个模块</li>
+<li>每个可重用组件一个模块（特别是指令和过滤器）</li>
+<li>app级别的模块依赖上面的模块，并可以包括任意初始化代码。</li>
+</ul>
+<iframe width="100%" height="300" src="http://jsfiddle.net/creeper/sfd5ag20/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h2 id="模块加载和依赖">模块加载和依赖</h2><p>模块是<code>configuration</code>和<code>run</code>块（blocks）的集合，这些块在app启动阶段被应用到app。最简形式时，模块由两种block的集合组成：</p>
+<ul>
+<li>配置blocks：在provider registrations 和 configuration阶段执行。只有provider和常数可以注入配置block。这可以防止在（服务的）所有的配置完成前，服务被初始化。</li>
+<li>运行blocks：在注入器被创建并用来启动app之后执行。只有实例和常数可以注入到运行block。这可以防止运行阶段做更多配置。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">angular.module(<span class="string">'myModule'</span>, []).</span><br><span class="line">config(<span class="function"><span class="keyword">function</span>(<span class="params">injectables</span>) </span>&#123; <span class="comment">// provider-injector</span></span><br><span class="line">  <span class="comment">// This is an example of config block.</span></span><br><span class="line">  <span class="comment">// You can have as many of these as you want.</span></span><br><span class="line">  <span class="comment">// You can only inject Providers (not instances)</span></span><br><span class="line">  <span class="comment">// into config blocks.</span></span><br><span class="line">&#125;).</span><br><span class="line">run(<span class="function"><span class="keyword">function</span>(<span class="params">injectables</span>) </span>&#123; <span class="comment">// instance-injector</span></span><br><span class="line">  <span class="comment">// This is an example of a run block.</span></span><br><span class="line">  <span class="comment">// You can have as many of these as you want.</span></span><br><span class="line">  <span class="comment">// You can only inject instances (not Providers)</span></span><br><span class="line">  <span class="comment">// into run blocks</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="配置block">配置block</h3><p>有些快捷方法等同于<code>config</code> block，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">angular.module(<span class="string">'myModule'</span>, []).</span><br><span class="line">value(<span class="string">'a'</span>, <span class="number">123</span>).</span><br><span class="line">factory(<span class="string">'a'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="number">123</span>; &#125;).</span><br><span class="line">directive(<span class="string">'directiveName'</span>, ...).</span><br><span class="line">filter(<span class="string">'filterName'</span>, ...);</span><br><span class="line"></span><br><span class="line"><span class="comment">// is same as</span></span><br><span class="line"></span><br><span class="line">angular.module(<span class="string">'myModule'</span>, []).</span><br><span class="line">config(<span class="function"><span class="keyword">function</span>(<span class="params">$provide, $compileProvider, $filterProvider</span>) </span>&#123;</span><br><span class="line">  $provide.value(<span class="string">'a'</span>, <span class="number">123</span>);</span><br><span class="line">  $provide.factory(<span class="string">'a'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="number">123</span>; &#125;);</span><br><span class="line">  $compileProvider.directive(<span class="string">'directiveName'</span>, ...);</span><br><span class="line">  $filterProvider.register(<span class="string">'filterName'</span>, ...);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><em>当启动时，angular首先应用所有的常数定义;然后以注册时顺序应用配置block。</em></p>
+<h3 id="运行block">运行block</h3><p>运行block是angular中最接近main方法的东西。运行block是需要运行来启动app的代码。</p>
+<p>运行block在所有服务被注册，injector被创建之后执行。运行block一般包含一些难以单元测试的代码。</p>
+<h3 id="依赖">依赖</h3><p>模块可以把其它模块作为依赖。作为依赖的模块必须在依赖它的模块之前加载。</p>
+<p>每个模块只加载一次，即使一个模块被很多其它模块依赖。</p>
+<h3 id="异步加载">异步加载</h3><p>模块是管理$injector配置的一种方式，并且与加载脚本到VM无关。有其他已存在的方案来管理脚本，可以与angular合作。因为模块在加载时什么都不做，所以它们可以以任意顺序加载。</p>
+<h3 id="创建与检索">创建与检索</h3><p>注意使用<code>angular.module(&#39;myModule&#39;, [])</code>会创建<code>myModule</code>，并覆盖已经存在的同名模块。使用<code>angular.module(&#39;myModule&#39;)</code>检索模块。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myModule = angular.module(<span class="string">'myModule'</span>, []);</span><br><span class="line"></span><br><span class="line"><span class="comment">// add some directives and services</span></span><br><span class="line">myModule.service(<span class="string">'myService'</span>, ...);</span><br><span class="line">myModule.directive(<span class="string">'myDirective'</span>, ...);</span><br><span class="line"></span><br><span class="line"><span class="comment">// overwrites both myService and myDirective by creating a new module</span></span><br><span class="line"><span class="keyword">var</span> myModule = angular.module(<span class="string">'myModule'</span>, []);</span><br><span class="line"></span><br><span class="line"><span class="comment">// throws an error because myOtherModule has yet to be defined</span></span><br><span class="line"><span class="keyword">var</span> myModule = angular.module(<span class="string">'myOtherModule'</span>);</span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2014/10/javascript-hoisting/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/09/angular-scope/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2014/09/angular-module/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

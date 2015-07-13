@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>从static/dynamic scope来谈JS的作用域 | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">JavaScript</span> &gt; <span class="category-item">从static/dynamic scope来谈JS的作用域</span> 
+
+            </div>
+            <h3>从static/dynamic scope来谈JS的作用域</h3>
+            <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'global'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printStr</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testScope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> str = <span class="string">'local'</span>;</span><br><span class="line">    printStr();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">printStr(); <span class="comment">// 毫无疑问，输出 "global"</span></span><br><span class="line">testScope(); <span class="comment">// 还是输出 "global"</span></span><br></pre></td></tr></table></figure>
+<!--view-break-->
+<p>在上面一段JS代码中<code>printStr();</code>输出<code>&quot;global&quot;</code>是很自然的，但<code>testScope();</code>仍然输出<code>&quot;global&quot;</code>可能就要让部分（使用其他语言的）人惊讶不解了。本文将从这段代码展开，深入JS的作用域（体系）。</p>
+<h2 id="变量、值与作用域">变量、值与作用域</h2><h3 id="从一般意义来理解变量、值与作用域">从一般意义来理解变量、值与作用域</h3><ul>
+<li><strong>variable</strong>：变量，就是值的符号名字（symbolic name）。变量的名字叫做标识符（identifier）。如<code>var x = 5;</code>中<code>x</code>就是变量。</li>
+<li><strong>value</strong>：值，真实数据，如字符串、数字、对象甚至函数等等。</li>
+<li><strong>varaible scope</strong>：<code>name bingding</code>（即变量和值的联系）的作用域，是指在部分程序（<strong>part of a program</strong>，大多数情况就是代码块）内，变量与值的联系是有效的（即变量可以用来引用值）。而在程序的另一部分，该变量可能指向另一个值，或者干脆没有任何绑定。作用域又称为值的可见性。</li>
+</ul>
+<blockquote>
+<p>In computer programming, the scope of a name binding – an association of a name to an entity, such as a variable – is the part of a computer program where the binding is valid: where the name can be used to refer to the entity. In other parts of the program the name may refer to a different entity (it may have a different binding), or to nothing at all (it may be unbound). The scope of a binding is also known as the <strong>visibility</strong> of an entity, particularly in older or more technical literature – this is from the perspective of the referenced entity, not the referencing name. A scope is a part of a program that is or can be the scope for a set of bindings – a precise definition is tricky (see below), but in casual use and in practice largely corresponds to a block, a function, or a file, depending on language and type of entity. The term “scope” is also used to refer to the set of all entities that are visible or names that are valid within a portion of the program or at a given point in a program, which is more correctly referred to as context or environment. <small>—<a href="http://en.wikipedia.org/wiki/Scope_(computer_science" target="_blank" rel="external">http://en.wikipedia.org/wiki/Scope_(computer_science</a>)</small></p>
+</blockquote>
+<p>（Lexial） scope的明确定义是<em>the portion of source code in which a binding of a name with an entity applies</em>，即scope就是一段源码（代码块），在这段代码内，变量到值的绑定应用。</p>
+<h3 id="JavaScript中的变量、值与作用域">JavaScript中的变量、值与作用域</h3><p>在JavaScript中，当你定义一个变量，这个变量的作用域要么是全局作用域（global scope），要么属于函数作用域。</p>
+<blockquote>
+<p>When you declare a variable outside of any function, it is called a global variable, because it is available to any other code in the current document. When you declare a variable within a function, it is called a local variable, because it is available only within that function. <small>—MDN</small></p>
+</blockquote>
+<p>JavaScript没有块级作用域，所以一个变量要么是全局变量（定义在任何函数之外），要么是局部变量（定义在函数内，属于该函数）。</p>
+<p>全局变量的本质是全局对象（<em>global object</em>）的属性。在浏览器中，全局对象是<code>window</code>，所以全局变量可以通过<code>window.variable</code>来访问。</p>
+<h2 id="Static/lexical_scope_vs_dynamic_scope">Static/lexical scope vs dynamic scope</h2><p>在了解完变量、值与作用域的知识后，我们正式来探索开头的那段代码。截取核心一段：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'global'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testScope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> str = <span class="string">'local'</span>;</span><br><span class="line">    printStr();  <span class="comment">// 当输出 "global" 时，代表这种语言是static scope，包括c/Java/JavaScript等等。</span></span><br><span class="line">    <span class="comment">// 当输出 "local" 时， 代表这种语言是 dynamic scope，如Perl等等。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当<code>testScope</code>中输出”global”时，语言采用的是lexical scope;</li>
+<li>当输出local”时则采用的是dynamic scope。</li>
+</ul>
+<p>关于scope的一个基本特征/最大区别就是<strong>part of a program（部分代码）</strong>到底指什么。</p>
+<ul>
+<li>当<em>part of a program</em>指代码块时，scope就是<em>static/lexical scope</em>;</li>
+<li>而<em>part of a program</em>指程序运行时状态时，scope就是<em>dynamic scope</em>。</li>
+</ul>
+<p>所以说，区分<em>static/lexical scope</em>和<em>dynamic scope</em>的就是对<em>part of a program</em>的不同定义。</p>
+<h3 id="Static/Lexical_Scope">Static/Lexical Scope</h3><p>对<em>lexical scope</em>而言，变量解析依赖于变量在源码中的位置，即文本上下文（lexical context）。lexical resolution可以在编译期间搞定——这也叫做<strong>early binding</strong>。</p>
+<p>既然所有的变量都可以在编译期间解析出（all variable references can be resolved at compile-time），<em>lexical scope</em>有时也叫<em>static scope</em>。</p>
+<p>// 通常来说，由于变量在编译期间都解析完毕，<em>lexical scope</em>有更好的性能。</p>
+<p>Lexical scoping目前为止广泛运用于<code>ALGOL-influenced</code>语言，包括C/Java/JavaScript等等。</p>
+<h3 id="Dynamic_Scope">Dynamic Scope</h3><p>对<em>dynamic scope</em>而言，解析变量名依赖于变量出现时程序的状态，即执行上下文或调用上下文（execution context or calling context）。dynamic resolution通常在运行时决定，也叫做<code>late binding</code>。</p>
+<p>Lisp，Perl等使用Dynamic Scope。</p>
+<h3 id="Lexical_scoping_vs_dynamic_scoping">Lexical scoping vs dynamic scoping</h3><p>使用局部变量（local variables，仅存在于特定函数内部）可以避免变量冲突。但怎么让变量仅存在于函数内部，有两种方式：</p>
+<p>在<em>lexical scoping</em>（lexical scope，也称作static scoping或static scope）中，如果一个变量名（name）的作用域是一个特定的函数，那么它的作用域就是这个函数定义的代码块：在代码块内，变量名是存在的，变量名绑定到变量的值;在代码块外，变量名不存在。</p>
+<p>相反，在<em>dynamic scoping</em>(dynamic scope)中，如果一个变量的作用域是一个特定函数，那么它的作用域就是这个函数执行的时间段：函数执行时，变量名存在且绑定到变量的值;但函数返回后（after the function returns），变量不再存在。</p>
+<p><em>——-仍使用开头的代码说明——-</em></p>
+<p>那么这意味着，函数<code>testScope</code>调用单独定义的<code>printStr</code>，</p>
+<ul>
+<li>在<em>lexical scoping</em>中，<code>printStr</code>无法访问<code>testScope</code>的局部变量（<code>printStr</code>不是在<code>testScope</code>内部定义的）。</li>
+<li>在<em>dynamic scoping</em>中，<code>printStr</code>可以访问<code>testScope</code>的局部变量，因为<code>printStr</code>的调用是在<code>testScope</code>执行期间。</li>
+</ul>
+<h2 id="JavaScript的作用域体系">JavaScript的作用域体系</h2><p>前面提到JS是采用<em>lexical scoping</em>的，那么除了前面讲的关于<em>lexical scoping</em>的知识，还有什么要讲呢？</p>
+<p>JS的scoping规则很简单，但是，变量初始化和名字解析可能会引发问题，而闭包的大量使用意味着函数定义时的词法环境（lexical environment）（用于变量名解析）和它执行时的词法环境（和变量名解析无关）可能有很大不同。另外，JS对象的属性名的名字解析又是另一个话题了（和变量、函数不同）。</p>
+<h3 id="JavaScript的lexical_scoping">JavaScript的lexical scoping</h3><p>JS有函数级嵌套的<em>lexical scoping</em>，而global scope是最外层的scope。这个作用域体系（scoping）用于<strong>变量</strong>和<strong>函数（函数声明，与函数类型的变量相对）</strong>。</p>
+<p>尽管JS的作用域体系很简单：就是lexical的，function-level的。相关的初始化和名字解析规则却可能引起困惑。</p>
+<ol>
+<li>没var时声明的变量是全局作用域的;</li>
+<li>声明局部变量必须有var，变量提升（variable hoisting）;</li>
+<li>在变量初始化之前访问是<code>undefined</code>，而不是语法错误;</li>
+<li>函数声明的提升与变量提升不同;</li>
+<li>闭包 。</li>
+</ol>
+<h3 id="JavaScript的闭包">JavaScript的闭包</h3><p>单独提一个小章节来讲闭包是必要的。闭包让JS无比强大，也是很多错误的来源。</p>
+<p><strong>当一个函数执行时，名字解析依赖于它定义的位置（定义时的词法环境），而不是它执行时的词法环境。</strong>在JS中，特定函数（特别是闭包）的嵌套的作用域（从全局到最local的），有时也被称为作用域链，可以类比对象的原型链。</p>
+<blockquote>
+<p>The nested scopes of a particular function (from most global to most local) in JavaScript, particularly of a closure, used as a callback, are sometimes referred to as the scope chain, by analogy with the prototype chain of an object.</p>
+</blockquote>
+<p>闭包可以通过嵌套函数来产生。假设一个封闭函数，返回其内部嵌套的函数，包括封闭函数的局部变量作为这个被返回的函数的词法环境——这就是闭包。</p>
+<p>闭包在JS中经常使用，但使用闭包是有风险的。</p>
+<p>一个函数作为回调或者在另一个函数中返回，这样创建了闭包。如果这个函数的函数体中有变量没有绑定（带着它的作用域链），就会有风险。当基于参数创建回调，参数必须在闭包中存储，否则就会创建一个闭包指向封闭环境中的变量，而这个变量可能会变。</p>
+<blockquote>
+<p>When creating a callback based on parameters, the parameters must be stored in a closure, otherwise it will accidentally create a closure that refers to the variables in the enclosing environment, which may change.</p>
+</blockquote>
+<p>例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'i is '</span> + i);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出 10次 "i is 10"</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    print(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">print</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'i is '</span> + str);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出 </span></span><br><span class="line"><span class="comment">// i is 0</span></span><br><span class="line"><span class="comment">// i is 1</span></span><br><span class="line"><span class="comment">// i is 2</span></span><br><span class="line"><span class="comment">// i is 3</span></span><br><span class="line"><span class="comment">// i is 4</span></span><br><span class="line"><span class="comment">// i is 5</span></span><br><span class="line"><span class="comment">// i is 6</span></span><br><span class="line"><span class="comment">// i is 7</span></span><br><span class="line"><span class="comment">// i is 8</span></span><br><span class="line"><span class="comment">// i is 9</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>注意，本文的大部分术语/名词都尽量可靠翻译了:)，而且基本还带着英文原文。但有些名词翻译为中文仍可能引起歧义，下面列出了一些：</p>
+<ul>
+<li>name resolution：名字解析，变量名解析，变量的名字解析。对JS而言，包括变量、函数甚至对象等等的名字解析。</li>
+<li>lexical environment：词法环境，指代码上下文/代码块。</li>
+<li>scoping：作用域体系。</li>
+</ul>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2015/04/JavaScript-timer/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/12/frontend-template-1/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2015/01/JavaScript-dynamic-scope-vs-static-scope/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

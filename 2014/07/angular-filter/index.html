@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>AngularJs Filter | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">AngularJs Filter</span> 
+
+            </div>
+            <h3>AngularJs Filter</h3>
+            <p><a href="/frontend/2014/07/angular-data-binding/">前一章</a>在scope上定义了一个reverse函数，可以倒序输出字符串——这就是过滤器（filter）的雏形。</p>
+<p><strong>定义：</strong>filter格式化一个表达式的值，以展现给用户。filter可以在模板、控制器、指令或服务中使用，并且容易定义你自己的过滤器。</p>
+<!--view-break-->
+<p>filter的底层API是<code>filterProvider</code>。</p>
+<h3 id="在视图/模板中用过滤器">在视图/模板中用过滤器</h3><p>filter的一般用法如<code>{ { expression | filter } }</code>。要应用多个filter时，直接链式使用即可。另外，filter是可以传入参数的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 语法</span></span><br><span class="line">&#123; &#123; expression | filter1 | filter2 | ... &#125; &#125;</span><br><span class="line"><span class="comment">// 如果要传入参数</span></span><br><span class="line">&#123; &#123; expression | filter:argument1:argument2:... &#125; &#125;</span><br><span class="line"><span class="comment">// 实例</span></span><br><span class="line">&#123; &#123; <span class="number">1234</span> | number:<span class="number">2</span> &#125; &#125; <span class="comment">// ==&gt;1,234.00</span></span><br></pre></td></tr></table></figure>
+<h3 id="在控制器、服务和指令中使用过滤器">在控制器、服务和指令中使用过滤器</h3><p>在控制器、服务和指令中使用过滤器需要注入依赖，具体语法是<code>&lt;filterName&gt;Filter</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">angular.module(<span class="string">'oneModule'</span>, []).</span><br><span class="line">controller(<span class="string">'oneController'</span>, [<span class="string">'nameFilter'</span>,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params">nameFilter</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.filteredValue = nameFilter(inputValue, filterArg1, filterArg2, ...);</span><br><span class="line">    &#125;</span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+<p>参数<code>nameFilter</code>就是过滤函数，它的参数和之前一样。</p>
+<h3 id="自定义过滤器">自定义过滤器</h3><p>定义过滤器很简单：把新的过滤器工厂（filter factory）注册到模块上即可。内部实现上angular使用了<code>filterProvider</code>。</p>
+<p>这个工厂函数必须返回一个过滤函数，过滤函数的第一个参数是输入值，接下来的参数是过滤参数。</p>
+<p>过滤函数必须是纯函数（pure function），即是无状态的和幂等的（stateless and idempotent）。angular依赖这些属性并且仅仅在输入改变时调用过滤器。</p>
+<p>一个自定义过滤器：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myApp = angular.module(<span class="string">'myApp'</span>, []);</span><br><span class="line"><span class="comment">// 注册reverse过滤器到模块myApp上</span></span><br><span class="line"><span class="comment">// 工厂函数返回一个过滤函数，工厂函数可以 注入依赖</span></span><br><span class="line">myApp.filter(<span class="string">'reverse'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">//can inject dependency</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> text.split(<span class="string">""</span>).reverse().join(<span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用： &lt;h1&gt;&#123; &#123; data.message | reverse &#125; &#125;&lt;/h1&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="有状态的过滤器（Stateful_filters）">有状态的过滤器（Stateful filters）</h3><p>强烈不建议写有状态的过滤器。</p>
+<p>略。</p>
+<h3 id="ngFilter">ngFilter</h3><p><code>ngFilter</code>会选取数组的一个子集并作为新数组返回。</p>
+<p><code>ngFilter</code>是angular的内置指令，但功能正如描述的——filter，可以作为搜索器使用（如下例）。</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/creeper/81jL8bu3/2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h3 id="内置的过滤器">内置的过滤器</h3><p>angular内置了一些常用过滤器，你可以方便使用。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"actor in avengers cast | orderBy:'name'"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"actor in avengers cast | limitTo:5"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">tr</span> <span class="attribute">ng-repeat</span>=<span class="value">"actor in avengers cast | filter:search | orderBy:'name'  | limitTo: 5 "</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2014/08/VisualFormattingModel/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/07/angular-data-binding/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2014/07/angular-filter/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

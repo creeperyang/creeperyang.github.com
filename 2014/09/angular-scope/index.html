@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>AngularJs Scope | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">AngularJs Scope</span> 
+
+            </div>
+            <h3>AngularJs Scope</h3>
+            <p>上一章末尾已经讲到了scope，其它地方也或多或少接触到了scope，这一章就来具体讲讲scope。</p>
+<h2 id="什么是scope">什么是scope</h2><p>scope是一个对象。scope是一个引用模型（refer to model）的对象。scope是一个提供给表达式的执行环境。scope是以层次结构来组织的，模拟了app的DOM结构。scope能检测表达式和传播事件。</p>
+<blockquote>
+<p>scope is an object that refers to the application model. It is an execution context for expressions. Scopes are arranged in hierarchical structure which mimic the DOM structure of the application. Scopes can watch expressions and propagate events.</p>
+</blockquote>
+<!--view-break-->
+<h3 id="Scope的特性（characteristics）">Scope的特性（characteristics）</h3><ol>
+<li>scope提供API（<code>$watch</code>）观察模型的变化。</li>
+<li>scope提供API（<code>$apply</code>）把模型在”Angular realm”之外发生的变化从系统传播给视图。”Angular realm”，angular范围，指controllers, services, Angular event handlers。</li>
+<li>scope提供执行环境，给表达式计算时使用。如<code>{ { username } }</code>是无意义的，除非指定到特定的scope（scope上定义了<code>username</code>）上执行时才有意义。</li>
+<li>scope可以嵌套来限制对app组件属性的访问，同时也提供对共享模型属性的访问。嵌套的scope不是<code>child scope</code>就是<code>isolated scope</code>。<code>child scope</code>（原型式地）继承<code>parent scope</code>的属性。<code>isolated scope</code>不继承。</li>
+</ol>
+<h3 id="Scope_as_Data-Model">Scope as Data-Model</h3><p>scope是控制器和视图之间的“胶水”。在模板编译的<em>linking阶段</em>，指令在scope上建立<code>$watch</code>表达式。<code>$watch</code>允许指令在属性变化时收到通知，然后可以把更新过的值渲染到视图。</p>
+<p>控制器和指令都有scope的引用（have reference to the scope），但它们两者之间没有。这种安排隔离了控制器和指令，同样隔离了控制器和DOM。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"MyController"</span>&gt;</span></span><br><span class="line">  Your name:</span><br><span class="line">    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"username"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">'sayHello()'</span>&gt;</span>greet<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">hr</span>&gt;</span></span><br><span class="line">  &#123; &#123;greeting&#125; &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="php"></span><br><span class="line">  angular.module(<span class="string">'scopeExample'</span>, [])</span><br><span class="line">  .controller(<span class="string">'MyController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span> </span>&#123;</span><br><span class="line">    <span class="variable">$scope</span>.username = <span class="string">'World'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$scope</span>.sayHello = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="variable">$scope</span>.greeting = <span class="string">'Hello '</span> + <span class="variable">$scope</span>.username + <span class="string">'!'</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;]);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在上面的例子中注意到，<code>MyController</code>为scope的<code>username</code>属性赋值<code>World</code>。scope之后就通知<code>input</code>这个赋值，然后就会为<code>input</code>预先填充username再渲染。这演示了控制器怎么向scope写数据。</p>
+<p>同样，控制器也可以向scope添加行为（<code>sayHello</code>）。</p>
+<p>逻辑上<code>{ {greeting} }</code>的渲染包括2步：</p>
+<ol>
+<li>检索<code>{ {greeting} }</code>在模板中定义位置所在的DOM node的相关scope。在例子中，该scope就是传给<code>MyController</code>的scope。</li>
+<li>以上面找到的scope为上下文执行<code>greeting</code>表达式，把值传给DOM。</li>
+</ol>
+<p>你可以把scope和它的属性视作用来渲染视图的数据。scope是与视图有关的所有事的唯一source-of-truth。</p>
+<p>控制器与视图的分离是必要的，特别是有利于测试。</p>
+<h3 id="Scope分层/继承（Hierarchies）">Scope分层/继承（Hierarchies）</h3><p>每个angular应用有且只有一个<code>root scope</code>，但也许有多个子scope。</p>
+<p>每个app可以有多个scope，因为一些指令会创建新的子scope（参见指令文档去看哪些指令会创建新的scope）。当新的scope被创建，它们以父scope的孩子被添加。这样就创建了一棵树，平行于它们被attach到的DOM。</p>
+<ol>
+<li>当angular执行<code>{ {name} }</code>时，它首先查询给定元素相关的scope的name属性。</li>
+<li>如果没有找到，它会查询父scope直到root scope。这就是js中的原型继承。</li>
+</ol>
+<iframe width="100%" height="240" src="http://jsfiddle.net/creeper/6xt2psh7/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p><strong>注意</strong>：angular会自动在元素上添加<code>ng-scope</code>类，如果这个元素被附加scope的话。</p>
+<h3 id="Retrieving_Scopes_from_the_DOM">Retrieving Scopes from the DOM</h3><p>scope会被以<code>$scope</code>data属性附加到DOM上，这可以用来debug时检索（在应用中用这种方法检索scope的不多见）。<code>root scope</code>附加的DOM就是<code>ng-app</code>所在的DOM。</p>
+<p>调试时可以这么检索DOM的scope：</p>
+<ol>
+<li><code>inspect element</code>对应的DOM;</li>
+<li><code>$0</code>代表这个DOM;</li>
+<li><code>angular.element($0).scope()</code>。</li>
+</ol>
+<h3 id="Scope_Events_Propagation">Scope Events Propagation</h3><p>Scopes可以以类似DOM事件的方式传播事件. 事件可以被broadcasted到scope children或者emitted到scope parents.</p>
+<h2 id="Scope生命周期">Scope生命周期</h2><p>浏览器接收到事件的正常处理流程是：执行对应的JS回调。一旦回调结束，浏览器重新渲染DOM并且返回以等待更多事件。</p>
+<p>当浏览器在angular执行上下文以外执行JS代码，这意味着angular不再知道模型的变化。正确处理模型变化应该是用<code>$apply</code>进入angular执行上下文，只有这样angular才会知道模型的变化。</p>
+<p>在计算完表达式后，<code>$apply</code>方法会执行一个<code>$digest</code>。在$digest阶段，scope会检查所有的<code>$watch</code>表达式，并与之前的值比较。这种脏检查是异步执行的。这意味着<code>$scope.username=&quot;angular&quot;</code>这种赋值不会立即通知<code>$watch</code>，而是延迟等到<code>$digest</code>阶段才通知。这种延迟是必要的，因为这可以把多个模型更新合并到一个<code>$watch</code>通知，而且还保证了在<code>$watch</code>通知时不会有其它的<code>$watch</code>运行。如果一个<code>$watch</code>改变了模型的值，那么会强制额外的一个<code>$digest</code>循环。</p>
+<ol>
+<li><p>Creation</p>
+<p> <code>root scope</code>在app bootstrap时被<code>$injector</code>创建。在模板linking阶段，一些指令会创建新的子scope。</p>
+</li>
+<li><p>Watcher registration</p>
+<p> 在模板linking时，指令会在scope上注册watches。这些watches被用来把模型的值传给DOM。</p>
+</li>
+<li><p>Model mutation（变化）</p>
+<p> 模型变化要被正确检测到，你应该用<code>scope.$apply()</code>。angular的API都内置这种做法，所以当你在控制器内部做同步工作时不需要<code>$apply</code>调用，另外异步的<code>$http, $timeout or $interval</code>也不需要。</p>
+</li>
+<li><p>Mutation observation（变化观察）</p>
+<p> 在<code>$apply</code>结束时，angular会在<code>root scope</code>上启动一个<code>$digest</code> cycle，这个<code>$digest</code>之后会传播到所有子scope。在<code>$digest</code> cycle，所有<code>$watch</code>ed表达式或者函数被检查来判断模型是否变化了;如果一个变化被探测到，<code>$watch</code>的listener被调用。</p>
+</li>
+<li><p>Scope destruction</p>
+<p> 当子scope不再需要，子scope的创建者有责任去通过<code>scope.$destroy()</code>API去destroy这些scope。这会阻止<code>$digest</code>的传播进入子scope并且允许垃圾收集器收回这个子scope的内存占用。</p>
+</li>
+</ol>
+<h3 id="Scopes_and_Directives">Scopes and Directives</h3><p>在编译阶段，编译器匹配DOM模板的指令。指令通常可以分为2个类型：</p>
+<ul>
+<li>观察型指令（<em>Observing directives</em>）,如双括号表达式<code>{ {expression} }</code>，它会用<code>$watch()</code>方法注册listeners。这种类型的指令在任何时候表达式（值）改变时必须被通知以便它能更新视图。</li>
+<li>监听型指令（<em>Listener directives</em>）,如<code>ng-click</code>，在DOM上注册listener。当DOM listener触发，指令执行相关的表达式并用<code>$apply()</code>方法更新视图。</li>
+</ul>
+<h3 id="Directives_that_Create_Scopes">Directives that Create Scopes</h3><p>在大多情况下，指令和scope交互但不会创建scope的新实例。然而，一些指令，比如<code>ng-controller</code>和<code>ng-repeat</code>，创建新的子scopes并且附加（attach）这个子scope到相应的DOM元素。</p>
+<p>你可以调用<code>angular.element(aDomElement).scope()</code>为任何DOM元素检索scope。</p>
+<h3 id="Controllers_and_Scopes">Controllers and Scopes</h3><p>scope和controller有以下交互方式：</p>
+<ul>
+<li>控制器用scope暴露方法给模板;</li>
+<li>控制器定义能改变模型的方法/行为;</li>
+<li>控制器可以在模型上注册watches。这些watches会在控制器行为执行后立即执行。</li>
+</ul>
+<h3 id="Scope_$watch_Performance_Considerations（注意事项）">Scope <code>$watch</code> Performance Considerations（注意事项）</h3><p>scope属性改变的脏检查是angular常用的操作，所以脏检查必须高效。</p>
+<p>脏检查一定不能做任何DOM访问，因为DOM访问比JS对象的属性访问慢很多很多。</p>
+<h2 id="Integration_with_the_browser_event_loop">Integration with the browser event loop</h2><p>下面的草图和例子描述了angular怎么和浏览器的事件回环交互。</p>
+<p><img src="https://docs.angularjs.org/img/guide/concepts-runtime.png" alt="event loop"></p>
+<ol>
+<li>浏览器的事件loop等待一个事件发生。事件可能是用户交互、timer事件或者网络事件（服务器response）。</li>
+<li>事件回调执行。这时进入JS上下文（JavaScript context）。回调可以改变DOM结构。</li>
+<li>一旦回调执行完，浏览器离开JS上下文并根据DOM变化重新渲染视图。</li>
+</ol>
+<p>angular通过提供自己的事件处理回环改变了正常的JavaScript流程。这把JavaScript分为经典的和angular的执行上下文。只有应用在angular执行上下文的操作可以利用angular的数据绑定、异常处理、属性监测等等。你也可以用<code>$apply()</code>从js执行上下文进入angular执行上下文。</p>
+<p><strong>注意</strong>：大多情况下，angular已经为你调用了<code>$apply</code>。只有实现自定义事件回调、第三方库回调时才会需要显示调用<code>$apply</code>。</p>
+<ol>
+<li>调用<code>scope.$apply(stimulusFn)</code>可以进入angular执行上下文，<code>stimulusFn</code>是你希望在angular执行上下文中做的工作。</li>
+<li>angular执行<code>stimulusFn</code>，一般是修改app状态。</li>
+<li>angular进入<code>$digest</code>回环。这个回环由两个小的回环组成，一个处理<code>$evalAsync</code> queue，一个处理<code>$watch()</code> list。<code>$digest</code>回环一直重复（keeps iterating）直到模型稳定，即<code>$evalAsync</code> queue为空而且<code>$watch()</code> list探测不到任何改变。</li>
+<li><code>$evalAsync</code> queue用来安排需要在当前栈帧（<code>current stack frame</code>）外，但必须在浏览器视图渲染前发生的工作。这通常用<code>setTimeout(0)</code>来做，但<code>setTimeout(0)</code>可能比较慢，还可能引起视图闪烁，因为浏览器在每个事件之后都会渲染视图。（The $evalAsync queue is used to schedule work which needs to occur outside of current stack frame, but before the browser’s view render. This is usually done with setTimeout(0), but the setTimeout(0) approach suffers from slowness and may cause view flickering since the browser renders the view after each event.）</li>
+<li><code>$watch()</code> list是一系列可能在上个循环后值改变的表达式。如果改变被探测到，<code>$watch</code>函数通常会以新值更新视图。</li>
+<li>一旦angular<code>$digest</code>回环结束，则离开angular执行上下文，回到JS上下文。之后会跟着浏览器重新渲染视图。</li>
+</ol>
+<p><code>hello world</code>例子的解释。</p>
+<ol>
+<li><p>在编译阶段</p>
+<ul>
+<li><code>ng-model</code>和<code>input directive</code>在<code>&lt;input&gt;</code>上建立<code>keydown</code> listener。</li>
+<li><code>interpolation</code>建立一个<code>$watch</code>（<code>name</code>属性变化时被通知）。</li>
+</ul>
+</li>
+<li><p>在运行阶段</p>
+<ol>
+<li>按下<code>X</code>键，浏览器在<code>&lt;input&gt;</code>上emit <code>keydown</code>事件;</li>
+<li><code>input directive</code>捕获input元素值的改变，调用<code>$apply(&quot;name = &#39;X&#39;;&quot;)</code>在angular上下文下更新模型;</li>
+<li>angular把<code>name = &#39;X&#39;;</code>应用到模型;</li>
+<li><code>$digest</code>回环启动;</li>
+<li><code>$watch()</code> list探测到<code>name</code>属性上的变动，通知<code>interpolation</code>，它会更新DOM;</li>
+<li>angular退出执行上下文，释放<code>keydown</code>事件给JS上下文;</li>
+<li>浏览器重新渲染视图，更新文字。</li>
+</ol>
+</li>
+</ol>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2014/09/angular-module/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/09/angular-html-compiler/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2014/09/angular-scope/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

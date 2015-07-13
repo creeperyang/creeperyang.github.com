@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>AngularJs自定义指令 | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">AngularJs自定义指令</span> 
+
+            </div>
+            <h3>AngularJs自定义指令</h3>
+            <p><a href="/frontend/2014/09/angular-directive/">前一章</a>介绍了指令的基础知识，这一章则关注自定义指令。从一个简单的例子来看怎么自定义指令。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = angular.module(<span class="string">"myApp"</span>, [])</span><br><span class="line"></span><br><span class="line">app.directive(<span class="string">"myDirective"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"> <span class="keyword">return</span> &#123;</span><br><span class="line">   restrict: <span class="string">"A"</span>,</span><br><span class="line">   link: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">       alert(<span class="string">"I'm working"</span>);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<!--view-break-->
+<h2 id="自定义指令的API和参数">自定义指令的API和参数</h2><p>像控制器一样，指令注册到模块上。指令注册API是：<code>module.directive（name, fun）</code>。</p>
+<ul>
+<li><code>name</code>是标准化的指令名。</li>
+<li><code>fun</code>是工厂函数，返回一个对象，指定指令的行为。工厂函数只在编译器第一次匹配到该指令时调用一次，你可以在里面做些初始化工作。</li>
+</ul>
+<iframe width="100%" height="200" src="http://jsfiddle.net/creeper/L50h9eh1/1/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>这个例子验证了工厂函数只执行一次。</p>
+<h3 id="工厂函数返回的对象的参数（可设置选项）">工厂函数返回的对象的参数（可设置选项）</h3><p>下面具体讲解工厂函数返回的对象的参数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">myModule.directive(<span class="string">'namespaceDirectiveName'</span>, <span class="function"><span class="keyword">function</span> <span class="title">factory</span>(<span class="params">injectables</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> directiveDefinitionObject = &#123;</span><br><span class="line">        restrict: string, <span class="comment">//指令的使用方式，包括标签，属性，类，注释</span></span><br><span class="line">        priority: number, <span class="comment">//指令执行的优先级</span></span><br><span class="line">        template: string, <span class="comment">//指令使用的模板，用HTML字符串的形式表示</span></span><br><span class="line">        templateUrl: string, <span class="comment">//从指定的url地址加载模板</span></span><br><span class="line">        replace: bool, <span class="comment">//是否用模板替换当前元素，若为false，则append在当前元素上</span></span><br><span class="line">        transclude: bool, <span class="comment">//是否将当前元素的内容转移到模板中</span></span><br><span class="line">        scope: bool or object, <span class="comment">//指定指令的作用域</span></span><br><span class="line">        controller: <span class="function"><span class="keyword">function</span> <span class="title">controllerConstructor</span>(<span class="params">$scope, $element, $attrs, $transclude</span>) </span>&#123;...</span><br><span class="line">        &#125;, <span class="comment">//定义与其他指令进行交互的接口函数</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">require</span>: string, <span class="comment">//指定需要依赖的其他指令</span></span><br><span class="line">        link: <span class="function"><span class="keyword">function</span> <span class="title">postLink</span>(<span class="params">scope, iElement, iAttrs</span>) </span>&#123;...</span><br><span class="line">        &#125;, <span class="comment">//以编程的方式操作DOM，包括添加监听器等</span></span><br><span class="line">        compile: <span class="function"><span class="keyword">function</span> <span class="title">compile</span>(<span class="params">tElement, tAttrs, transclude</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> :&#123;</span><br><span class="line">                pre: <span class="function"><span class="keyword">function</span> <span class="title">preLink</span>(<span class="params">scope, iElement, iAttrs, controller</span>) </span>&#123;...</span><br><span class="line">                &#125;,</span><br><span class="line">                post: <span class="function"><span class="keyword">function</span> <span class="title">postLink</span>(<span class="params">scope, iElement, iAttrs, controller</span>) </span>&#123;...</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="comment">//编程的方式修改DOM模板的副本，可以返回链接函数</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> directiveDefinitionObject;</span><br><span class="line">    </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>下面具体解释常用的参数：</p>
+<p>restrict指明了一个指令应该如何在HTML中使用，默认A，可以组合使用，如EA等。</p>
+<table>
+<thead>
+<tr>
+<th>restrict取值</th>
+<th>含义</th>
+<th>使用示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>标签</td>
+<td><code>&lt;my-menu title=Products&gt;&lt;/my-menu&gt;</code></td>
+</tr>
+<tr>
+<td>A</td>
+<td>属性</td>
+<td><code>&lt;div my-menu=Products&gt;&lt;/div&gt;</code></td>
+</tr>
+<tr>
+<td>C</td>
+<td>类</td>
+<td><code>&lt;div class=&quot;my-menu&quot;:Products&gt;&lt;/div&gt;</code></td>
+</tr>
+<tr>
+<td>M</td>
+<td>注释</td>
+<td><code>&lt;!--directive:my-menu Products--&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>什么时候用属性vs元素？</strong>当你创建组件（需要控制模板）时用元素;当你只是修饰已存在的元素，为其添加新功能时用属性。</p>
+<p>template指明了当指令被Angular编译和链接时生成的HTML标记。它不一定是一个简单的字符串。template可以很复杂，其中经常会涉及其它的指令，表达式（{ {} }），等等。在大多数情况下你可能会想要使用templateUrl而不是template。因此，理想情况下你应该首先将模板放置在一个单独的HTML文件中然后让templateUrl指向它。</p>
+<p>replace指明了是否生成的模板会代替绑定指令的元素。默认为false，设为true时，指令标签将会替换为template中定义的内容。</p>
+<p>transclude指明了是否把绑定指令的元素的内容转移到模板中。</p>
+<h2 id="Isolating_the_Scope_of_a_Directive">Isolating the Scope of a Directive</h2><p>不设置<code>scope</code>属性时，指令的scope就是父scope。</p>
+<p>可以通过</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line">scope: &#123;</span><br><span class="line">  customerInfo: <span class="string">'=info'</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">//...</span></span><br></pre></td></tr></table></figure>
+<p>此时，指令的scope选项是对象，里面的每个属性都是isolate scope binding。</p>
+<ul>
+<li>name（<code>customerInfo</code>）就是指令独立的scope的属性名;</li>
+<li>value（<code>=info</code>）告诉<code>$compile</code>绑定到<code>info</code>属性。</li>
+</ul>
+<h2 id="指令与控制器/指令的交流">指令与控制器/指令的交流</h2><h3 id="指令与控制器的交流">指令与控制器的交流</h3><p>如前一小节所示，通过scope和attribute，指令可以与外部控制器交流。这方面更多的可以看有关scope的一章。</p>
+<p>下面讲通过<code>scope.$apply()</code>与外部控制器交流。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"AppCtrl"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">enter</span>=<span class="value">"deleteTweets()"</span>&gt;</span>Roll over to load more tweets<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="php"></span><br><span class="line">    <span class="keyword">var</span> app = angular.module(<span class="string">'twitterApp'</span>, []);</span><br><span class="line"></span><br><span class="line">    app.controller(<span class="string">"AppCtrl"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(<span class="variable">$scope</span>)</span> </span>&#123;</span><br><span class="line">      <span class="variable">$scope</span>.loadMoreTweets = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">        alert(<span class="string">"Loading tweets!"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="variable">$scope</span>.deleteTweets = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">        alert(<span class="string">"deleting tweets!"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    app.directive(<span class="string">"enter"</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(scope, element, attrs)</span> </span>&#123;</span><br><span class="line">        element.bind(<span class="string">"mouseenter"</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">          scope.<span class="variable">$apply</span>(attrs.enter);</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="指令间交流">指令间交流</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-app</span>=<span class="value">"app"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">country</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">state</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">city</span>&gt;</span><span class="tag">&lt;/<span class="title">city</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">state</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">country</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><br><span class="line">    <span class="keyword">var</span> app = angular.module(<span class="string">"app"</span>, []);</span><br><span class="line">    app.directive(<span class="string">"country"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            restrict: <span class="string">"E"</span>,</span><br><span class="line">            controller: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.makeAnnouncement = <span class="function"><span class="keyword">function</span>(<span class="params">message</span>) </span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"Country says: "</span> + message);</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;);</span><br><span class="line">    app.directive(<span class="string">"state"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            restrict: <span class="string">"E"</span>,</span><br><span class="line">            controller: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.makeLaw = <span class="function"><span class="keyword">function</span>(<span class="params">law</span>) </span>&#123;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"Law: "</span> + law);</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;);</span><br><span class="line">    app.directive(<span class="string">"city"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            restrict: <span class="string">"E"</span>,</span><br><span class="line">            <span class="built_in">require</span>: [<span class="string">"^country"</span>,<span class="string">"^state"</span>],</span><br><span class="line">            link: <span class="function"><span class="keyword">function</span>(<span class="params">scope, element, attrs, ctrls</span>) </span>&#123;</span><br><span class="line">                ctrls[<span class="number">0</span>].makeAnnouncement(<span class="string">"This city rocks"</span>);</span><br><span class="line">                ctrls[<span class="number">1</span>].makeLaw(<span class="string">"Jump higher"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果嵌套的指令间存在分层关系（<em>hierarchical relationship</em>），那么可以通过使用控制器来在指令间交流：</p>
+<ul>
+<li>父指令可以通过控制器来暴露一些东西，比如这里的<code>makeAnnouncement</code>方法，并传给子指令。</li>
+<li>我们可以把父指令的控制器注入到子指令中，这由<code>require</code>命名体系完成。通过这个，子指令可以使用父指令的控制器。</li>
+<li>这种控制器的继承只要是祖先与后代的关系就可用。</li>
+</ul>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2014/09/angular-html-compiler/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/09/angular-directive/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2014/09/angular-custom-directive/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

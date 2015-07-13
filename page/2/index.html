@@ -79,359 +79,23 @@
     <div class="mdl-card__supporting-text">
         
             <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2015/04/frontend-questions-and-answers/">
+    <a href="/2014/09/angular-custom-directive/">
         <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2015-04-06T16:00:00.000Z" itemprop="datePublished">2015-04-07</time>
+        <time datetime="2014-09-21T16:00:00.000Z" itemprop="datePublished">2014-09-22</time>
     </a>
 </h4>
         
         
     
         <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2015/04/frontend-questions-and-answers/">前端问题集锦</a>
+            <a href="/2014/09/angular-custom-directive/">AngularJs自定义指令</a>
         </h1>
     
 
     </div>
     <div class="mdl-card__supporting-text mdl-card--border">
-        <p>关于前端，工作和学习过程中遇到过许多问题，也解答过许多别人的问题。这篇博客权当一个记录，记录一些有价值的问题。</p>
-
-    </div>
-    <div class="mdl-card__actions">
-        
-    <ul class="article-tags">
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/questions/">#questions</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/问题/">#问题</a>
-            </li>
-        
-    </ul>
-
-    </div>
-</div>
-            
-        
-            
-                <div class="mdl-card mdl-shadow--2dp article-entry">
-    <div class="mdl-card__supporting-text">
-        
-            <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2015/04/JavaScript-timer/">
-        <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2015-04-06T16:00:00.000Z" itemprop="datePublished">2015-04-07</time>
-    </a>
-</h4>
-        
-        
-    
-        <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2015/04/JavaScript-timer/">JavaScript event loop and timing in-depth</a>
-        </h1>
-    
-
-    </div>
-    <div class="mdl-card__supporting-text mdl-card--border">
-        <p>先看一道阿里面试题（来自<a href="http://www.w3cfuns.com/blog-5448978-5404954.html" target="_blank" rel="external">阿里2015春季前端实习校招笔试题</a>）:</p>
-<p>对于下列程序运行结果，符合预期的是：</p>
-
-    </div>
-    <div class="mdl-card__actions">
-        
-    <ul class="article-tags">
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/event-loop/">#event loop</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/setInterval/">#setInterval</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/setTimeout/">#setTimeout</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/timer/">#timer</a>
-            </li>
-        
-    </ul>
-
-    </div>
-</div>
-            
-        
-            
-                <div class="mdl-card mdl-shadow--2dp article-entry">
-    <div class="mdl-card__supporting-text">
-        
-            <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2015/01/JavaScript-dynamic-scope-vs-static-scope/">
-        <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2015-01-07T16:00:00.000Z" itemprop="datePublished">2015-01-08</time>
-    </a>
-</h4>
-        
-        
-    
-        <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2015/01/JavaScript-dynamic-scope-vs-static-scope/">从static/dynamic scope来谈JS的作用域</a>
-        </h1>
-    
-
-    </div>
-    <div class="mdl-card__supporting-text mdl-card--border">
-        <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'global'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printStr</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testScope</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> str = <span class="string">'local'</span>;</span><br><span class="line">    printStr();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">printStr(); <span class="comment">// 毫无疑问，输出 "global"</span></span><br><span class="line">testScope(); <span class="comment">// 还是输出 "global"</span></span><br></pre></td></tr></table></figure>
-
-    </div>
-    <div class="mdl-card__actions">
-        
-    <ul class="article-tags">
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/dynamical-scope，-closure/">#dynamical scope， closure</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/lexical-scope/">#lexical scope</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/scope/">#scope</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/static-scope/">#static scope</a>
-            </li>
-        
-    </ul>
-
-    </div>
-</div>
-            
-        
-            
-                <div class="mdl-card mdl-shadow--2dp article-entry">
-    <div class="mdl-card__supporting-text">
-        
-            <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2014/12/frontend-template-1/">
-        <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2014-12-04T16:00:00.000Z" itemprop="datePublished">2014-12-05</time>
-    </a>
-</h4>
-        
-        
-    
-        <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2014/12/frontend-template-1/">前端模板分析（一）</a>
-        </h1>
-    
-
-    </div>
-    <div class="mdl-card__supporting-text mdl-card--border">
-        <p>以一段简单的代码开始：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;<span class="comment">/*...*/</span>&#125;).done(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> list = data.list, <span class="comment">// will be like ['文艺', '博客', '摄影', '电影', '民谣', '旅行', '吉他']</span></span><br><span class="line">        tmp = <span class="string">''</span>,</span><br><span class="line">        i, </span><br><span class="line">        len = list.length;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        tmp += <span class="string">'&lt;li&gt; index: '</span> + (i + <span class="number">1</span>) + <span class="string">', content: '</span> + list[i] + <span class="string">'&lt;/li&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    $(<span class="string">'#wrap'</span>).append(tmp);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>这段代码就是实现<em>根据数据拼接字符串，修改文档DOM</em>的功能，很简单，大概每个前端程序员都写过，或至少感到熟悉。</p>
-
-    </div>
-    <div class="mdl-card__actions">
-        
-    <ul class="article-tags">
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/string-based-template/">#string-based template</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/template/">#template</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/模板/">#模板</a>
-            </li>
-        
-    </ul>
-
-    </div>
-</div>
-            
-        
-            
-                <div class="mdl-card mdl-shadow--2dp article-entry">
-    <div class="mdl-card__supporting-text">
-        
-            <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2014/11/javascript-base-about-scoping-and-precompile/">
-        <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2014-11-27T16:00:00.000Z" itemprop="datePublished">2014-11-28</time>
-    </a>
-</h4>
-        
-        
-    
-        <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2014/11/javascript-base-about-scoping-and-precompile/">JavaScript基础——变量、作用域、命名空间和预编译</a>
-        </h1>
-    
-
-    </div>
-    <div class="mdl-card__supporting-text mdl-card--border">
-        <p>什么是命名空间，变量污染，变量声明提升，预编译？如何检查一段代码执行后是否声明了全局变量？</p>
-<p>这些问题聚焦于一个核心：变量与作用域，而这恰恰是JavaScript作为一门语言没有处理好的地方，所以有很多疑问都很正常。</p>
-
-    </div>
-    <div class="mdl-card__actions">
-        
-    <ul class="article-tags">
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/hoisting/">#hoisting</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/scoping/">#scoping</a>
-            </li>
-        
-    </ul>
-
-    </div>
-</div>
-            
-        
-            
-                <div class="mdl-card mdl-shadow--2dp article-entry">
-    <div class="mdl-card__supporting-text">
-        
-            <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2014/11/javascript-scoping-and-hoisting/">
-        <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2014-11-05T16:00:00.000Z" itemprop="datePublished">2014-11-06</time>
-    </a>
-</h4>
-        
-        
-    
-        <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2014/11/javascript-scoping-and-hoisting/">JavaScript Scoping and Hoisting</a>
-        </h1>
-    
-
-    </div>
-    <div class="mdl-card__supporting-text mdl-card--border">
-        <p>这篇是<a href="/frontend/2014/10/javascript-hoisting/">「JavaScript Hoisting」</a>的进阶篇，参照了大牛<strong>Ben</strong>的<a href="http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html" target="_blank" rel="external">「JavaScript Scoping and Hoisting」</a>。</p>
-<p>首先介绍一下<strong>Ben</strong>：</p>
-<blockquote>
-<p>Ben is a 25 year-old software engineer. He lives and works in San Francisco. Many people think he invented the term “hoisting” in JavaScript, but this is untrue.</p>
-</blockquote>
-
-    </div>
-    <div class="mdl-card__actions">
-        
-    <ul class="article-tags">
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/hoisting/">#hoisting</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/scoping/">#scoping</a>
-            </li>
-        
-    </ul>
-
-    </div>
-</div>
-            
-        
-            
-                <div class="mdl-card mdl-shadow--2dp article-entry">
-    <div class="mdl-card__supporting-text">
-        
-            <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2014/10/javascript-hoisting/">
-        <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2014-10-23T16:00:00.000Z" itemprop="datePublished">2014-10-24</time>
-    </a>
-</h4>
-        
-        
-    
-        <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2014/10/javascript-hoisting/">JavaScript Hoisting</a>
-        </h1>
-    
-
-    </div>
-    <div class="mdl-card__supporting-text mdl-card--border">
-        <p>先给一个高大上的术语「JavaScript Hoisting」——没听过的人可能是一头雾水，理解的人则可能会心一笑。hoist是提升的意思（<a href="http://fanyi.baidu.com/#en/zh/hoist" target="_blank" rel="external">百度翻译</a>）：</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="header">hoist：</span><br><span class="line">-----------------------</span></span><br><span class="line">vt.升起，提起; </span><br><span class="line">vi.被举起或抬高; </span><br><span class="line">n.起重机，升降机; 升起; &lt;俚&gt;推，托，举;</span><br></pre></td></tr></table></figure>
-<p>但知道这个单词可能无助于理解这个术语。但一贯地，我认为概念可以提纲契领，所以定义先来：</p>
-<blockquote>
-<p>Hoisting is JavaScript’s default behavior of moving all declarations to the top of the current scope (to the top of the current script or the current function).</p>
-</blockquote>
-
-    </div>
-    <div class="mdl-card__actions">
-        
-    <ul class="article-tags">
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/declaration/">#declaration</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/function/">#function</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/hoisting/">#hoisting</a>
-            </li>
-        
-            <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/variable/">#variable</a>
-            </li>
-        
-    </ul>
-
-    </div>
-</div>
-            
-        
-            
-                <div class="mdl-card mdl-shadow--2dp article-entry">
-    <div class="mdl-card__supporting-text">
-        
-            <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2014/09/angular-module/">
-        <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2014-09-25T16:00:00.000Z" itemprop="datePublished">2014-09-26</time>
-    </a>
-</h4>
-        
-        
-    
-        <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2014/09/angular-module/">AngularJs Modules</a>
-        </h1>
-    
-
-    </div>
-    <div class="mdl-card__supporting-text mdl-card--border">
-        <h2 id="什么是模块">什么是模块</h2><p>你可以把模块当作你app不同部分（控制器、指令、过滤器等等）的容器。</p>
-<h2 id="为什么需要模块">为什么需要模块</h2><p>大多应用有个main方法实例化app的各个部分并把它们联系起来。</p>
-<p>angular app没有main方法。作为代替，模块声明性地指定一个app怎么启动。这样做的几个优点：</p>
-<ul>
-<li>声明性的处理更易理解;</li>
-<li>可以打包代码作为可复用模块;</li>
-<li>因为模块的延迟执行，不同模块可以以任意顺序（甚至并行）加载;</li>
-<li>单元测试更快;</li>
-<li>端到端测试可以用模块来覆写配置。</li>
-</ul>
+        <p><a href="/frontend/2014/09/angular-directive/">前一章</a>介绍了指令的基础知识，这一章则关注自定义指令。从一个简单的例子来看怎么自定义指令。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = angular.module(<span class="string">"myApp"</span>, [])</span><br><span class="line"></span><br><span class="line">app.directive(<span class="string">"myDirective"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"> <span class="keyword">return</span> &#123;</span><br><span class="line">   restrict: <span class="string">"A"</span>,</span><br><span class="line">   link: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">       alert(<span class="string">"I'm working"</span>);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
     </div>
     <div class="mdl-card__actions">
@@ -440,6 +104,181 @@
         
             <li class="article-tag-item">
                 <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/AngularJs/">#AngularJs</a>
+            </li>
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/directive/">#directive</a>
+            </li>
+        
+    </ul>
+
+    </div>
+</div>
+            
+        
+            
+                <div class="mdl-card mdl-shadow--2dp article-entry">
+    <div class="mdl-card__supporting-text">
+        
+            <h4 class="mdl-typography--body-2 article-date">
+    <a href="/2014/09/angular-directive/">
+        <i class="material-icons">access_time</i>&nbsp;
+        <time datetime="2014-09-19T16:00:00.000Z" itemprop="datePublished">2014-09-20</time>
+    </a>
+</h4>
+        
+        
+    
+        <h1 itemprop="name" class="mdl-card__title-text">
+            <a href="/2014/09/angular-directive/">AngularJs内置指令</a>
+        </h1>
+    
+
+    </div>
+    <div class="mdl-card__supporting-text mdl-card--border">
+        <p>指令是使angular特殊的基础。指令是angular这个框架最重要的部分之一。</p>
+<p>指令是什么？</p>
+<blockquote>
+<p>At a high level, directives are markers on a DOM element (such as an attribute, element name, comment or CSS class) that tell AngularJS’s HTML compiler ($compile) to attach a specified behavior to that DOM element or even transform the DOM element and its children.</p>
+</blockquote>
+
+    </div>
+    <div class="mdl-card__actions">
+        
+    <ul class="article-tags">
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/AngularJs/">#AngularJs</a>
+            </li>
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/directive/">#directive</a>
+            </li>
+        
+    </ul>
+
+    </div>
+</div>
+            
+        
+            
+                <div class="mdl-card mdl-shadow--2dp article-entry">
+    <div class="mdl-card__supporting-text">
+        
+            <h4 class="mdl-typography--body-2 article-date">
+    <a href="/2014/09/angular-forms/">
+        <i class="material-icons">access_time</i>&nbsp;
+        <time datetime="2014-09-17T16:00:00.000Z" itemprop="datePublished">2014-09-18</time>
+    </a>
+</h4>
+        
+        
+    
+        <h1 itemprop="name" class="mdl-card__title-text">
+            <a href="/2014/09/angular-forms/">AngularJs Forms（格式化输入）</a>
+        </h1>
+    
+
+    </div>
+    <div class="mdl-card__supporting-text mdl-card--border">
+        <p>表单控件（<code>input</code>、<code>select</code>、<code>textarea</code>）是用户输入数据的途径。一个表单（form）是表单控件的集合，用来组织相关的表单控件。</p>
+<p>表单和表单控件提供验证服务，所以无效输入时会提示用户。这会提高用户体验，因为用户可以获得连续的提示来改正错误。但注意，客户端的验证不能代替服务端验证，因为客户端验证容易被绕过而不太可信，必须在服务端再次验证以保证安全。</p>
+
+    </div>
+    <div class="mdl-card__actions">
+        
+    <ul class="article-tags">
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/AngularJs/">#AngularJs</a>
+            </li>
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/form/">#form</a>
+            </li>
+        
+    </ul>
+
+    </div>
+</div>
+            
+        
+            
+                <div class="mdl-card mdl-shadow--2dp article-entry">
+    <div class="mdl-card__supporting-text">
+        
+            <h4 class="mdl-typography--body-2 article-date">
+    <a href="/2014/09/angular-controller/">
+        <i class="material-icons">access_time</i>&nbsp;
+        <time datetime="2014-09-09T16:00:00.000Z" itemprop="datePublished">2014-09-10</time>
+    </a>
+</h4>
+        
+        
+    
+        <h1 itemprop="name" class="mdl-card__title-text">
+            <a href="/2014/09/angular-controller/">AngularJs控制器</a>
+        </h1>
+    
+
+    </div>
+    <div class="mdl-card__supporting-text mdl-card--border">
+        <p>控制器可能是angular中最常接触的部分，前面几章都说到或者在用控制器，这章具体说一说。</p>
+<h2 id="理解控制器">理解控制器</h2><p>在angular中，控制器是一个js构造函数<strong>（<code>constructor function</code>）</strong>，这个构造函数用来扩张<strong>Angular Scope</strong>(augment the Angular Scope，为scope添加属性)。</p>
+
+    </div>
+    <div class="mdl-card__actions">
+        
+    <ul class="article-tags">
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/AngularJs/">#AngularJs</a>
+            </li>
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/controller/">#controller</a>
+            </li>
+        
+    </ul>
+
+    </div>
+</div>
+            
+        
+            
+                <div class="mdl-card mdl-shadow--2dp article-entry">
+    <div class="mdl-card__supporting-text">
+        
+            <h4 class="mdl-typography--body-2 article-date">
+    <a href="/2014/08/classes-and-modules/">
+        <i class="material-icons">access_time</i>&nbsp;
+        <time datetime="2014-08-24T16:00:00.000Z" itemprop="datePublished">2014-08-25</time>
+    </a>
+</h4>
+        
+        
+    
+        <h1 itemprop="name" class="mdl-card__title-text">
+            <a href="/2014/08/classes-and-modules/">JavaScript Classes and Modules</a>
+        </h1>
+    
+
+    </div>
+    <div class="mdl-card__supporting-text mdl-card--border">
+        <p>JavaScript对象在第六章讲过了，之前我们只是把对象当作独一无二的属性的集合，每个对象都不同。但现在，我们要讲讲一类对象（a class of objects）共享某些属性。类的实例（instance）有自己的自由属性存储或定义自己的状态，也会有属性（方法）来定义自己的行为，这种行为通常是由类来定义并被所有实例共享。</p>
+<p>在JavaScript中，类基于JavaScript的以原型为基础的继承机制。</p>
+
+    </div>
+    <div class="mdl-card__actions">
+        
+    <ul class="article-tags">
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/JavaScript/">#JavaScript</a>
+            </li>
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/class/">#class</a>
             </li>
         
             <li class="article-tag-item">
@@ -457,26 +296,29 @@
     <div class="mdl-card__supporting-text">
         
             <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2014/09/angular-scope/">
+    <a href="/2014/08/JavaScriptObject/">
         <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2014-09-24T16:00:00.000Z" itemprop="datePublished">2014-09-25</time>
+        <time datetime="2014-08-11T16:00:00.000Z" itemprop="datePublished">2014-08-12</time>
     </a>
 </h4>
         
         
     
         <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2014/09/angular-scope/">AngularJs Scope</a>
+            <a href="/2014/08/JavaScriptObject/">JavaScript Object</a>
         </h1>
     
 
     </div>
     <div class="mdl-card__supporting-text mdl-card--border">
-        <p>上一章末尾已经讲到了scope，其它地方也或多或少接触到了scope，这一章就来具体讲讲scope。</p>
-<h2 id="什么是scope">什么是scope</h2><p>scope是一个对象。scope是一个引用模型（refer to model）的对象。scope是一个提供给表达式的执行环境。scope是以层次结构来组织的，模拟了app的DOM结构。scope能检测表达式和传播事件。</p>
-<blockquote>
-<p>scope is an object that refers to the application model. It is an execution context for expressions. Scopes are arranged in hierarchical structure which mimic the DOM structure of the application. Scopes can watch expressions and propagate events.</p>
-</blockquote>
+        <p>JavaScript对象是什么？</p>
+<ul>
+<li>js的基础数据类型（fundamental datatype）是对象（<em>object</em>）；</li>
+<li>对象是无序的属性（<em>properties</em>）集合，每个属性是个key-value对；</li>
+<li>但对象不仅仅是字符串到值的映射。除去有自己的属性集合，每个js对象都会从另一个对象继承属性，即原型（<em>prototype</em>）；</li>
+<li>原型式继承（<em>prototypal inheritance</em>）是js的核心特性。</li>
+</ul>
+<p>JS对象是动态的，属性可以添加或删除。除去string、number、true/false、null、undefined，在js中其他值都是对象。</p>
 
     </div>
     <div class="mdl-card__actions">
@@ -484,11 +326,11 @@
     <ul class="article-tags">
         
             <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/AngularJs/">#AngularJs</a>
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/JavaScript/">#JavaScript</a>
             </li>
         
             <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/scope/">#scope</a>
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/Object/">#Object</a>
             </li>
         
     </ul>
@@ -502,23 +344,84 @@
     <div class="mdl-card__supporting-text">
         
             <h4 class="mdl-typography--body-2 article-date">
-    <a href="/2014/09/angular-html-compiler/">
+    <a href="/2014/08/VisualFormattingModel/">
         <i class="material-icons">access_time</i>&nbsp;
-        <time datetime="2014-09-23T16:00:00.000Z" itemprop="datePublished">2014-09-24</time>
+        <time datetime="2014-08-06T16:00:00.000Z" itemprop="datePublished">2014-08-07</time>
     </a>
 </h4>
         
         
     
         <h1 itemprop="name" class="mdl-card__title-text">
-            <a href="/2014/09/angular-html-compiler/">AngularJs HTML Compiler</a>
+            <a href="/2014/08/VisualFormattingModel/">CSS Visual Formatting Model</a>
         </h1>
     
 
     </div>
     <div class="mdl-card__supporting-text mdl-card--border">
-        <p>html编译，这是angular的核心概念或者说重难点。这章就是围绕<code>HTML Compiler</code>展开，既算是自定义指令的深入，也算是对angular工作原理的一点解析。</p>
-<p>首先<strong>注意</strong>：如果只是初学者，或者暂时不想深入，那么，跳过本章也可。</p>
+        <p>声明：</p>
+<p>本文参考<a href="http://topic.csdn.net/u/20100719/17/ff203b89-135e-46cf-8fce-705f16e37beb.html?006156676166584196" target="_blank" rel="external">http://topic.csdn.net/u/20100719/17/ff203b89-135e-46cf-8fce-705f16e37beb.html?006156676166584196</a></p>
+<p>定义以下术语：</p>
+<ol>
+<li>visual formatting model： 可视化格式模型，下文中简称模型。</li>
+<li>media： 媒介，CSS中的重要概念，即展示页面的介质，最常见的是screen（显示器），其它还有纸媒介等待。</li>
+<li>user agent： 用户代理，即浏览器。</li>
+<li>dom tree： 文档树，下文中简称树。</li>
+<li>box model： 盒模型。</li>
+<li>positioning scheme： 定位体系。</li>
+<li>containing blocks： 包含块，元素生成box，该box就是子元素的包含块。</li>
+<li>block-level elements, block box: 块级元素，块框</li>
+<li>inline-level elements, inline box： 行内级别元素，行内框</li>
+<li>inline-level box： 行内级别框</li>
+<li><p>replaced element: 其内容不受CSS视觉格式化模型控制的元素,比如image,嵌入的文档(iframe之类)或者applet,叫做替换元素。</p>
+<p>比如,img元素的内容通常会被其src属性指定的图像替换掉。替换元素通常有其固有的尺寸:一个固有的宽度,一个固有的高度和一个固有的比率。比如一幅位图有固有用绝对单位指定的宽度和高度,从而也有固有的宽高比率。另一方面,其他文档也可能没有固有的尺寸,比如一个空白的html文档。</p>
+<p>CSS渲染模型不考虑替换元素内容的渲染。这些替换元素的展现独立于CSS。object,video,textarea,input也是替换元素,audio和canvas在某些特定情形下为替换元素。使用CSS的content属性插入的对象是匿名替换元素。</p>
+</li>
+<li><p>non-replaced element: 非替换元素，替换元素之外的所有其他元素都是非替换元素,由CSS的视觉格式化模型负责非替换元素的渲染。</p>
+</li>
+</ol>
+
+    </div>
+    <div class="mdl-card__actions">
+        
+    <ul class="article-tags">
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/Box-model/">#Box model</a>
+            </li>
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/CSS/">#CSS</a>
+            </li>
+        
+    </ul>
+
+    </div>
+</div>
+            
+        
+            
+                <div class="mdl-card mdl-shadow--2dp article-entry">
+    <div class="mdl-card__supporting-text">
+        
+            <h4 class="mdl-typography--body-2 article-date">
+    <a href="/2014/07/angular-filter/">
+        <i class="material-icons">access_time</i>&nbsp;
+        <time datetime="2014-07-24T16:00:00.000Z" itemprop="datePublished">2014-07-25</time>
+    </a>
+</h4>
+        
+        
+    
+        <h1 itemprop="name" class="mdl-card__title-text">
+            <a href="/2014/07/angular-filter/">AngularJs Filter</a>
+        </h1>
+    
+
+    </div>
+    <div class="mdl-card__supporting-text mdl-card--border">
+        <p><a href="/frontend/2014/07/angular-data-binding/">前一章</a>在scope上定义了一个reverse函数，可以倒序输出字符串——这就是过滤器（filter）的雏形。</p>
+<p><strong>定义：</strong>filter格式化一个表达式的值，以展现给用户。filter可以在模板、控制器、指令或服务中使用，并且容易定义你自己的过滤器。</p>
 
     </div>
     <div class="mdl-card__actions">
@@ -530,15 +433,91 @@
             </li>
         
             <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/compile/">#compile</a>
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/filter/">#filter</a>
+            </li>
+        
+    </ul>
+
+    </div>
+</div>
+            
+        
+            
+                <div class="mdl-card mdl-shadow--2dp article-entry">
+    <div class="mdl-card__supporting-text">
+        
+            <h4 class="mdl-typography--body-2 article-date">
+    <a href="/2014/07/angular-data-binding/">
+        <i class="material-icons">access_time</i>&nbsp;
+        <time datetime="2014-07-19T16:00:00.000Z" itemprop="datePublished">2014-07-20</time>
+    </a>
+</h4>
+        
+        
+    
+        <h1 itemprop="name" class="mdl-card__title-text">
+            <a href="/2014/07/angular-data-binding/">AngularJs的数据绑定</a>
+        </h1>
+    
+
+    </div>
+    <div class="mdl-card__supporting-text mdl-card--border">
+        <p>前面两章内容比较多，但看完前两章，对angular应该会有一个比较全面的了解。这章开始，会对angular中的每个部分做细致讲解，首先从数据绑定讲起。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-app</span>=<span class="value">""</span>&gt;</span></span><br><span class="line">         &#123; &#123; "john" + "lindquist" &#125; &#125;</span><br><span class="line">         <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">'data.msg'</span> /&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="title">h1</span>&gt;</span>&#123; &#123; data.msg &#125; &#125;<span class="tag">&lt;/<span class="title">h1</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"angular.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+    <div class="mdl-card__actions">
+        
+    <ul class="article-tags">
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/AngularJs/">#AngularJs</a>
             </li>
         
             <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/compiler/">#compiler</a>
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/controller/">#controller</a>
             </li>
         
             <li class="article-tag-item">
-                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/scope/">#scope</a>
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/data-binding/">#data binding</a>
+            </li>
+        
+    </ul>
+
+    </div>
+</div>
+            
+        
+            
+                <div class="mdl-card mdl-shadow--2dp article-entry">
+    <div class="mdl-card__supporting-text">
+        
+            <h4 class="mdl-typography--body-2 article-date">
+    <a href="/2014/07/angular-bootstrap/">
+        <i class="material-icons">access_time</i>&nbsp;
+        <time datetime="2014-07-11T16:00:00.000Z" itemprop="datePublished">2014-07-12</time>
+    </a>
+</h4>
+        
+        
+    
+        <h1 itemprop="name" class="mdl-card__title-text">
+            <a href="/2014/07/angular-bootstrap/">AngularJs入门（启动、表达式和数据绑定）</a>
+        </h1>
+    
+
+    </div>
+    <div class="mdl-card__supporting-text mdl-card--border">
+        <p>angular的一个闪光点是你只需要对框架有个很少的了解就能顺利跑起Demo了。这很好，你可以边学边实际做，毕竟自学最重要的一点是动手，而不是<code>biabiabia</code>看些文档或视频就好。</p>
+<p>首先，看怎么启动最简单的Angular应用。</p>
+
+    </div>
+    <div class="mdl-card__actions">
+        
+    <ul class="article-tags">
+        
+            <li class="article-tag-item">
+                <a class="article-tag mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="tags/AngularJs/">#AngularJs</a>
             </li>
         
     </ul>
@@ -610,9 +589,16 @@
     <div class="mdl-cell mdl-cell--8-col">
         <nav class="pagination-bar mdl-color-text--grey-50">
     
+        <a href="/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
     <div class="section-spacer"></div>
     
-        <a href="/page/2/" class="pagination__button">
+        <a href="/page/3/" class="pagination__button">
             Older
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
                 <i class="material-icons">arrow_forward</i>

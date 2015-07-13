@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>JavaScript Scoping and Hoisting | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">JavaScript Scoping and Hoisting</span> 
+
+            </div>
+            <h3>JavaScript Scoping and Hoisting</h3>
+            <p>这篇是<a href="/frontend/2014/10/javascript-hoisting/">「JavaScript Hoisting」</a>的进阶篇，参照了大牛<strong>Ben</strong>的<a href="http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html" target="_blank" rel="external">「JavaScript Scoping and Hoisting」</a>。</p>
+<p>首先介绍一下<strong>Ben</strong>：</p>
+<blockquote>
+<p>Ben is a 25 year-old software engineer. He lives and works in San Francisco. Many people think he invented the term “hoisting” in JavaScript, but this is untrue.</p>
+</blockquote>
+<!--view-break-->
+<p>但不管是不是Ben发明了”JavaScript Hoisting”，他关于Hoisting的阐释是透彻和深刻的。本文大部分内容是对它文章的翻译，英文好的同学可以直接阅读<a href="http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html" target="_blank" rel="external">原文</a>。英文吃力的或者嫌麻烦的可以接着看。</p>
+<h2 id="让你大吃一惊的例子">让你大吃一惊的例子</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// example 1:</span></span><br><span class="line"><span class="keyword">var</span> foo = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!foo) &#123;</span><br><span class="line">        <span class="keyword">var</span> foo = <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    alert(foo);</span><br><span class="line">&#125;</span><br><span class="line">bar();</span><br><span class="line"></span><br><span class="line"><span class="comment">// example 2:</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">b();</span><br><span class="line">alert(a);</span><br></pre></td></tr></table></figure>
+<p>不妨先想想浏览器会输出什么，然后运行代码对照，那么结果会让大部分人大吃一惊，大部分人都会感到困惑不解。（上面的例子中，例1会输出<code>10</code>，例2会输出<code>1</code>。）</p>
+<p>那么为什么会有这样的结果？这就是这篇文章要说的「JavaScript Hoisting」，但要理解这个概念必须先从scope说起。</p>
+<h2 id="Scoping_in_JavaScript">Scoping in JavaScript</h2><p>js新手（可能不止新手）的一个困扰源就是作用域。js作用域为什么让人困惑的原因是js是一门类似C的语言，但它的作用域体系又和C不一样。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> &lt;stdio.h&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d, "</span>, x); <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = <span class="number">2</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d, "</span>, x); <span class="comment">// 2</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, x); <span class="comment">// 1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是一段C代码，C有块级作用域（<code>block-level scope</code>），所以进入if语句块后，新的变量可以定义在块内而不影响外部变量。但JS不一样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(x); <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> x = <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(x); <span class="comment">// 2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(x); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>JS没有块级作用域！所以if内的<code>x</code>覆盖了外部的<code>x</code>。</p>
+<p>但JS有函数级作用域（<code>function-level scope</code>）。例如if语句之类的不会创建新的作用域，在JS中只有函数会创建新的作用域。</p>
+<h2 id="Declarations,_Names,_and_Hoisting">Declarations, Names, and Hoisting</h2><p>在js中，一个变量名进入作用域的方式有4种：</p>
+<ol>
+<li>Language-defined：所有的作用域默认都会给出<code>this</code>和<code>arguments</code>两个变量名;</li>
+<li>Formal parameters（形参）：函数有形参，形参会添加到函数的作用域中;</li>
+<li>Function declarations（函数声明）：如<code>function foo() {}</code>;</li>
+<li>Variable declarations（变量声明）：如<code>var foo</code>。</li>
+</ol>
+<p>函数声明和变量声明总是会被编译器移动（即hoist）到它们所在的作用域的顶部（这对你是透明的）。至于<code>Language-defined</code>和形参，显然，它们已经在顶部了。</p>
+<p>注意，提升的只有变量声明，变量初始化是不会提升的。更具体的情况可以看前一篇<a href="/frontend/2014/10/javascript-hoisting/">「JavaScript Hoisting」</a>。</p>
+<h3 id="Name_Resolution_Order">Name Resolution Order</h3><p>最重要的特殊情况是变量解析顺序。这个顺序与前面提到的变量进入作用域的4种方式的顺序一致。</p>
+<p>这说明，如果一个变量名已经被定义了，它就再也不会被重新声明。这也意味着，函数声明的优先级要高于变量声明。</p>
+<p>当然，这不是说赋值无效了，而是变量声明部分被解释器忽略了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testOrder</span>(<span class="params">arg</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(arg); <span class="comment">// arg是形参，不会被重新定义</span></span><br><span class="line">    <span class="built_in">console</span>.log(a); <span class="comment">// 因为函数声明比变量声明优先级高，所以这里a是函数</span></span><br><span class="line">    <span class="keyword">var</span> arg = <span class="string">'hello'</span>; <span class="comment">// var arg;变量声明被忽略， arg = 'hello'被执行</span></span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">10</span>; <span class="comment">// var a;被忽视; a = 10被执行，a变成number</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'fun'</span>);</span><br><span class="line">    &#125; <span class="comment">// 被提升到作用域顶部</span></span><br><span class="line">    <span class="built_in">console</span>.log(a); <span class="comment">// 输出10</span></span><br><span class="line">    <span class="built_in">console</span>.log(arg); <span class="comment">// 输出hello</span></span><br><span class="line">&#125;; </span><br><span class="line">testOrder(<span class="string">'hi'</span>);</span><br><span class="line"><span class="comment">/* 输出：</span><br><span class="line">hi </span><br><span class="line">function a() &#123;</span><br><span class="line">        console.log('fun');</span><br><span class="line">    &#125;</span><br><span class="line">10 </span><br><span class="line">hello </span><br><span class="line">*/</span></span><br></pre></td></tr></table></figure>
+<p>相信上面的例子已经把意思阐述清楚了。但记住3个例外：</p>
+<ul>
+<li><p>内置的变量名 <code>arguments</code> 表现有点奇怪。它似乎在形参之后被声明，但在函数声明之前。这意味着如果一个形参叫<code>arguments</code>，那么这个形参的优先级比<code>arguments</code>要高（覆盖了内置的<code>arguments</code>，即使它是<code>undefined</code>）。请不要把形参命名为<code>arguments</code>。</p>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">arg</span>(<span class="params">arguments, b</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line">arg(<span class="string">'hi'</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出：hi</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在任何地方试图把<code>this</code>作为标识符（<code>identifier</code>，可以理解为变量名）都会报错。</p>
+</li>
+<li>如果多个形参同名，最后一个同名形参优先级高，即使它是<code>undefined</code>。</li>
+</ul>
+<h2 id="How_to_Code_With_This_Knowledge">How to Code With This Knowledge</h2><p>强烈建议一个作用域只使用一个<code>var</code>语句，而且在作用域顶部。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*jslint onevar: true [...] */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">a, b, c</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> x = <span class="number">1</span>,</span><br><span class="line">        bar,</span><br><span class="line">        baz = <span class="string">"something"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="What_the_Standard_Says">What the Standard Says</h2><p><a href="http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf" target="_blank" rel="external">「ECMAScript262 Standard」</a>，section 12.2.2：</p>
+<blockquote>
+<p>If the variable statement occurs inside a FunctionDeclaration, the variables are defined with function-local scope in that function, as described in section 10.1.3. Otherwise, they are defined with global scope (that is, they are created as members of the global object, as described in section 10.1.3) using property attributes { DontDelete }. Variables are created when the execution scope is entered. A Block does not define a new execution scope. Only Program and FunctionDeclaration produce a new scope. Variables are initialised to undefined when created. A variable with an Initialiser is assigned the value of its AssignmentExpression when the VariableStatement is executed, not when the variable is created.</p>
+</blockquote>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2014/11/javascript-base-about-scoping-and-precompile/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/10/javascript-hoisting/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2014/11/javascript-scoping-and-hoisting/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

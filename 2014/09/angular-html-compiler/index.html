@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>AngularJs HTML Compiler | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">AngularJs HTML Compiler</span> 
+
+            </div>
+            <h3>AngularJs HTML Compiler</h3>
+            <p>html编译，这是angular的核心概念或者说重难点。这章就是围绕<code>HTML Compiler</code>展开，既算是自定义指令的深入，也算是对angular工作原理的一点解析。</p>
+<p>首先<strong>注意</strong>：如果只是初学者，或者暂时不想深入，那么，跳过本章也可。</p>
+<!--view-break-->
+<h2 id="概览">概览</h2><p>angular的<code>HTML Compiler</code>允许开发人员教会浏览器新语法。编译器允许你为元素或属性添加新行为，甚至创建有自定义行为的新元素或新属性。<strong>angular称这些行为扩展（behavior extensions）为指令。</strong></p>
+<p>HTML有许多结构以声明的方式来为静态文档格式化html。（HTML has a lot of constructs for formatting the HTML for static documents in a declarative fashion.）例如，元素居中，不需要提供命令让浏览器计算中心的位置，为元素加上<code>align=&quot;center&quot;</code>的属性就够了。这就是声明式语言的强大。</p>
+<p>但声明式语言有时又是受限的，因为它不允许你教浏览器新语法。比如，你想让文本居中变成1/3对齐就比较难了。所以需要教浏览器新语法。</p>
+<p>angular自带通用的指令，编写webapp时很有用。但你可以自定义指令。这些指令就是构建你app的“特定领域语言”（<em>Domain Specific Language</em>）。</p>
+<p>所有的编译发生在浏览器端，无关服务器。</p>
+<h2 id="编译器">编译器</h2><p>编译器是一个angular服务，它会遍历DOM来查询属性。</p>
+<blockquote>
+<p>Compiler is an Angular service which traverses the DOM looking for attributes.</p>
+</blockquote>
+<p>编译过程分为2个阶段：</p>
+<ol>
+<li>编译（<em>Compile</em>）：遍历DOM，收集这个DOM上的所有指令。结果是一个link函数。</li>
+<li>链接（<em>Link</em>）：用scope结合指令，生成动态视图。scope model的所有变动会影响视图，视图上的任何用户交互会影响scope model。这让scope model成为<em>single source of truth</em>。</li>
+</ol>
+<p>一些指令如<code>ng-repeat</code>会为集合的每个元素克隆DOM元素。把编译分为compile和link两个过程有利于提高性能。因为克隆的模板只需要编译一次，然后为每个克隆实例link。</p>
+<h2 id="指令">指令</h2><p>指令是一种行为（behavior），当编译过程中遇到特定html结构时会被触发。指令可以放在元素名、属性、类名和注释上。</p>
+<p><strong>指令就是一个函数，编译器在DOM中遇到指令时执行它。</strong></p>
+<h2 id="理解视图">理解视图</h2><p>大多模板系统是单向绑定，获取（consume）静态字符串模板，与数据结合，得出新字符串，插入元素内部（<code>innerHTML</code>）。</p>
+<p>这意味着数据的任意改变需要重新与template结合编译，然后插入元素。这样做有些问题：</p>
+<ul>
+<li>读取用户输入，合并到数据</li>
+<li>通过重写会严重影响用户输入（clobbering user input by overwriting it）</li>
+<li>控制整个更新过程</li>
+<li>缺乏行为表现力（lack of behavior expressiveness）</li>
+</ul>
+<p>angular不同。angular编译器接收（consume）DOM，不是字符串模板。结果是link函数，该函数与scope model结合生成live view。这个view和scope model绑定是透明的，开发者不用做任何事去更新视图。然后因为没有用到<code>innerHTML</code>，所以你不会影响到用户输入。更多的是，angular指令不仅包括文字绑定，还包括行为结构。</p>
+<p>angular会生成稳定的DOM。绑定到模型的DOM元素实例在整个绑定期间不会变。这意味着可以访问到元素和注册事件处理，并且知道引用不会被模板数据合并破坏。</p>
+<h2 id="指令怎么被编译？">指令怎么被编译？</h2><p><strong>再次强调一点：angular在DOM节点上操作而不是字符串！</strong>通常你是不会注意到这个限制的，因为当页面加载，浏览器会自动解析html为DOM。</p>
+<p>html编译有3个阶段：</p>
+<ol>
+<li><p><code>$compile</code>遍历DOM并匹配指令（traverses the DOM and matches directives）</p>
+<p>如果编译器找到一个元素匹配指令，那么， 这个指令就会被添加到匹配这个DOM元素的指令列表。单个DOM元素可能匹配多个指令。</p>
+</li>
+<li><p>一旦所有匹配这个DOM元素的指令都被标识出了，编译器按优先级<code>priority</code>排序它们。</p>
+<p> 每个指令的<code>compile</code>函数被执行。每个<code>compile</code>函数都有一次机会修改DOM。每个<code>compile</code>函数返回一个<code>link</code>函数。这些<code>link</code>函数被组合成一个复合<code>link</code>函数（调用每个小<code>link</code>）。</p>
+</li>
+<li><p><code>$compile</code>通过调用之前的复合<code>link</code>函数，把模板链接到scope。这会轮流调用每个小<code>link</code>函数，注册监听器，启动<code>$watch</code>s。</p>
+</li>
+</ol>
+<p>编译的结果是scope和DOM之间的动态绑定。因为这点，编译后的scope上的模型的任何变化都会反映到视图上。</p>
+<hr>
+<p><em>这里的遍历DOM，指的不是整个DOM树，而是DOM节点。如下面的<code>&lt;div ng-bind=&quot;exp&quot;&gt;&lt;/div&gt;</code>。</em></p>
+<hr>
+<p>下面是使用<code>$compile</code>服务的对应代码，这应该会让你了解angular内部做了什么：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> $compile = ...; <span class="comment">// injected into your code</span></span><br><span class="line"><span class="keyword">var</span> scope = ...;</span><br><span class="line"><span class="keyword">var</span> parent = ...; <span class="comment">// DOM element where the compiled template can be appended</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> html = <span class="string">'&lt;div ng-bind="exp"&gt;&lt;/div&gt;'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Step 1: parse HTML into DOM element</span></span><br><span class="line"><span class="keyword">var</span> template = angular.element(html);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Step 2: compile the template</span></span><br><span class="line"><span class="keyword">var</span> linkFn = $compile(template);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Step 3: link the compiled template with the scope.</span></span><br><span class="line"><span class="keyword">var</span> element = linkFn(scope);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Step 4: Append to DOM (optional)</span></span><br><span class="line">parent.appendChild(element);</span><br></pre></td></tr></table></figure>
+<h3 id="Compile和Link的不同之处">Compile和Link的不同之处</h3><p>到这里你可能要问编译过程为什么要分为compile和link两个过程。简单点说，任何时候模型中的变化会导致<strong>DOM结构(structure of the DOM)</strong>的变化，那么compile和link的分离就是必要的。</p>
+<p>指令很少会有<code>compile function</code>，因为大多情况下，指令被考虑到工作在特定结构的DOM而不是改变DOM结构。</p>
+<p>指令一般都有<code>link function</code>，link函数允许指令注册监听器到特定的克隆的DOM元素实例，而不是改变DOM结构。</p>
+<p><strong>注意</strong>：出于性能考虑，任何可被指令实例共享（shared among the instance of directives）的操作应该放到compile函数中。</p>
+<h4 id="“Compile”_Vs_“Link”的一个例子">“Compile” Vs “Link”的一个例子</h4><p>为了理解，以真实的<code>ngRepeat</code>为例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Hello &#123; &#123;user.name&#125; &#125;, you have these actions:</span><br><span class="line"><span class="tag">&lt;<span class="title">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">li</span> <span class="attribute">ng-repeat</span>=<span class="value">"action in user.actions"</span>&gt;</span></span><br><span class="line">    &#123; &#123; action.description &#125; &#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当上面这个例子被编译时，编译器访问每个节点并查找指令。</p>
+<p><code>{ {user.name} }</code>匹配<code>interpolation</code>指令，而<code>ng-repeat</code>匹配<code>ngRepeat</code>指令。</p>
+<p>但<code>ngRepeat</code>有个问题：</p>
+<p>它需要为<code>user.actions</code>中的每个<code>action</code>克隆新的<code>&lt;li&gt;</code>元素。这乍一看没什么特别的，但考虑到<code>user.actions</code>以后可能会添加项目，情况变得复杂了。这意味着为了（以后的）克隆，需要保存一份干净的<code>&lt;li&gt;</code>元素拷贝。</p>
+<p>当新的<code>action</code>被添加，模板<code>&lt;li&gt;</code>元素需要被克隆并插入到<code>ul</code>。但克隆<code>&lt;li&gt;</code>是不够的，还需要编译<code>&lt;li&gt;</code>，这样它的指令，如<code>{ { action.description } }</code>，才能在正确的scope下执行。</p>
+<p>解决这个问题的一个笨方法是插入一份拷贝然后编译一次这个拷贝。这样做的问题是编译这个拷贝会重复很多工作。特别的，我们不得不每次在克隆前去遍历这个<code>&lt;li&gt;</code>来查找它的指令。这会有性能问题。</p>
+<p>解决方案是把编译分成compile和link：</p>
+<ol>
+<li>compile阶段，所有指令都被识别，并被按优先级排序;</li>
+<li>link阶段，执行有关”链接“scope的一个特定实例与<code>&lt;li&gt;</code>的一个特定实例的任何工作。</li>
+</ol>
+<p><strong>注意</strong>：<code>link</code>意味着在DOM上建立监听器，在scope上建立<code>$watch</code>，以保持模型和视图的同步。</p>
+<blockquote>
+<p>Note: <em>Link means setting up listeners on the DOM and setting up $watch on the Scope to keep the two in sync.</em></p>
+</blockquote>
+<p><code>ngRepeat</code>阻止编译过程下沉到<code>&lt;li&gt;</code>内，所以它能有一个原始的<code>&lt;li&gt;</code>克隆，能自己处理插入和删除节点。</p>
+<p><code>ngRepeat</code>指令把编译分为compile和link。<code>&lt;li&gt;</code>元素的compile结果是一个link函数，该link函数包含了<code>&lt;li&gt;</code>元素内部的所有指令，准备被附加到一个特定的<code>&lt;li&gt;</code>元素克隆实例（ready to be attached to a specific clone of the <code>&lt;li&gt;</code> element）。</p>
+<p>在运行（runtime）时，<code>ngRepeat</code>监测表达式<code>&quot;action in user.actions&quot;</code>，一旦新项目添加到数组，它会克隆<code>&lt;li&gt;</code>元素，为这个<code>&lt;li&gt;</code>元素创建一个新的<code>scope</code>，并在克隆的<code>&lt;li&gt;</code>元素上调用link函数。</p>
+<h3 id="理解Scope怎么与_Transcluded_Directives协同工作">理解Scope怎么与 Transcluded Directives协同工作</h3><p>指令的一个常用情况是创建复用组件。下面是一个简化的对话框组件例子。</p>
+<p>下面展示<code>dialog</code>指令怎么在html中使用：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- html to make dialog directive work --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"show=true"</span>&gt;</span>show<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">dialog</span> <span class="attribute">title</span>=<span class="value">"Hello &#123; &#123;username&#125; &#125;."</span></span><br><span class="line">        <span class="attribute">visible</span>=<span class="value">"show"</span></span><br><span class="line">        <span class="attribute">on-cancel</span>=<span class="value">"show = false"</span></span><br><span class="line">        <span class="attribute">on-ok</span>=<span class="value">"show = false; doSomething()"</span>&gt;</span></span><br><span class="line">   Body goes here: &#123; &#123;username&#125; &#125; is &#123; &#123;title&#125; &#125;.</span><br><span class="line"><span class="tag">&lt;/<span class="title">dialog</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>下面是<code>dialog</code>的模板：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- dialog template --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-show</span>=<span class="value">"visible"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">h3</span>&gt;</span>&#123; &#123;title&#125; &#125;<span class="tag">&lt;/<span class="title">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"body"</span> <span class="attribute">ng-transclude</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"footer"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"onOk()"</span>&gt;</span>Save changes<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">button</span> <span class="attribute">ng-click</span>=<span class="value">"onCancel()"</span>&gt;</span>Close<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面的例子中<code>dialog</code>不会被正确渲染，除非对scope进行处理。一个问题是<code>dialog</code>希望模板scope的<code>title</code>属性已被定义，但我们希望<code>title</code>是<code>dialog</code>元素的title attribute的插值结果。另外，按钮希望<code>onOk</code>，<code>onCancel</code>已经在scope中存在——这会限制<code>dialog</code>指令的用处。解决方案是用<code>locals</code>来创建local变量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">scope: &#123;</span><br><span class="line">  title: <span class="string">'@'</span>,       <span class="comment">// the title uses the data-binding from the parent scope</span></span><br><span class="line">  onOk: <span class="string">'&amp;'</span>,        <span class="comment">// create a delegate onOk function</span></span><br><span class="line">  onCancel: <span class="string">'&amp;'</span>,    <span class="comment">// create a delegate onCancel function</span></span><br><span class="line">  visible: <span class="string">'='</span>      <span class="comment">// set up visible to accept data-binding</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建local properties会有两个问题：</p>
+<ol>
+<li>隔离（isolation）：如果用户忘记在<code>&lt;dialog&gt;</code>上设置<code>title</code> attribute，那么dialog模板会绑定到父scope的同名属性。</li>
+<li>嵌入（transclusion）：被嵌入的（ transcluded）DOM可以访问到locals，但locals可能覆写了某些属性，比如这里的<code>title</code>，但嵌入的DOM其实希望访问外部的scope。</li>
+</ol>
+<p>为了解决隔离问题，指令会创建一个新的<code>isolated</code> scope。<code>isolated</code> scope不继承任何父scope，所以不用担心问题一。</p>
+<p>但<code>isolated</code> scope导致了新问题：被嵌入的DOM是指令的<code>isolated</code> scope的孩子，不能绑定到任何其它东西。因为这个原因，the transcluded scope 将会是原来的scope的child，在指令创建<code>isolated</code> scope之前。<strong>这使<code>isolated</code> scope和<code>transcluded</code> scope是兄弟。</strong></p>
+<p>因此，最终代码是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">transclude: <span class="literal">true</span>,</span><br><span class="line">scope: &#123;</span><br><span class="line">    title: <span class="string">'@'</span>,             <span class="comment">// the title uses the data-binding from the parent scope</span></span><br><span class="line">    onOk: <span class="string">'&amp;'</span>,              <span class="comment">// create a delegate onOk function</span></span><br><span class="line">    onCancel: <span class="string">'&amp;'</span>,          <span class="comment">// create a delegate onCancel function</span></span><br><span class="line">    visible: <span class="string">'='</span>            <span class="comment">// set up visible to accept data-binding</span></span><br><span class="line">&#125;,</span><br><span class="line">restrict: <span class="string">'E'</span>,</span><br><span class="line">replace: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2014/09/angular-scope/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/09/angular-custom-directive/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2014/09/angular-html-compiler/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

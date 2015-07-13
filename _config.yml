@@ -1,8 +1,0 @@
-baseurl: /
-markdown: redcarpet
-redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
-paginate_path: "/pages/:num"
-permalink: /articles/:categories/:year/:month/:title
-highlighter: pygments
-paginate: 5

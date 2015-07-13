@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>JavaScript event loop and timing in-depth | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">JavaScript</span> &gt; <span class="category-item">JavaScript event loop and timing in-depth</span> 
+
+            </div>
+            <h3>JavaScript event loop and timing in-depth</h3>
+            <p>先看一道阿里面试题（来自<a href="http://www.w3cfuns.com/blog-5448978-5404954.html" target="_blank" rel="external">阿里2015春季前端实习校招笔试题</a>）:</p>
+<p>对于下列程序运行结果，符合预期的是：</p>
+<!--view-break-->
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.time(<span class="string">'time span'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f2</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.timeEnd(<span class="string">'time span'</span>);</span><br><span class="line">&#125;</span><br><span class="line">setTimeout (f1, <span class="number">100</span>);</span><br><span class="line">setTimeout (f2, <span class="number">200</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitForMs</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> now = <span class="built_in">Date</span>.now();</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">Date</span>.now() - now &lt; n) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">waitForMs(<span class="number">500</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>A. time span :700.077ms</li>
+<li>B. time span :0.066ms</li>
+<li>C. time span :500.077ms</li>
+<li>D. time span :100.077ms</li>
+</ul>
+<p>答案是<strong>B</strong>，但为什么？</p>
+<h2 id="Concurrency_model_and_Event_Loop">Concurrency model and Event Loop</h2><p>要理解定时器内部怎么工作的，首先要明白 JavaScript 的<strong>Concurrency model and Event Loop(并发模型和事件回环)</strong>。</p>
+<p>JavaScript 有一个基于事件回环的并发模型，这与<code>C</code>或<code>Java</code>很不同。</p>
+<h3 id="确立几个运行时概念（runtime_concepts）">确立几个运行时概念（runtime concepts）</h3><ul>
+<li><strong>Stack</strong>： 栈，函数调用形成帧栈（a stack of frames）。如调用函数A，那么首先第一个包含A的参数和局部变量的frame（frameA）被创建;当A中调用B，包含B的参数和局部变量的frame（frameB）被创建，并push到frameA上面。B<code>return</code>后，frameB从栈中pop出来，当A<code>return</code>后，栈就是空的了。</li>
+<li><strong>Heap</strong>： 堆，对象被分配在堆中。</li>
+<li><strong>Queue</strong>： 每个 JavaScript runtime 都包含一个消息队列（message queue），即一列要处理的消息。每个消息对应（associated）一个函数。当 stack 是空的，队列中的一个消息就被取出并处理。处理包括调用对应的（associated）那个函数（这会创建栈），当栈再次空了之后，这个处理就结束了。</li>
+</ul>
+<h3 id="Event_loop">Event loop</h3><p>事件回环（event loop）得名于它的实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(queue.waitForMessage())&#123;</span><br><span class="line">  queue.processNextMessage();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>queue.waitForMessage</code>同步等待一个消息到来，如果当前没有消息的话。</p>
+<h4 id="“Run-to-completion”">“Run-to-completion”</h4><p>每个消息会在任何其它消息被处理前处理完。</p>
+<p>这有很多好处，但会有一个副作用：如果一个消息处理要花很长时间，那么这期间浏览器就不会响应用户交互（点击，滚动等等），即浏览器假死。好的方法是让消息处理过程短，并且可能的话把一个消息分割成若干消息。</p>
+<h4 id="Adding_messages">Adding messages</h4><p>在浏览器中，任何时间有事件发生且该事件有监听函数的话，那么一个消息就会被添加。如果没有监听函数，该事件被忽略。</p>
+<p>另外，调用<code>setTimeout</code>会在第二个参数指定的时间后添加消息到消息队列。如果此时队列中没有其它消息，那么这个消息会立即处理，如果有其它消息，那么<code>setTimeout</code>消息就必须等到其它消息处理后才会被处理。所以第二个参数指定的是最小时间，而不是保证的精确时间。</p>
+<h4 id="Several_Runtime_communicating_together">Several Runtime communicating together</h4><p>web worker 或者跨域的 iframe 有自己对立的堆、栈还有队列。两个不同的 runtime 只能通过<code>postMessage</code>来通信。</p>
+<h2 id="JavaScript_is_single-threaded">JavaScript is single-threaded</h2><p><strong>JavaScript是单线程的。</strong></p>
+<p>这一段重点讲js是单线程的，或者说从单线程角度来理解js的并发和事件回环。正因为js是单线程的，所以js只能通过事件回环来实现并发。</p>
+<p><strong>在浏览器中，每个 window 只有一个js线程。</strong>其它如下载等等都是独立线程的。</p>
+<p>既然js是单线程的，那么某段时间js只能执行一段代码，执行这段代码时，会阻塞其它异步事件的处理。这意味着异步事件只能加入消息队列等待处理。</p>
+<h2 id="setTimeout与setInterval">setTimeout与setInterval</h2><p>正式来解答开头的题目，一探js定时器的秘密。</p>
+<p>当执行<code>setTimeout/setInterval</code>时，js引擎会产生一个消息并添加到消息队列。</p>
+<ol>
+<li><p>当是<code>setTimeout</code>时，如<code>setTimeout(fn, delay)</code></p>
+<p> js引擎会在delay毫秒后把消息添加到队列。如果消息队列是空的，那么立即处理消息，执行<code>fn</code>。而题目中，<code>waitForMs</code>会使当前处理过程持续500毫秒，此时两个<code>setTimeout</code>消息都被添加到消息队列中了，会顺序执行（时间间隔几乎为0）。</p>
+</li>
+<li><p>当是<code>setInterval</code>时，如<code>setInterval(fn, delay)</code></p>
+<p> <code>setInterval</code>在怎么执行异步代码上和<code>setTimeout</code>差别很大。假设<code>fn</code>执行时间小于<code>delay</code>，那么<code>setTimeout</code>是可以做到每<code>delay</code>执行一次，但如果<code>fn</code>执行时间很长，或者当前消息处理时间很长，那么<code>fn</code>可能紧贴着执行多次（没有<code>delay</code>）或者执行间隔很长。</p>
+</li>
+</ol>
+<hr>
+<p>备注：</p>
+<ul>
+<li>异步事件： JavaScript 中大多数事件是异步的，如鼠标事件。当异步事件发生时，消息被添加到队列。</li>
+<li>同步事件： 有些事件是同步的，事件处理函数会立即执行，而同步时间发生时，也不会添加消息到队列。同步事件有 DOM mutation 以及嵌套的 DOM 事件。</li>
+</ul>
+<p>参考：</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop" target="_blank" rel="external">MDN: Concurrency model and Event Loop</a></li>
+<li><a href="http://javascript.info/tutorial/events-and-timing-depth#asynchronous-events" target="_blank" rel="external">Events and timing in-depth</a></li>
+<li><a href="http://ejohn.org/blog/how-javascript-timers-work/" target="_blank" rel="external">How JavaScript Timers Work</a></li>
+</ul>
+<hr>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2015/04/frontend-questions-and-answers/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2015/01/JavaScript-dynamic-scope-vs-static-scope/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2015/04/JavaScript-timer/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

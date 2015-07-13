@@ -1,0 +1,163 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: #333;
+    font-family: 'Helvetica', "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.414;
+    color: #333;
+}
+h3 {
+    font-weight: normal;
+    margin: 12px 0;
+    color: #222;
+}
+h4 {
+    font-weight: normal;
+}
+#wrapper {
+    height: 100%;
+    overflow: hidden;
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
+}
+
+.stage-list {
+    position: relative;
+    width: 100%;
+    height: 300%;
+}
+.stage-list .stage {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 33.333333334%;
+    overflow: hidden;
+}
+.indicator-list {
+    position: fixed;
+    z-index: 100;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 70px;
+}
+.indicator-list .indicator {
+    display: block;
+    width: 10px;
+    height: 10px;
+    margin: 10px;
+    border-radius: 50%;
+    border: 1px solid #000;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+.indicator-list .indicator:hover,
+.indicator-list .indicator.active {
+    background-color: #000;
+}
+
+.bg-primary {
+    background-color: #5677fc;
+}
+.bg-success {
+    background-color: #8bc34a;
+}
+.bg-bluegrey {
+    background-color: rgb(0,150,136);
+}
+
+.user-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 240px;
+    text-align: center;
+}
+.user-info .head {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    animation: fadeIn 1s linear 0s 1;
+}
+.user-info h3 {
+    animation: fadeIn 1s linear 0s 1;
+}
+.user-info p {
+    animation: fadeIn 1s linear 0s 1;
+}
+
+.skill-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 200px;
+    max-width: 300px;
+    opacity: 0;
+}
+.skill-info h3 {
+    text-align: center;
+}
+
+.preject-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 300px;
+    max-width: 300px;
+    opacity: 0;
+}
+
+.preject-info h3 {
+    margin: 12px 0;
+}
+
+.preject-info a {
+    text-decoration: none;
+    color: #333;
+}
+
+.animating .skill-info, .animating .preject-info{
+    animation: zoomIn 1s linear 0s 1;
+    opacity: 1;
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@-webkit-keyframes zoomIn {
+    from {
+        opacity: 0.3;
+        transform: scale(0.7);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

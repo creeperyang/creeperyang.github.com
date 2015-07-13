@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>AngularJs内置指令 | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">AngularJs内置指令</span> 
+
+            </div>
+            <h3>AngularJs内置指令</h3>
+            <p>指令是使angular特殊的基础。指令是angular这个框架最重要的部分之一。</p>
+<p>指令是什么？</p>
+<blockquote>
+<p>At a high level, directives are markers on a DOM element (such as an attribute, element name, comment or CSS class) that tell AngularJS’s HTML compiler ($compile) to attach a specified behavior to that DOM element or even transform the DOM element and its children.</p>
+</blockquote>
+<!--view-break-->
+<p>翻译一下，指令就是DOM元素上的标记，可以是属性、类、注释甚至元素本身。指令告诉angular的html编译器为该DOM元素附加特定行为，甚至转换该DOM元素及其后代。</p>
+<h2 id="内置指令">内置指令</h2><p>angular内置许多指令，先介绍这些指令的含义及用法。</p>
+<h3 id="样式相关指令">样式相关指令</h3><ol>
+<li><p>ngClass</p>
+<p>ng-class用来给元素绑定类名，其表达式的返回值可以是以下三种：- 类名字符串，可以用空格分割多个类名，如”redtext boldtext”；- 类名数组，数组中的每一项都会层叠起来生效；- 一个名值对应的object，其键值为类名，值为boolean类型，当值为true时，该类会被加在元素上。</p>
+<p>例子：</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/creeper/0cn2mzwz/1/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+</li>
+<li><p>ngStyle</p>
+<p>ng-style用来绑定元素的css样式，其表达式的返回值为一个js对象，键为css样式名，值为该样式对应的合法取值。用法比较简单：</p>
+<p>例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-style</span>=<span class="value">"&#123;color:'red'&#125;"</span>&gt;</span>ng-style测试<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-style</span>=<span class="value">"style"</span>&gt;</span>ng-style测试<span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line">$scope.style = &#123;color:'red'&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ngShow/ngHide</p>
+<p>控制显隐。表达式返回值应该是boolean。</p>
+</li>
+</ol>
+<h3 id="表单控件功能相关的">表单控件功能相关的</h3><ul>
+<li>ng-checked控制radio和checkbox的选中状态</li>
+<li>ng-selected控制下拉框的选中状态</li>
+<li>ng-disabled控制失效状态</li>
+<li>ng-multiple控制多选</li>
+<li>ng-readonly控制只读状态</li>
+</ul>
+<p>以上指令的取值均为boolean类型，当值为true时相关状态生效，道理比较简单就不多做解释。</p>
+<p><strong>注意：</strong> 上面的这些只是单向绑定，即只是从数据到模板，不能反作用于数据。要双向绑定，还是要使用 ng-model 。</p>
+<h3 id="事件绑定相关">事件绑定相关</h3><p><code>ng-change``ng-dblclick``ng-mousedown``ng-mouseenter``ng-mouseleave``ng-mousemove``ng-mouseover``ng-mouseup``ng-submit</code></p>
+<p>事件绑定指令的取值为函数，并且需要加上括号，例如：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">ng-change</span>=<span class="value">"change($event)"</span>&gt;</span><span class="tag">&lt;/<span class="title">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="php"></span><br><span class="line">    <span class="variable">$scope</span>.change = <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$event</span>)</span></span>&#123;</span><br><span class="line">        alert(<span class="variable">$event</span>.target);</span><br><span class="line">        <span class="comment">//do something</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="特殊的ng-src和ng-href">特殊的ng-src和ng-href</h3><p>我们使用ng-src指令，这样在路径被正确得到之前就不会显示找不到图片。同理，<code>&lt;a&gt;</code>标签的href属性也需要换成ng-href，这样页面上就不会先出现一个地址错误的链接。</p>
+<p>ng中有一个与{ {} }等同的指令:ng-bind，同样用于单向绑定，在页面刚加载的时候就不会显示出对用户无用的数据。</p>
+<h3 id="控制相关的指令">控制相关的指令</h3><p>如ngRepeat循环输出</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">li</span> <span class="attribute">ng-repeat</span>=<span class="value">"o in question.options"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">b</span>&gt;</span>&#123; &#123;$index+1&#125; &#125;.<span class="tag">&lt;/<span class="title">b</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">ng-model</span>=<span class="value">"o.content"</span> <span class="attribute">value</span>=<span class="value">"o.content"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"javascript:void(0);"</span> <span class="attribute">ng-click</span>=<span class="value">"delOption($index)"</span>&gt;</span>删除<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Matching_Directives（匹配指令）">Matching Directives（匹配指令）</h2><p>上面都是常用的内置指令，通过一些代码，对指令的使用应该有了基本了解，这里讲一讲指令的匹配，即编译器怎么决定/找到正确的指令。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">"foo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">data-ng:model</span>=<span class="value">"foo"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面两个都匹配<code>ngModel</code>指令。</p>
+<p>angular标准化（<strong>normalize</strong>）元素的标签和属性名来检测匹配哪个指令。</p>
+<p>我们一般通过大小写敏感的驼峰式(<em>camelCase</em>)的标准化的名字去指代指令(如<code>ngModel</code>)，但html是不区分大小写的，于是，我们一般用小写的，破折线分离（<em> dash-delimited </em>）的属性名去指代指令（如<code>ng-model</code>）。</p>
+<p>标准化处理如下：</p>
+<ol>
+<li>去除元素/属性前的<code>x-</code>和<code>data-</code>;</li>
+<li>把<code>:</code>，<code>-</code>或<code>_</code>分离的名字转换成驼峰式。</li>
+</ol>
+<p>如下面的例子都匹配<code>ngBind</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"Controller"</span>&gt;</span></span><br><span class="line">  Hello <span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">'name'</span>&gt;</span> <span class="tag">&lt;<span class="title">hr</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng:bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng_bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">data-ng-bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">x-ng-bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<ul>
+<li>最好用破折线分离的形式，如<code>ng-bind</code>，如果你想用html验证工具，也可以用<code>data-ng-bind</code>。其它形式都是历史遗留（问题）。</li>
+<li>最好用标签名或者属性名，折会使angular更容易检测指令。</li>
+</ul>
+<h3 id="Text_and_attribute_bindings">Text and attribute bindings</h3><p>在编译期间，编译器用<code>$interpolate</code>服务去检测文本和属性是否内嵌表达式。这些表达式会被注册为<code>watches</code>，并作为正常digest循环的一部分。</p>
+<p>一个例子：<code>&lt;a ng-href=&quot;img/{ {username} }.jpg&quot;&gt;Hello { {username} }!&lt;/a&gt;</code>。</p>
+<h3 id="ngAttr_attribute_bindings"><code>ngAttr</code> attribute bindings</h3><p>浏览器有时会比较挑剔，对属性的值是否有效进行验证。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">svg</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">circle</span> <span class="attribute">cx</span>=<span class="value">"&#123; &#123;cx&#125; &#125;"</span>&gt;</span><span class="tag">&lt;/<span class="title">circle</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>因为<code>SVG DOM API</code>的限制，有时会出行错误<code>Error: Invalid value for attribute cx=&quot;{ {cx} }&quot;</code>。</p>
+<p>这时，你可以使用<code>ng-attr-cx</code>修复这种错误。</p>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2014/09/angular-custom-directive/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/09/angular-forms/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2014/09/angular-directive/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>

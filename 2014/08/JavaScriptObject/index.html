@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+    <meta name="author" content="Creeper Yang" />
+    <meta name="description" content="Creeper's blog, focus on JavaScript/Html(5)/Css(3)" />
+    <meta name="keywords" content="Creeper Yang,blog,JavaScript,html5,development">
+    
+    <title>JavaScript Object | Creeper&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <link rel="alternative" href="/atom.xml" title="Creeper&#39;s Blog" type="application/atom+xml">
+    
+    
+        <link rel="icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="/assets/styles/material.min.css" type="text/css">
+    <link rel="stylesheet" href="/assets/styles/app.css" type="text/css">
+</head>
+    <body class='mdl-color--grey-100 mdl-color-text--grey-800 mdl-base'>
+        <div class="mdl-layout post-page article-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+    <div class="article-ribbon">
+        <a class="btn-back mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="javascript:history.back();">
+            <i class="material-icons">arrow_back</i>
+        </a>
+    </div>
+    <main class="article-main mdl-layout__content">
+        <div class="cus-grid section--center mdl-grid">
+<div class="mdl-cell mdl-cell--12-col">
+    <div class="article-content mdl-color--white mdl-shadow--4dp mdl-color-text--grey-800">
+        <div class="article-body">
+            <div class="article-crumbs mdl-color-text--grey-500">
+                
+    
+    <span class="category-item">Posts</span> &gt; <span class="category-item">frontend</span> &gt; <span class="category-item">JavaScript</span> &gt; <span class="category-item">JavaScript Object</span> 
+
+            </div>
+            <h3>JavaScript Object</h3>
+            <p>JavaScript对象是什么？</p>
+<ul>
+<li>js的基础数据类型（fundamental datatype）是对象（<em>object</em>）；</li>
+<li>对象是无序的属性（<em>properties</em>）集合，每个属性是个key-value对；</li>
+<li>但对象不仅仅是字符串到值的映射。除去有自己的属性集合，每个js对象都会从另一个对象继承属性，即原型（<em>prototype</em>）；</li>
+<li>原型式继承（<em>prototypal inheritance</em>）是js的核心特性。</li>
+</ul>
+<p>JS对象是动态的，属性可以添加或删除。除去string、number、true/false、null、undefined，在js中其他值都是对象。</p>
+<!--view-break-->
+<blockquote>
+<p>null is not an object, it is a primitive value. For example, you cannot add properties to it. Sometimes people wrongly assume that it is an object, because typeof null returns “object”. But that is actually a bug (that might even be fixed in ECMAScript 6).     <small><a href="http://stackoverflow.com/questions/801032/why-is-null-an-object-and-whats-the-difference-between-null-and-undefined/802371#802371" target="_blank" rel="external">参见stackoverflow</a></small></p>
+</blockquote>
+<p>null不是对象，是基础类型。不要被<code>typeof null;  // object</code>迷惑，这是js解释器的错误。 </p>
+<p>property有name和value，name可以是任意字符串，包括空字符串（empty string），但一个对象不可能有相同的name。value可以任意js value，或者setter或/和getter方法（ecma5）。但除去name和value，对象还有3个相关的“属性特性”（<em>property attribute</em>）：</p>
+<ul>
+<li>writable attribute，指定value是否可以设置；</li>
+<li>enumerable attribute，指定是否可以通过<code>for in</code>返回属性的name；</li>
+<li>configurable attribute，指定是否可以删除该属性，或者属性的”属性特性”是否可以修改。</li>
+</ul>
+<p>除去属性，每个对象还拥有3个相关的“对象特性”（<em>object attribute</em>）：</p>
+<ul>
+<li>prototype，另一个对象的引用，本对象继承另一个对象的属性；</li>
+<li>class，标识对象类型的字符串；</li>
+<li>extensible flag（可扩展标记，ecma5），表明是否可以为对象添加新属性。</li>
+</ul>
+<p>最后，下面这些术语可以区分3类js对象和2类属性：</p>
+<ul>
+<li>内置对象（<em>native object</em>），ecma规范定义的对象或类，如Array等；</li>
+<li>宿主对象（<em>host object</em>），js解释器嵌入的宿主环境（如web浏览器）所定义的，如DOM对象等；</li>
+<li>自定义对象（<em>user-defined object</em>），运行js代码创建的对象。</li>
+<li>自有属性（<em>own property</em>），直接在对象中定义的属性。</li>
+<li>继承属性（<em>inherited property</em>），继承的属性。</li>
+</ul>
+<h2 id="创建对象">创建对象</h2><p>可以通过对象直接量（<em>object literals</em>）、new关键字、<code>Object.create()</code>（ecma5）方法创建对象。</p>
+<h3 id="对象直接量">对象直接量</h3> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> book = &#123;</span><br><span class="line">   author: &#123;</span><br><span class="line">       firstname: <span class="string">"David"</span>,</span><br><span class="line">       lastname: <span class="string">"Yang"</span></span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="string">"main title"</span>: <span class="string">"JavaScript"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意： </p>
+<ul>
+<li>保留字作属性name时最好加引号，虽然ecma5与一部分3可以不加引号；</li>
+<li>对象直接量最后一个属性后的逗号会忽略，但ie报错。</li>
+</ul>
+<p>对象直接量是一个表达式，这个表达式创建并初始化一个新的不同的对象。这意味着在loop中，对象直接量将创建很多新对象，并且每个对象的属性值可能也不同。</p>
+<h3 id="new创建对象">new创建对象</h3><p>new运算符创建并初始化一个新对象。关键字new后面必须跟着一个函数调用，这个函数就叫构造函数（<em>constructor</em>）。构造函数用以初始化一个新创建的对象。</p>
+<h3 id="原型">原型</h3><p>介绍第三种创建方法前，必须先解释一下原型。</p>
+<p><strong>原型：</strong>每个js对象都有第二个js对象（可能是<code>null</code>，但很少见）与之相关，这个第二个js对象就是原型，并且第一个对象从原型继承属性。</p>
+<blockquote>
+<p>Every JavaScript object has a second JavaScript object (or  null ,<br>but this is rare) associated with it. This second object is known as a prototype, and the first object inherits properties from the prototype.</p>
+</blockquote>
+<ul>
+<li>所有对象直接量的原型都一样，即Object.prototype;</li>
+<li><strong>new创建的对象的原型就是构造函数的原型！</strong>所以：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">// arr.prototype 就是 Array.prototype</span></span><br><span class="line">arr.__proto__ <span class="comment">// []</span></span><br><span class="line"><span class="built_in">Array</span>.prototype <span class="comment">// []</span></span><br><span class="line"><span class="built_in">Array</span>.prototype === arr.__proto__ <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p><code>var obj = Object.prtotype;</code>，obj就是很少的没有原型(<strong>原型是null</strong>)的对象之一：它不继承任何属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;x: <span class="number">1</span>&#125;; <span class="comment">// 对象直接量</span></span><br><span class="line">obj.__proto__ <span class="comment">// Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">Object</span>.prototype <span class="comment">// Object &#123;&#125;</span></span><br><span class="line"><span class="built_in">Object</span>.prototype === obj.__proto__ <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.__proto__ <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+<h3 id="第3种对象创建方法：Object-create()">第3种对象创建方法：Object.create()</h3><p>ecma5定义了<code>Object.create()</code>。这个方法创建一个新对象，方法的第一个参数就是新对象的原型。可选的第二个参数描述新对象的属性。</p>
+<p><code>Object.create()</code>是静态方法，不是提供给某个对象调用的方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = <span class="built_in">Object</span>.create(&#123;x:<span class="number">1</span>, y:<span class="number">2</span>&#125;); <span class="comment">// o1 inherits properties x and y.</span></span><br><span class="line"><span class="keyword">var</span> o2 = <span class="built_in">Object</span>.create(<span class="literal">null</span>); <span class="comment">// o2 inherits no props or methods.</span></span><br><span class="line"><span class="keyword">var</span> o3 = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.prototype); <span class="comment">// o3 is like &#123;&#125; or new Object().</span></span><br></pre></td></tr></table></figure>
+<p>一个简单的inherit方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inherit</span>(<span class="params">p</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (p == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="built_in">TypeError</span>(); <span class="comment">// p must be a non-null object</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Object</span>.create) <span class="comment">// If Object.create() is defined...</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Object</span>.create(p); <span class="comment">// then just use it.</span></span><br><span class="line">    <span class="keyword">var</span> t = <span class="keyword">typeof</span> p; <span class="comment">// Otherwise do some more type checking</span></span><br><span class="line">    <span class="keyword">if</span> (t !== <span class="string">"object"</span> &amp;&amp; t !== <span class="string">"function"</span>) <span class="keyword">throw</span> <span class="built_in">TypeError</span>();</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;&#125;; <span class="comment">// Define a dummy constructor function.</span></span><br><span class="line">    f.prototype = p; <span class="comment">// Set its prototype property to p.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> f(); <span class="comment">// Use f() to create an "heir" of p.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="查询和设置属性（Querying_and_Setting_Properties）">查询和设置属性（Querying and Setting Properties）</h2><p>js通过 点dot ( . )或方括号 square bracket ( [] ) 访问/设置属性。</p>
+<p>点运算符后的标识不能是保留字，但ecma5放宽了限制。</p>
+<p>方括号内的表达式必须是字符串，更严格讲，是可以转化为字符串的值。</p>
+<h3 id="作为关联数组的对象（Objects_As_Associative_Arrays）">作为关联数组的对象（Objects As Associative Arrays）</h3><p>用方括号时，对象就类似于数组，只是下标是字符串而非数字。这种数组就叫关联数组。</p>
+<p>对象作为关联数组使用时非常方便：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> addr = <span class="string">""</span>;</span><br><span class="line"><span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">    addr += customer[<span class="string">"address"</span> + i] + <span class="string">'\n'</span>;</span><br></pre></td></tr></table></figure>
+<p>这是点操作符难以做到的。</p>
+<h3 id="继承">继承</h3><p>属性查询时会顺着原型链查找，但设置属性时只会在对象上创建或修改属性，不会修改原型链。</p>
+<h3 id="属性访问错误">属性访问错误</h3><p>查询一个不存在的属性会返回undefined，但对象不存在，查询其属性则报错。但可以这样来避免错误：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A concise and idiomatic alternative to get subtitle length or undefined</span></span><br><span class="line"><span class="keyword">var</span> len = book &amp;&amp; book.subtitle &amp;&amp; book.subtitle.length;</span><br></pre></td></tr></table></figure>
+<p>有些属性是只读的，不能重新赋值；有些对象不允许新增属性，但设置这些属性的失败操作不会报错。ecma5的严格模式已经修复。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// The prototype properties of built-in constructors are read-only.</span></span><br><span class="line"><span class="built_in">Object</span>.prototype = <span class="number">0</span>; <span class="comment">// Assignment fails silently; Object.prototype unchanged</span></span><br></pre></td></tr></table></figure>
+<p>在这些场景下设置对象o的属性p会失败：</p>
+<ul>
+<li>o的属性p是只读的（有个例外：<code>defineProperty()</code>方法可以配置只读属性可以被设置）；</li>
+<li>o有个继承的只读属性p：不可能通过设置同名属性来隐藏原型链上的只读属性；</li>
+<li>o不可扩展。</li>
+</ul>
+<h2 id="删除属性">删除属性</h2><p><code>delete</code>操作符删除对象的属性。操作数必须是一个属性访问表达式。</p>
+<p><code>delete</code>只能删除自有属性，不能删除继承属性。要删除继承的属性，必须从定义这个属性的原型对象上删除它。</p>
+<p><code>delete</code>删除成功或没起作用时返回true；<code>delete</code>后面不是属性访问表达式时也返回true。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">o = &#123;x:<span class="number">1</span>&#125;; <span class="comment">// o has own property x and inherits property toString</span></span><br><span class="line"><span class="keyword">delete</span> o.x; <span class="comment">// Delete x, and return true</span></span><br><span class="line"><span class="keyword">delete</span> o.x; <span class="comment">// Do nothing (x doesn't exist), and return true</span></span><br><span class="line"><span class="keyword">delete</span> o.toString; <span class="comment">// Do nothing (toString isn't an own property), return true</span></span><br><span class="line"><span class="keyword">delete</span> <span class="number">1</span>; <span class="comment">// Nonsense, but evaluates to true</span></span><br></pre></td></tr></table></figure>
+<p><em>configurable</em>设为false的属性不会被<code>delete</code>删除。某些内置对象的属性是不可配置的，比如通过变量声明和函数声明创建的全局对象的属性。严格模式中，删除不可配置属性会报TypeError，但ecma3并且是非严格模式下，仅仅是<code>return false；</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="built_in">Object</span>.prototype; <span class="comment">// Can't delete; property is non-configurable</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">1</span>; <span class="comment">// Declare a global variable</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">this</span>.x; <span class="comment">// return false; Can't delete this property</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;&#125; <span class="comment">// Declare a global function</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">this</span>.f; <span class="comment">// Can't delete this property either</span></span><br></pre></td></tr></table></figure>
+<p>非严格模式下，删除可配置属性时，可以省略对全局对象的引用，直接在<code>delete</code>操作符后跟上属性名即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.x = <span class="number">1</span>; <span class="comment">// Create a configurable global property (no var)</span></span><br><span class="line"><span class="keyword">delete</span> x; <span class="comment">// And delete it</span></span><br></pre></td></tr></table></figure>
+<p>但在严格模式下，上述做法会报SyntaxError，必须：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> x; <span class="comment">// SyntaxError in strict mode</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">this</span>.x; <span class="comment">// This works</span></span><br></pre></td></tr></table></figure>
+<h2 id="检测属性">检测属性</h2><p><code>in</code>运算符, <code>hasOwnProperty()</code>和<code>propertyIsEnumerable()</code>方法可以检测一个对象是否有某属性，或者简单的通过属性查询来完成。</p>
+<p><code>in</code>运算符左侧是属性名（字符串），右侧是对象，如果对象的自有属性或继承属性包含这个属性的话，返回true。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123; x: <span class="number">1</span> &#125;</span><br><span class="line"><span class="string">"x"</span> <span class="keyword">in</span> o; <span class="comment">// true: o has an own property "x"</span></span><br><span class="line"><span class="string">"y"</span> <span class="keyword">in</span> o; <span class="comment">// false: o doesn't have a property "y"</span></span><br><span class="line"><span class="string">"toString"</span> <span class="keyword">in</span> o;<span class="comment">// true: o inherits a toString property</span></span><br></pre></td></tr></table></figure>
+<p><code>hasOwnProperty()</code>检测自有属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123; x: <span class="number">1</span> &#125;</span><br><span class="line">o.hasOwnProperty(<span class="string">"x"</span>); <span class="comment">// true: o has an own property x</span></span><br><span class="line">o.hasOwnProperty(<span class="string">"y"</span>); <span class="comment">// false: o doesn't have a property "y"</span></span><br><span class="line">o.hasOwnProperty(<span class="string">"toString"</span>); <span class="comment">// false: toString is an inherited property</span></span><br></pre></td></tr></table></figure>
+<p><code>propertyIsEnumerable()</code>是<code>hasOwnProperty()</code>的增强版：只有是自有属性，并且属性的可枚举性（enumerable attribute）为true时才返回true。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = inherit(&#123; y: <span class="number">2</span> &#125;);</span><br><span class="line">o.x = <span class="number">1</span>;</span><br><span class="line">o.propertyIsEnumerable(<span class="string">"x"</span>); <span class="comment">// true: o has an own enumerable property x</span></span><br><span class="line">o.propertyIsEnumerable(<span class="string">"y"</span>); <span class="comment">// false: y is inherited, not own</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.propertyIsEnumerable(<span class="string">"toString"</span>); <span class="comment">// false: not enumerable</span></span><br></pre></td></tr></table></figure>
+<p>其实除去用<code>in</code>， <code>！==undefined</code>在大部分情况下可替代。但这种情况只能用in：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123; x: <span class="literal">undefined</span> &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="枚举属性">枚举属性</h2><p>除去验证某个属性的存在，我们有时会列举对象所有属性，这常常也用<code>for/in</code>来做，但ecma5提供了2个便捷的替代方法。</p>
+<ol>
+<li><code>Object.keys()</code>， 返回 <strong>可枚举的自有属性</strong> 的name组成的数组。</li>
+<li><code>Object.getOwnPropertyNames()</code>，类似<code>Object.keys()</code>，但返回自有属性而不止可枚举属性。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>.create(&#123;x:<span class="number">1</span>&#125;);</span><br><span class="line">obj.y = <span class="number">2</span>;</span><br><span class="line">obj.toString() <span class="comment">// "[object Object]"</span></span><br><span class="line"><span class="built_in">Object</span>.keys(obj);</span><br><span class="line">[<span class="string">"y"</span>]</span><br><span class="line"><span class="built_in">Object</span>.getOwnPropertyNames(obj)</span><br><span class="line">[<span class="string">"y"</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="属性Getter和Setter">属性Getter和Setter</h2><p>我们说过，属性是由name、value以及一组特性attribute构成的。</p>
+<p>ecma5中，属性的value可以被1个或2个函数替代，这两个函数就是getter/setter。由getter/setter定义的属性常被称作“访问器属性”（“accessor property”），以区别于“数据属性”（“data property”），数据属性只有一个简单的值。</p>
+<p>当程序查询“访问器属性”时，js调用getter方法（不传参），方法返回值就是属性值。js调用setter时，赋值表达式右侧的值就作为参数传入setter。忽略setter的返回值。</p>
+<p>“访问器属性”没有<em>writable</em>特性：</p>
+<ul>
+<li>同时有setter/getter，读/写属性;</li>
+<li>只有setter，只写属性（“数据属性”不可能做到这一点），读取时得到undefined;</li>
+<li>只有getter，只读属性。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;</span><br><span class="line">    <span class="comment">// An ordinary data property</span></span><br><span class="line">    data_prop: value,</span><br><span class="line">    <span class="comment">// An accessor property defined as a pair of functions</span></span><br><span class="line">    <span class="comment">// 访问器属性一般成对定义</span></span><br><span class="line">    get accessor_prop() &#123; <span class="comment">/* function body here */</span> &#125;,</span><br><span class="line">    set accessor_prop(value) &#123; <span class="comment">/* function body here */</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> p= &#123;</span><br><span class="line">    <span class="comment">// x and y are regular read-write data properties.</span></span><br><span class="line">    x:<span class="number">1.0</span>,</span><br><span class="line">    y:<span class="number">1.0</span>,</span><br><span class="line">    <span class="comment">// r is a read-write accessor property with getter and setter.</span></span><br><span class="line">    <span class="comment">// Don't forget to put a comma after accessor methods.</span></span><br><span class="line">    get r() &#123; <span class="keyword">return</span> <span class="built_in">Math</span>.sqrt(<span class="keyword">this</span>.x*<span class="keyword">this</span>.x + <span class="keyword">this</span>.y*<span class="keyword">this</span>.y); &#125;,</span><br><span class="line">    set r(newvalue) &#123;</span><br><span class="line">        <span class="keyword">var</span> oldvalue = <span class="built_in">Math</span>.sqrt(<span class="keyword">this</span>.x*<span class="keyword">this</span>.x + <span class="keyword">this</span>.y*<span class="keyword">this</span>.y);</span><br><span class="line">        <span class="keyword">var</span> ratio = newvalue/oldvalue;</span><br><span class="line">        <span class="keyword">this</span>.x *= ratio;</span><br><span class="line">        <span class="keyword">this</span>.y *= ratio;</span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="comment">// theta is a read-only accessor property with getter only.</span></span><br><span class="line">    get theta() &#123; <span class="keyword">return</span> <span class="built_in">Math</span>.atan2(<span class="keyword">this</span>.y, <span class="keyword">this</span>.x); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>“访问器属性”和“数据属性”一样可以被继承。</p>
+<h2 id="属性特性（Property_Attributes）">属性特性（Property Attributes）</h2><p>属性特性指定属性是否可写、可枚举、可配置。ecma3无法设置这些，ecma5提供了查询和设置这些特性的api。这些api对类库来说很重要，因为：</p>
+<ul>
+<li>允许为原型对象添加方法，并让方法不可枚举，跟内置的方法一样;</li>
+<li>允许锁住对象，定义不可更改、删除的属性。</li>
+</ul>
+<p>我们把“访问器属性”的setter/getter看作特性，按这个逻辑，“数据属性”的值也可以看作特性。因此，可以说一个属性有一个名字和4个特性：value、writable、enumerable、configurable。</p>
+<blockquote>
+<p>we can say that a property has a name and four attributes. The four attributes of a data property are value, writable, enumerable, and configurable.</p>
+</blockquote>
+<p>为了实现属性特性的查询和设置，ecma5定义了一个叫“属性描述符”（property descriptor）的对象来代表那4个特性。描述符对象的属性和它们所描述的属性特性是同名的，因此：</p>
+<ul>
+<li>“数据属性”的描述符对象有value、writable、enumerable、configurable等4个属性；</li>
+<li>“访问器属性”的描述符对象则用getter/setter代替value和writable。</li>
+</ul>
+<p>writable、enumerable、configurable都是布尔值。getter/setter是函数。</p>
+<p>通过<code>Object.getOwnPropertyDescriptor()</code>可以对指定对象获取指定属性的描述符对象：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Returns &#123;value: 1, writable:true, enumerable:true, configurable:true&#125;</span></span><br><span class="line"><span class="built_in">Object</span>.getOwnPropertyDescriptor(&#123;x:<span class="number">1</span>&#125;, <span class="string">"x"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// This object has accessor properties that return random numbers.</span></span><br><span class="line"><span class="keyword">var</span> random = &#123;</span><br><span class="line">    get octet() &#123; <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random()*<span class="number">256</span>); &#125;,</span><br><span class="line">    get uint16() &#123; <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random()*<span class="number">65536</span>); &#125;,</span><br><span class="line">    get int16() &#123; <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random()*<span class="number">65536</span>)-<span class="number">32768</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// Returns &#123; get: /*func*/, set:undefined, enumerable:true, configurable:true&#125;</span></span><br><span class="line"><span class="built_in">Object</span>.getOwnPropertyDescriptor(random, <span class="string">"octet"</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.getOwnPropertyDescriptor(&#123;&#125;, <span class="string">"x"</span>); <span class="comment">// undefined, no such prop</span></span><br><span class="line"><span class="built_in">Object</span>.getOwnPropertyDescriptor(&#123;&#125;, <span class="string">"toString"</span>); <span class="comment">// undefined, inherited</span></span><br></pre></td></tr></table></figure>
+<p><code>Object.getOwnPropertyDescriptor()</code>只能获取自有属性的描述符对象，对继承的属性，要遍历原型链（<code>Object.getPrototypeOf()</code>）。</p>
+<p>要设置属性特性，用<code>Object.defineProperty()</code>，传入参数：要修改的对象、属性、描述符对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;; <span class="comment">// Start with no properties at all</span></span><br><span class="line"><span class="comment">// Add a nonenumerable data property x with value 1.</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(o, <span class="string">"x"</span>, &#123; value : <span class="number">1</span>,</span><br><span class="line">    writable: <span class="literal">true</span>,</span><br><span class="line">    enumerable: <span class="literal">false</span>,</span><br><span class="line">    configurable: <span class="literal">true</span>&#125;);</span><br><span class="line"><span class="comment">// Check that the property is there but is nonenumerable</span></span><br><span class="line">o.x; <span class="comment">// =&gt; 1</span></span><br><span class="line"><span class="built_in">Object</span>.keys(o) <span class="comment">// =&gt; []</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Now modify the property x so that it is read-only</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(o, <span class="string">"x"</span>, &#123; writable: <span class="literal">false</span> &#125;);</span><br><span class="line"><span class="comment">// Try to change the value of the property</span></span><br><span class="line">o.x = <span class="number">2</span>; <span class="comment">// Fails silently or throws TypeError in strict mode</span></span><br><span class="line">o.x <span class="comment">// =&gt; 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// The property is still configurable, so we can change its value like this:</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(o, <span class="string">"x"</span>, &#123; value: <span class="number">2</span> &#125;);</span><br><span class="line">o.x <span class="comment">// =&gt; 2</span></span><br><span class="line"><span class="comment">// Now change x from a data property to an accessor property</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(o, <span class="string">"x"</span>, &#123; get: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="number">0</span>; &#125; &#125;);</span><br><span class="line">o.x <span class="comment">// =&gt; 0</span></span><br></pre></td></tr></table></figure>
+<p><code>Object.defineProperty()</code>创建/修改自有属性，不能修改继承的属性。</p>
+<p><code>Object.defineProperties()</code>同时创建或修改多个属性,返回修改过的对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = <span class="built_in">Object</span>.defineProperties(&#123;&#125;, &#123;</span><br><span class="line">    x: &#123; value: <span class="number">1</span>, writable: <span class="literal">true</span>, enumerable:<span class="literal">true</span>, configurable:<span class="literal">true</span> &#125;,</span><br><span class="line">    y: &#123; value: <span class="number">1</span>, writable: <span class="literal">true</span>, enumerable:<span class="literal">true</span>, configurable:<span class="literal">true</span> &#125;,</span><br><span class="line">    r: &#123;</span><br><span class="line">        get: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">Math</span>.sqrt(<span class="keyword">this</span>.x*<span class="keyword">this</span>.x + <span class="keyword">this</span>.y*<span class="keyword">this</span>.y) &#125;,</span><br><span class="line">        enumerable:<span class="literal">true</span>,</span><br><span class="line">        configurable:<span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>对不允许修改/创建的属性用上述2个方法，会报错：TypeError。一般说，writable特性控制着value特性，configurable特性控制着其它特性，但这不是绝对的，具体规则如下：</p>
+<ul>
+<li>如果对象是不可扩展的，则可以编辑已有属性，但不能添加新属性；</li>
+<li>如果“访问器属性”是不可配置的，则不能修改getter和setter方法，也不能转为“数据属性”；</li>
+<li>如果“数据属性”是不可配置的，则不能将它转换为“访问器属性”；</li>
+<li>如果“数据属性”是不可配置的，则不能将它的writable从false修改为true，但可以从true修改为false；</li>
+<li>如果“数据属性”是不可配置且不可写的，则不能修改它的值。</li>
+</ul>
+<h3 id="getter和setter的老式API">getter和setter的老式API</h3><p>在ecma5标准被采纳之前，一些浏览器已经可以支持set和get。具体略。</p>
+<h2 id="对象特性/属性（Object_Attributes）">对象特性/属性（Object Attributes）</h2><p>每个对象都有<code>prototype、class、extensible</code>3个特性。</p>
+<h3 id="prototype属性">prototype属性</h3><p>prototype特性指定对象从哪个对象继承属性。这个属性非常重要，因此我们常简称为“对象o的原型”，而非“对象o的原型属性”。</p>
+<p>原型属性是对象创建之初就设置好的。复述一下之前提到的：</p>
+<ul>
+<li>对象字面量的原型是Object.prototype;</li>
+<li>new创建的对象的原型是构造函数的原型；</li>
+<li>Object.create()用第一个参数（可以是null）作为原型。</li>
+</ul>
+<p>在ecma5中，<code>Object.getPrototypeOf()</code>可以查询对象的原型，而ecma3没有对应的方法。但我们可以通过<code>o.constructor.prototype</code>来检测对象o的原型。<strong>通过new创建的对象，通常继承一个constructor属性，该属性指代创建这个对象的构造函数。</strong>如上所说，构造函数的prototype就是新建对象的prototype。这一点在之后会详细解释，并且同时会解释为什么用这种方法检测原型不太可靠。</p>
+<p>对象直接量或者通过<code>Object.create()</code>创建的对象有一个constructor属性，该属性值为<code>Object()</code>构造函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = <span class="built_in">Object</span>.create(&#123;x:<span class="number">1</span>&#125;);</span><br><span class="line">o.constructor <span class="comment">// =&gt;function Object() &#123; [native code] &#125;</span></span><br><span class="line">o.constructor.prototype  <span class="comment">// =&gt; Object &#123;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>因此，对对象直接量而言，<code>constructor.prototype</code>指向正确的原型，但对<code>Object.create()</code>创建的对象而言，指向原型常常不正确。</p>
+<p>要想检测一个对象是否是另一个对象的原型（或处于原型链中），用<code>isPrototypeOf()</code>方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = &#123;x:<span class="number">1</span>&#125;; <span class="comment">// Define a prototype object.</span></span><br><span class="line"><span class="keyword">var</span> o = <span class="built_in">Object</span>.create(p); <span class="comment">// Create an object with that prototype.</span></span><br><span class="line">p.isPrototypeOf(o) <span class="comment">// =&gt; true: o inherits from p</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.isPrototypeOf(o) <span class="comment">// =&gt; true: p inherits from Object.prototype</span></span><br></pre></td></tr></table></figure>
+<h3 id="class特性（The_class_Attribute）">class特性（The class Attribute）</h3><p>一个对象的class特性是一个字符串，代表对象的类型信息。</p>
+<p>ecma3，ecma5都没有提供设置这个特性的方法，并且只有一个间接的技术去查询它。默认的<code>toString</code>方法（继承自Object.prototype）返回这种形式的字符串：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[object class]</span><br></pre></td></tr></table></figure>
+<p>可以查询类特性的方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">classof</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (o === <span class="literal">null</span>) <span class="keyword">return</span> <span class="string">"Null"</span>;</span><br><span class="line">    <span class="keyword">if</span> (o === <span class="literal">undefined</span>) <span class="keyword">return</span> <span class="string">"Undefined"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(o).slice(<span class="number">8</span>,-<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>classof</code>函数可以传入任何类型的参数。number、string、bool都可以正确得出class，null和undefined也特殊对待了。内建的对象也可以正常得出同名class，如Date、Array等。另外，宿主对象一般也可以得出有意义的class名（取决于实现方式）。但是，自定义的对象、对象字面量、Object.create创建的对象都只能得出<code>Object</code>。所以对自定义的类来说，无法通过class来区分。</p>
+<h3 id="可扩展特性（The_extensible_Attribute）">可扩展特性（The extensible Attribute）</h3><p>一个对象的可扩展特性指定该对象是否能够新加属性。</p>
+<p>在ecma3中，显然所有内建对象和用户自定义对象都可以扩展，宿主对象的可扩展性是由JS引擎定义的。ecma5默认所有内建对象和用户自定义对象是可扩展的，除非你转换成不可扩展；而宿主对象的可扩展性仍然是引擎定义。</p>
+<p>ecma5定义了函数来查询和设置对象的扩展性：</p>
+<ul>
+<li>Object.isExtensible()，是否可扩展；</li>
+<li>Object.preventExtensions()，转换对象为不可扩展。<strong>已经转换为不可扩展的对象不能再转换为可扩展。</strong>另外，不可扩展一般指定的是本对象，你可以为它的原型对象添加属性。</li>
+<li>Object.seal()，除了使对象不可扩展，还使对象自有属性不可配置，即新属性无法添加，已有属性不能添加，已有属性不能删除或配置。没有方法去unseal一个对象，可以用<code>Object.isSealed()</code>去检测对象是否seal。</li>
+<li>Object.freeze()更严格，相比seal，它使所有属性只读（但getter/setter不受影响）。记住，freeze同样只对本对象起作用，不影响原型。</li>
+</ul>
+<p>extensible特性的意义是能够“lock down”对象，使对象维持一个某一状态，不会被外部修改。</p>
+<h2 id="序列化对象（Serializing_Objects）">序列化对象（Serializing Objects）</h2><p>对象的序列化（serialization）就是把对象转化为字符串的过程（之后可以从字符串恢复）。</p>
+<p>ecma5使用<code>JSON.stringify()``JSON.parse()</code>来序列化和反序列化对象。</p>
+<p>JSON：JavaScript Object Notation，语法和js对象字面量很相似。</p>
+<p>JSON语法是JS语法的子集，它不能代表所有的js值。如RegExp、Error对象、undefined值不能序列化和反序列化。</p>
+<p><strong>JSON只序列化可枚举的自有属性！</strong></p>
+<h2 id="对象方法（Object_Methods）">对象方法（Object Methods）</h2><p>如之前所说，所有的对象（除去创建时明显没有原型的）都从<code>Object.prototype</code>继承属性。</p>
+<h3 id="toString()">toString()</h3><p><code>toString()</code>方法无参数，返回字符串，某种程度上代表调用这个方法的对象的值。</p>
+<h3 id="toLocaleString()">toLocaleString()</h3><p>返回本地化的字符串。</p>
+<h3 id="toJSON()">toJSON()</h3><p>Object.prototype实际上没有定义这个方法，但对需要序列化的对象来说，JSON.stringify()会查找toJSON方法，存在则调用。</p>
+<h3 id="valueOf()">valueOf()</h3><p>valueOf()和toString()很像，但往往但js需要将对象转换成某种原始值而不是字符串时会调用它。默认的valueOf什么都没做，但<code>Date</code>做了处理：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">d.valueOf() <span class="comment">// =&gt;1408867947768</span></span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+            <section id="comments">
+                <div id="disqus_thread">
+                    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+            </section>
+        
+    </div>
+    <nav class="pagination-bar mdl-color-text--grey-50">
+    
+        <a href="/2014/08/classes-and-modules/" class="pagination__button">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+        </a>
+    
+    <div class="section-spacer"></div>
+    
+        <a href="/2014/08/VisualFormattingModel/" class="pagination__button">
+            Older
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+</div>
+        </div>
+    </main>
+</div>
+
+    <script>
+        var disqus_shortname = 'ghblog-cp'; 
+            var disqus_url = 'http://creeperyang.github.io/2014/08/JavaScriptObject/'; 
+        (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+
+        <script src="/assets/scripts/material.min.js" type="text/javascript"></script>
+        
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-63704729-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+    </body>
+</html>
