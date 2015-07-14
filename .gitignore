@@ -1,3 +1,5 @@
-_site/
 *.zip
-assets/fonts/roboto-fontfacekit/*
+node_modules
+*.less
+assets/gulpfile.js
+assets/package.json
